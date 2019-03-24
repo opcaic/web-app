@@ -85,6 +85,8 @@ module.exports = {
         config: './internals/webpack/webpack.prod.babel.js',
       },
       alias: [
+        ['@public', './app/modules/public'],
+        ['@admin', './app/modules/admin'],
         ['@', './app'],
       ]
     },
