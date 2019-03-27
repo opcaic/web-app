@@ -20,7 +20,7 @@ import 'sanitize.css/sanitize.css';
 import App from 'modules/core/App';
 
 // Import Language Provider
-import LanguageProvider from 'modules/public/containers/LanguageProvider';
+// import LanguageProvider from 'modules/public/containers/LanguageProvider';
 
 // Load the favicon and the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
@@ -41,11 +41,15 @@ const MOUNT_NODE = document.getElementById('app');
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+      {/* <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
           <App />
         </ConnectedRouter>
       </LanguageProvider>
+      */}
     </Provider>,
     MOUNT_NODE,
   );

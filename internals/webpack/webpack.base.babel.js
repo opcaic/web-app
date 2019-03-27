@@ -129,8 +129,6 @@ module.exports = options => ({
     mainFields: ['browser', 'jsnext:main', 'main'],
     alias: {
       '@': path.resolve(__dirname, '../../app/'),
-      '@public': path.resolve(__dirname, '../../app/modules/public/'),
-      '@admin': path.resolve(__dirname, '../../app/modules/admin/'),
     },
   },
   devtool: options.devtool,
