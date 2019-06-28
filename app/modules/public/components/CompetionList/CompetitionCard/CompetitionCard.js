@@ -15,7 +15,6 @@ const CompetitionCard = props => (
 );
 
 CompetitionCard.propTypes = {
-  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
 };

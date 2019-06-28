@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import OverviewContainer from '@/modules/public/containers/Competition/OverviewContainer';
 import PageContent from '../../components/Competition/PageContent';
 import Menu from '../../containers/Competition/Menu';
@@ -27,3 +28,7 @@ export default function Competition(props) {
     </PageLayout>
   );
 }
+
+Competition.propTypes = {
+  match: PropTypes.object.isRequired,
+};

@@ -1,4 +1,4 @@
-import { put, takeEvery, all } from 'redux-saga/effects';
+/* import { put, takeEvery, all } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import { fetchCompetitionsSuccess } from './actions';
@@ -13,4 +13,4 @@ function* handleCompetitions() {
 // Root saga
 export default function* rootSaga() {
   yield all([takeEvery(FETCH_COMPETITIONS_REQUEST, handleCompetitions)]);
-}
+} */

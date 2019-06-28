@@ -4,10 +4,11 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Button, Typography } from 'antd';
-import { makeSelectFeaturedCompetitions } from './selectors';
-import { fetchCompetitionsRequest } from '../../ducks/competitions/actions';
-import CompetitionList from '../../components/CompetionList/CompetitionList';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { makeSelectFeaturedCompetitions } from './selectors';
+import { actions as tournamentActions } from '../../ducks/tournaments';
+import CompetitionList from '../../components/CompetionList/CompetitionList';
 const { Title } = Typography;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -43,9 +44,14 @@ export class HomePage extends React.PureComponent {
   }
 }
 
+HomePage.propTypes = {
+  featuredCompetitions: PropTypes.object,
+  loadCompetitions: PropTypes.func,
+};
+
 export function mapDispatchToProps(dispatch) {
   return {
-    loadCompetitions: () => dispatch(fetchCompetitionsRequest()),
+    loadCompetitions: () => dispatch(tournamentActions.fetchMany()),
   };
 }
 

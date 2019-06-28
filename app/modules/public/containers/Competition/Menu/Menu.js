@@ -32,6 +32,11 @@ const SubmenuItem = styled.li`
 
 /* eslint-disable react/prefer-stateless-function */
 export class Menu extends React.PureComponent {
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
+  };
+
   render() {
     console.log(this.props);
 
@@ -56,9 +61,5 @@ export class Menu extends React.PureComponent {
     );
   }
 }
-
-Menu.propTypes = {
-  name: PropTypes.string.isRequired,
-};
 
 export default withRouter(Menu);

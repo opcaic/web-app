@@ -1,16 +1,16 @@
 import { createSelector } from 'reselect';
 
-const selectCompetitionsState = state => state.get('competitions');
+const selectTournamentsState = state => state.get('tournaments');
 
 const makeSelectFeaturedCompetitions = () =>
-  createSelector(selectCompetitionsState, competitionsState => {
-    const competitions = competitionsState.get('competitions');
+  createSelector(selectTournamentsState, competitionsState => {
+    const tournaments = competitionsState.get('items').toJS(); // TODO: probably should be without toJS()
 
-    if (competitions === undefined) {
-      return competitions;
+    if (tournaments === undefined) {
+      return tournaments;
     }
 
-    return competitions.slice(0, 3);
+    return tournaments.slice(0, 3);
   });
 
 export { makeSelectFeaturedCompetitions };

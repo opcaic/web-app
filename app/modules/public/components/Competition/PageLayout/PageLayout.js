@@ -13,7 +13,6 @@ const PageLayout = props => (
 PageLayout.propTypes = {
   children: PropTypes.any,
   title: PropTypes.node.isRequired,
-  game: PropTypes.string.isRequired,
 };
 
 export default PageLayout;

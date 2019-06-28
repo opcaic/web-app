@@ -11,9 +11,10 @@ import CompetitionsPage from '@/modules/public/pages/CompetitionsPage';
 
 import competitionsSaga from './ducks/competitions/sagas';
 import competitionsReducer from './ducks/competitions/reducers';
+import tournamentsReducers from './ducks/tournaments';
 
 /* eslint-disable react/prefer-stateless-function */
-export class PublicRouter extends React.PureComponent {
+export class PublicApp extends React.PureComponent {
   render() {
     return (
       <Switch>
@@ -29,9 +30,10 @@ export class PublicRouter extends React.PureComponent {
 const withSagas = [injectSaga({ key: 'competitions', saga: competitionsSaga })];
 const withReducers = [
   injectReducer({ key: 'competitions', reducer: competitionsReducer }),
+  injectReducer({ key: 'tournaments', reducer: tournamentsReducers }),
 ];
 
 export default compose(
   ...withReducers,
   ...withSagas,
-)(PublicRouter);
+)(PublicApp);
