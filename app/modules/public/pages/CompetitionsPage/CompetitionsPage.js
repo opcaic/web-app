@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import PageLayout from '@/modules/public/components/layout/PageLayout';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { fetchCompetitionsRequest } from '../../ducks/competitions/actions';
 import { makeSelectCompetitions } from '@/modules/public/pages/CompetitionsPage/selectors';
 import CompetitionList from '@/modules/public/components/CompetionList/CompetitionList';
@@ -30,7 +31,7 @@ export class CompetitionsPage extends React.PureComponent {
 }
 
 CompetitionsPage.propTypes = {
-  competitions: PropTypes.object,
+  competitions: PropTypes.array,
   loadCompetitions: PropTypes.func,
 };
 
@@ -49,4 +50,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(CompetitionsPage);
+export default compose(
+  withRouter,
+  withConnect,
+)(CompetitionsPage);

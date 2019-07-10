@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Button, Typography } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeSelectFeaturedCompetitions } from './selectors';
 import { actions as tournamentActions } from '../../ducks/tournaments';
@@ -45,7 +45,7 @@ export class HomePage extends React.PureComponent {
 }
 
 HomePage.propTypes = {
-  featuredCompetitions: PropTypes.object,
+  featuredCompetitions: PropTypes.array,
   loadCompetitions: PropTypes.func,
 };
 
@@ -64,4 +64,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(HomePage);
+export default compose(
+  withRouter,
+  withConnect,
+)(HomePage);

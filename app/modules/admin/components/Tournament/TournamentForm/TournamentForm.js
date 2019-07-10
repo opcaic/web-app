@@ -42,10 +42,10 @@ export default Form.create({
   mapPropsToFields(props) {
     return {
       name: Form.createFormField({
-        ...props.name,
+        value: props.name,
       }),
       description: Form.createFormField({
-        ...props.description,
+        value: props.description,
       }),
     };
   },

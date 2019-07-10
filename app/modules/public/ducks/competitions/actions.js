@@ -9,7 +9,7 @@ import { createApiAction } from '@/modules/shared/helpers/apiMiddleware';
 export function fetchCompetitionsRequest() {
   return createApiAction({
     type: FETCH_COMPETITIONS,
-    url: 'https://localhost:44333/api/tournaments',
+    endpoint: '/api/tournaments',
     method: 'GET',
   });
 }

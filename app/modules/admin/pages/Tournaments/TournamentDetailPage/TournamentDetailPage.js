@@ -22,6 +22,8 @@ export class TournamentDetailPage extends React.PureComponent {
   };
 
   render() {
+    console.log(this.props.tournament);
+
     return (
       <Spin spinning={this.props.isFetching}>
         <TournamentForm

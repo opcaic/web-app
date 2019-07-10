@@ -18,6 +18,12 @@ const TopMenu = () => (
         <Menu.Item key="2">
           <Link to="/competitions">Competitions</Link>
         </Menu.Item>
+        <Menu.Item key="3">
+          <Link to="/login">Login</Link>
+        </Menu.Item>
+        <Menu.Item key="4">
+          <Link to="/register">Register</Link>
+        </Menu.Item>
       </Menu>
     </div>
   </Header>

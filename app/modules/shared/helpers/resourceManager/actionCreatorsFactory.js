@@ -4,7 +4,7 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
   const fetchMany = apiOptions =>
     createApiAction({
       type: actionTypes.FETCH_MANY,
-      url: apiEndpointFactory(),
+      endpoint: apiEndpointFactory(),
       method: 'GET',
       ...apiOptions,
     });
@@ -12,14 +12,14 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
   const fetchResource = id =>
     createApiAction({
       type: actionTypes.FETCH,
-      url: apiEndpointFactory(id),
+      endpoint: apiEndpointFactory(id),
       method: 'GET',
     });
 
   const updateResource = (id, body) =>
     createApiAction({
       type: actionTypes.UPDATE,
-      url: apiEndpointFactory(id),
+      endpoint: apiEndpointFactory(id),
       method: 'PUT',
       body,
     });

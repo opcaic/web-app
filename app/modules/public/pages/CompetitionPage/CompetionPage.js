@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import OverviewContainer from '@/modules/public/containers/Competition/OverviewContainer';
 import PageContent from '../../components/Competition/PageContent';
 import Menu from '../../containers/Competition/Menu';
 import PageLayout from '../../components/layout/PageLayout';
+import OverviewContainer from '../../containers/Competition/OverviewContainer';
 import HowToPlayContainer from '../../containers/Competition/HowToPlayContainer';
 import MatchLogContainer from '../../containers/Competition/MatchLogContainer';
 
@@ -12,7 +12,7 @@ export default function Competition(props) {
   return (
     <PageLayout>
       <Menu name={props.match.params.slug} />
-      <PageContent>
+      <PageContent title="">
         <Switch>
           <Route exact path={props.match.path} component={OverviewContainer} />
           <Route

@@ -7,7 +7,6 @@ import { connectRouter } from 'connected-react-router/immutable';
 
 import history from 'utils/history';
 // import languageProviderReducer from 'modules/public/containers/LanguageProvider/reducer';
-import competitionsReducer from '@/modules/public/ducks/competitions/reducers';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -15,7 +14,7 @@ import competitionsReducer from '@/modules/public/ducks/competitions/reducers';
 export default function createReducer(injectedReducers = {}) {
   const rootReducer = combineReducers({
     // language: languageProviderReducer,
-    competitions: competitionsReducer,
+    dummyReducer: (state = {}) => state, // TODO: probably should be removed but it needed at least one reducer
     ...injectedReducers,
   });
 

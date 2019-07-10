@@ -5,10 +5,15 @@ import PublicApp from '../../public';
 import GlobalStyle from '../../../global-styles';
 import AdminApp from '../../admin';
 import injectSaga from '@/utils/injectSaga';
+import injectReducer from '@/utils/injectReducer';
+
 import { apiSaga } from '@/modules/shared/helpers/apiMiddleware';
+import registrationReducer, {
+  saga as registrationSaga,
+} from '../ducks/registration';
 
 /* eslint-disable react/prefer-stateless-function */
-export class App extends React.PureComponent {
+export class App extends React.Component {
   render() {
     return (
       <div>
@@ -22,8 +27,14 @@ export class App extends React.PureComponent {
   }
 }
 
-const withSagas = [injectSaga({ key: 'api', saga: apiSaga })];
-const withReducers = [];
+const withSagas = [
+  injectSaga({ key: 'api', saga: apiSaga }),
+  injectSaga({ key: 'registration', saga: registrationSaga }),
+];
+
+const withReducers = [
+  injectReducer({ key: 'registration', reducer: registrationReducer }),
+];
 
 export default compose(
   ...withReducers,
