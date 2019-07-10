@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-const { SubMenu } = Menu;
 const { Sider } = Layout;
 
 const Sidebar = () => (
@@ -14,14 +13,18 @@ const Sidebar = () => (
       <Menu.Item key="dashboard">
         <Link to="/admin">Dashboard</Link>
       </Menu.Item>
-      <SubMenu key="tournaments" title={<span>Tournaments</span>}>
-        <Menu.Item key="tournaments_new">
-          <Link to="/admin/tournaments/create">Create new</Link>
-        </Menu.Item>
-        <Menu.Item key="tournaments_list">
-          <Link to="/admin/tournaments">List</Link>
-        </Menu.Item>
-      </SubMenu>
+      <Menu.Item key="tournaments_list">
+        <Link to="/admin/tournaments">Tournaments</Link>
+      </Menu.Item>
+      <Menu.Item key="games_list">
+        <Link to="/admin/games">Games</Link>
+      </Menu.Item>
+      <Menu.Item key="users_list">
+        <Link to="/admin/users">Users</Link>
+      </Menu.Item>
+      <Menu.Item key="system">
+        <Link to="/admin/system">System</Link>
+      </Menu.Item>
     </Menu>
   </Sider>
 );

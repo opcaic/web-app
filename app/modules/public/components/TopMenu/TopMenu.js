@@ -24,6 +24,9 @@ const TopMenu = () => (
         <Menu.Item key="4">
           <Link to="/register">Register</Link>
         </Menu.Item>
+        <Menu.Item key="4">
+          <Link to="/admin">Administration</Link>
+        </Menu.Item>
       </Menu>
     </div>
   </Header>
