@@ -1,1 +1,7 @@
-[]
+{
+  "app.registrationForm.confirmPassword": "Confirm password",
+  "app.registrationForm.email": "Email",
+  "app.registrationForm.password": "Password",
+  "app.registrationForm.register": "Register",
+  "app.registrationForm.username": "Username"
+}

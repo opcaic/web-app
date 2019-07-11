@@ -1,6 +1,7 @@
 import { Form, Input, Button, Checkbox } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 class RegisterForm extends React.PureComponent {
   state = {
@@ -88,7 +89,14 @@ class RegisterForm extends React.PureComponent {
         onSubmit={this.handleSubmit}
         style={{ width: 600 }}
       >
-        <Form.Item label="Username">
+        <Form.Item
+          label={
+            <FormattedMessage
+              id="app.registrationForm.username"
+              defaultMessage="Username"
+            />
+          }
+        >
           {getFieldDecorator('username', {
             rules: [
               {
@@ -98,7 +106,14 @@ class RegisterForm extends React.PureComponent {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="E-mail">
+        <Form.Item
+          label={
+            <FormattedMessage
+              id="app.registrationForm.email"
+              defaultMessage="Email"
+            />
+          }
+        >
           {getFieldDecorator('email', {
             rules: [
               {
@@ -112,7 +127,15 @@ class RegisterForm extends React.PureComponent {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="Password" hasFeedback>
+        <Form.Item
+          label={
+            <FormattedMessage
+              id="app.registrationForm.password"
+              defaultMessage="Password"
+            />
+          }
+          hasFeedback
+        >
           {getFieldDecorator('password', {
             rules: [
               {
@@ -129,7 +152,15 @@ class RegisterForm extends React.PureComponent {
             ],
           })(<Input.Password />)}
         </Form.Item>
-        <Form.Item label="Confirm Password" hasFeedback>
+        <Form.Item
+          label={
+            <FormattedMessage
+              id="app.registrationForm.confirmPassword"
+              defaultMessage="Confirm password"
+            />
+          }
+          hasFeedback
+        >
           {getFieldDecorator('confirm', {
             rules: [
               {
@@ -153,7 +184,10 @@ class RegisterForm extends React.PureComponent {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
-            Register
+            <FormattedMessage
+              id="app.registrationForm.register"
+              defaultMessage="Register"
+            />
           </Button>
         </Form.Item>
       </Form>

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const { Header } = Layout;
 
-const TopMenu = () => (
+const TopMenu = ({ changeLocale }) => (
   <Header style={{ background: '#3949AB' }}>
     <div className="container" style={{ padding: 0 }}>
       <Menu
@@ -24,12 +25,22 @@ const TopMenu = () => (
         <Menu.Item key="4">
           <Link to="/register">Register</Link>
         </Menu.Item>
-        <Menu.Item key="4">
+        <Menu.Item key="5">
           <Link to="/admin">Administration</Link>
+        </Menu.Item>
+        <Menu.Item key="6" onClick={() => changeLocale('en')}>
+          English
+        </Menu.Item>
+        <Menu.Item key="7" onClick={() => changeLocale('cs')}>
+          Česky
         </Menu.Item>
       </Menu>
     </div>
   </Header>
 );
+
+TopMenu.propTypes = {
+  changeLocale: PropTypes.func,
+};
 
 export default TopMenu;

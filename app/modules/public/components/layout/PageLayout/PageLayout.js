@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import React from 'react';
 import PropTypes from 'prop-types';
-import TopMenu from '@/modules/public/components/TopMenu';
+import TopMenu from '@/modules/public/containers/TopMenu';
 
 const PageLayout = props => (
   <Layout className="layout" style={{ height: '100vh' }}>
