@@ -1,7 +1,7 @@
 import { put, takeEvery, all, call } from 'redux-saga/effects';
 import axios from 'axios';
 
-export const API_BASE = 'https://localhost:44333';
+export const API_BASE = process.env.API_URL;
 export const CALL_API = 'app/CALL_API';
 export const createApiAction = request => ({ type: CALL_API, request });
 

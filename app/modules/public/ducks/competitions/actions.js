@@ -9,7 +9,7 @@ import { createApiAction } from '@/modules/shared/helpers/apiMiddleware';
 export function fetchCompetitionsRequest() {
   return createApiAction({
     type: FETCH_COMPETITIONS,
-    endpoint: '/api/tournaments',
+    endpoint: 'api/tournaments',
     method: 'GET',
   });
 }
