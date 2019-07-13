@@ -4,12 +4,41 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const fs = require('fs');
+const dotenv = require('dotenv');
 
 // Remove this line once the following warning goes away (it was meant for webpack loader authors not users):
 // 'DeprecationWarning: loaderUtils.parseQuery() received a non-string value which can be problematic,
 // see https://github.com/webpack/loader-utils/issues/56 parseQuery() will be replaced with getOptions()
 // in the next major version of loader-utils.'
 process.noDeprecation = true;
+
+function getEnvKeys() {
+  // Get the root path (assuming your webpack config is in the root of your project!)
+  const rootPath = path.resolve(process.cwd());
+
+  // Create the fallback path (the production .env)
+  const basePath = `${rootPath}/env/.env`;
+
+  // We're concatenating the environment name to our filename to specify the correct env file!
+  const envPath = `${basePath}.${process.env.NODE_ENV}`;
+
+  // Check if the file exists, otherwise fall back to the production .env
+  const finalPath = fs.existsSync(envPath) ? envPath : basePath;
+
+  // Set the path parameter in the dotenv config
+  const fileEnv = dotenv.config({ path: finalPath }).parsed;
+
+  const envKeys = Object.keys(fileEnv).reduce((prev, next) => {
+    // eslint-disable-next-line
+    prev[`process.env.${next}`] = JSON.stringify(fileEnv[next]);
+    return prev;
+  }, {});
+
+  envKeys[`process.env.NODE_ENV`] = JSON.stringify(process.env.NODE_ENV);
+
+  return envKeys;
+}
 
 module.exports = options => ({
   mode: options.mode,
@@ -117,11 +146,7 @@ module.exports = options => ({
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
     // inside your code for any environment checks; Terser will automatically
     // drop any unreachable code.
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
-    }),
+    new webpack.DefinePlugin(getEnvKeys()),
   ]),
   resolve: {
     modules: ['node_modules', 'app'],

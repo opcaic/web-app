@@ -17,7 +17,7 @@ export const actionTypes = {
 export const login = (username, password) =>
   createApiAction({
     type: actionTypes.LOGIN,
-    endpoint: '/login',
+    endpoint: 'api/login',
     method: 'POST',
     body: {
       username,
