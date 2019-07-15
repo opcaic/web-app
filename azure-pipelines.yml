@@ -1,0 +1,46 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  displayName: 'Install Node.js'
+  inputs:
+    versionSpec: '10.x'
+- task: Npm@1
+  displayName: 'Install npm packages'
+  inputs:
+    command: install
+- task: Npm@1
+  displayName: 'Unit tests'
+  inputs:
+    command: custom
+    customCommand: test
+- task: PublishTestResults@2
+  displayName: 'Publish test results'
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: '$(Build.SourcesDirectory)/junit.xml'
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage'
+  condition: succeededOrFailed()
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Build.SourcesDirectory)/coverage/cobertura-coverage.xml'
+- task: Npm@1
+  displayName: 'Build web app'
+  inputs:
+    command: custom
+    customCommand: run build
+- task: CopyFiles@2
+  displayName: 'Copy packaged app to artifact staging'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/build'
+    Contents: |
+      *
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifacts'
