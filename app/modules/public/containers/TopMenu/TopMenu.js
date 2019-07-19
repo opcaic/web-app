@@ -3,28 +3,44 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
 import TopMenuComponent from '@/modules/public/components/TopMenu';
 import { changeLocale } from '@/modules/shared/ducks/localization';
+import { isLoggedIn } from '@/modules/shared/selectors/auth';
+import { logout } from '@/modules/shared/ducks/auth';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TopMenu extends React.PureComponent {
   render() {
-    return <TopMenuComponent changeLocale={this.props.changeLocale} />;
+    return (
+      <TopMenuComponent
+        changeLocale={this.props.changeLocale}
+        isLoggedIn={this.props.isLoggedIn}
+        logout={this.props.logout}
+      />
+    );
   }
 }
 
 TopMenu.propTypes = {
   changeLocale: PropTypes.func,
+  isLoggedIn: PropTypes.bool,
+  logout: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     changeLocale: locale => dispatch(changeLocale(locale)),
+    logout: () => dispatch(logout()),
   };
 }
 
+const mapStateToProps = createStructuredSelector({
+  isLoggedIn,
+});
+
 const withConnect = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

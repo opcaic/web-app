@@ -1,5 +1,7 @@
 import { fromJS } from 'immutable';
-import { createApiAction } from '../helpers/apiMiddleware';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
+import { callApi } from '../helpers/apiMiddleware';
 
 /*
  * Action types
@@ -9,39 +11,91 @@ export const actionTypes = {
   LOGIN_REQUEST: 'app/shared/auth/LOGIN_REQUEST',
   LOGIN_SUCCESS: 'app/shared/auth/LOGIN_SUCCESS',
   LOGIN_FAILURE: 'app/shared/auth/LOGIN_FAILURE',
+  LOGOUT: 'app/shared/auth/LOGOUT',
 };
 
 /*
  * Action creators
  */
-export const login = (username, password) =>
-  createApiAction({
+export function login(email, password, errorsCallback) {
+  return {
     type: actionTypes.LOGIN,
-    endpoint: '/login',
-    method: 'POST',
-    body: {
-      username,
-      password,
-    },
+    email,
+    password,
+    errorsCallback,
+  };
+}
+
+export function logout() {
+  return {
+    type: actionTypes.LOGOUT,
+  };
+}
+
+/*
+ * Sagas
+ */
+function* handleLogin({ email, password, errorsCallback }) {
+  yield put({
+    type: actionTypes.LOGIN_REQUEST,
   });
+
+  try {
+    const { data } = yield call(callApi, {
+      endpoint: '/api/users/login',
+      method: 'POST',
+      body: {
+        email,
+        password,
+      },
+    });
+
+    yield put({
+      type: actionTypes.LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    yield put(push('/'));
+  } catch (e) {
+    yield put({
+      type: actionTypes.LOGIN_FAILURE,
+    });
+
+    console.log(e.response);
+
+    errorsCallback({
+      username: ['Server-side validation error'],
+    });
+  }
+}
+
+function* handleLogout() {
+  yield put(push('/'));
+}
+
+export function* saga() {
+  yield all([
+    takeEvery(actionTypes.LOGIN, handleLogin),
+    takeEvery(actionTypes.LOGOUT, handleLogout),
+  ]);
+}
 
 /*
  * Reducers
  */
 const initialState = fromJS({
-  username: null,
+  id: null,
+  email: null,
   token: null,
-  loggedIn: false,
+  role: null,
 });
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypes.LOGIN_SUCCESS:
-      return state.set('user', {
-        username: action.payload.username,
-        token: action.payload.token,
-        loggedIn: true,
-      });
+      return state.merge(action.payload);
+    case actionTypes.LOGOUT:
+      return initialState;
     default:
       return state;
   }

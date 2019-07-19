@@ -12,7 +12,11 @@ class RegisterForm extends React.PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.onSubmit(values, this.submitErrorsCallback);
+        const newValues = Object.assign({}, values, {
+          passwordHash: values.password,
+        }); // TODO: remove
+        this.props.onSubmit(newValues, this.submitErrorsCallback);
+        // this.props.onSubmit(values, this.submitErrorsCallback);
       }
     });
   };

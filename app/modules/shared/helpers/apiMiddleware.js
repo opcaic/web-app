@@ -1,7 +1,11 @@
-import { put, takeEvery, all, call } from 'redux-saga/effects';
+import { put, takeEvery, all, call, select } from 'redux-saga/effects';
 import axios from 'axios';
+import {
+  isLoggedIn as isLoggedInSelector,
+  jwtSelector,
+} from '../selectors/auth';
 
-export const API_BASE = 'https://localhost:44333';
+export const API_BASE = 'http://localhost:5000';
 export const CALL_API = 'app/CALL_API';
 export const createApiAction = request => ({ type: CALL_API, request });
 
@@ -23,8 +27,18 @@ function* handleApiCalls({ request }) {
     type: `${type}_REQUEST`,
   });
 
+  const requestParams = prepareAxiosParams(request);
+  const isLoggedIn = yield select(isLoggedInSelector);
+
+  if (isLoggedIn) {
+    const jwt = yield select(jwtSelector);
+    requestParams.headers = {
+      Authorization: `Bearer ${jwt}`,
+    };
+  }
+
   try {
-    const { data } = yield call(axios.request, prepareAxiosParams(request));
+    const { data } = yield call(axios.request, requestParams);
 
     yield put({
       type: `${type}_SUCCESS`,

@@ -7,6 +7,8 @@ import TournamentListPage from './pages/Tournaments/TournamentListPage';
 import tournamentsReducers from './ducks/tournaments';
 import injectReducer from '../../utils/injectReducer';
 import TournamentDetailPage from './pages/Tournaments/TournamentDetailPage';
+import UsersListPage from '@/modules/admin/pages/Users/UsersListPage';
+import usersReducers from './ducks/users';
 
 /* eslint-disable react/prefer-stateless-function */
 export class AdminApp extends React.PureComponent {
@@ -29,6 +31,8 @@ export class AdminApp extends React.PureComponent {
             path="/admin/tournaments/"
             component={TournamentListPage}
           />
+
+          <Route exact path="/admin/users/" component={UsersListPage} />
         </Switch>
       </PageLayout>
     );
@@ -38,6 +42,7 @@ export class AdminApp extends React.PureComponent {
 const withSagas = [];
 const withReducers = [
   injectReducer({ key: 'tournaments', reducer: tournamentsReducers }),
+  injectReducer({ key: 'users', reducer: usersReducers }),
 ];
 
 export default compose(

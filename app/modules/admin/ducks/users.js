@@ -1,8 +1,8 @@
 import resourceFactory from '../../shared/helpers/resourceManager';
 
 const { actions, actionTypes, reducers } = resourceFactory({
-  endpoint: '/api/tournaments',
-  resourceName: 'tournaments',
+  endpoint: '/api/users',
+  resourceName: 'users',
 });
 
 export { actions, actionTypes };

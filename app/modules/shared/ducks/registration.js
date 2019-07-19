@@ -35,7 +35,7 @@ function* handleRegister({ username, password, errorsCallback }) {
 
   try {
     yield call(callApi, {
-      endpoint: '/register',
+      endpoint: '/api/users',
       method: 'POST',
       body: {
         username,

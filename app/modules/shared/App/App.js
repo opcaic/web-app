@@ -11,6 +11,7 @@ import { apiSaga } from '@/modules/shared/helpers/apiMiddleware';
 import registrationReducer, {
   saga as registrationSaga,
 } from '../ducks/registration';
+import authReducer, { saga as authSaga } from '../ducks/auth';
 import localizationReducer from '../ducks/localization';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -31,10 +32,12 @@ export class App extends React.Component {
 const withSagas = [
   injectSaga({ key: 'api', saga: apiSaga }),
   injectSaga({ key: 'registration', saga: registrationSaga }),
+  injectSaga({ key: 'auth', saga: authSaga }),
 ];
 
 const withReducers = [
   injectReducer({ key: 'registration', reducer: registrationReducer }),
+  injectReducer({ key: 'auth', reducer: authReducer }),
   injectReducer({ key: 'language', reducer: localizationReducer }),
 ];
 
