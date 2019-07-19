@@ -1,7 +1,8 @@
 import { fromJS } from 'immutable';
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery, select } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { callApi } from '../helpers/apiMiddleware';
+import { routerStateSelector } from '@/modules/shared/selectors/router';
 
 /*
  * Action types
@@ -55,13 +56,21 @@ function* handleLogin({ email, password, errorsCallback }) {
       payload: data,
     });
 
-    yield put(push('/'));
+    const routerState = yield select(routerStateSelector);
+    console.log(routerState);
+    const { from } = routerState || {
+      from: { pathname: '/' },
+    };
+    console.log(from);
+    const redirectTo = from; // TODO: handle search and hash
+
+    yield put(push(redirectTo));
   } catch (e) {
     yield put({
       type: actionTypes.LOGIN_FAILURE,
     });
 
-    console.log(e.response);
+    console.log(e);
 
     errorsCallback({
       username: ['Server-side validation error'],

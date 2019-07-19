@@ -13,6 +13,7 @@ import registrationReducer, {
 } from '../ducks/registration';
 import authReducer, { saga as authSaga } from '../ducks/auth';
 import localizationReducer from '../ducks/localization';
+import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
 
 /* eslint-disable react/prefer-stateless-function */
 export class App extends React.Component {
@@ -21,7 +22,7 @@ export class App extends React.Component {
       <div>
         <GlobalStyle />
         <Switch>
-          <Route path="/admin" component={AdminApp} />
+          <PrivateRoute path="/admin" component={AdminApp} />
           <Route path="/" component={PublicApp} />
         </Switch>
       </div>
