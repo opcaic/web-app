@@ -3,12 +3,14 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
-import { actions as usersActions } from '../../../ducks/users';
+import {
+  actions as userActions,
+  selectors as userSelectors,
+} from '../../../ducks/users';
 import UserList from '@/modules/admin/components/User/UserList';
-import { isFetching, selectUsers } from '@/modules/admin/selectors/users';
 
 /* eslint-disable react/prefer-stateless-function */
-export class UsersListPage extends React.PureComponent {
+class UserListPage extends React.PureComponent {
   componentWillMount() {
     this.props.fetchUsers();
   }
@@ -20,7 +22,7 @@ export class UsersListPage extends React.PureComponent {
   }
 }
 
-UsersListPage.propTypes = {
+UserListPage.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object),
   isFetching: PropTypes.bool.isRequired,
   fetchUsers: PropTypes.func.isRequired,
@@ -28,13 +30,13 @@ UsersListPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchUsers: () => dispatch(usersActions.fetchMany()),
+    fetchUsers: () => dispatch(userActions.fetchMany()),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  users: selectUsers,
-  isFetching,
+  users: userSelectors.getItems,
+  isFetching: userSelectors.isFetching,
 });
 
 const withConnect = connect(
@@ -42,4 +44,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(UsersListPage);
+export default compose(withConnect)(UserListPage);

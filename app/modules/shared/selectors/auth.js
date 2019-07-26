@@ -2,5 +2,17 @@ import { createSelector } from 'reselect';
 
 const getAuth = state => state.get('auth');
 
-export const jwtSelector = createSelector(getAuth, auth => auth.get('token'));
-export const isLoggedIn = createSelector(jwtSelector, jwt => Boolean(jwt));
+export const currentUserSelector = createSelector(
+  getAuth,
+  auth => auth && auth.toJS(),
+);
+
+export const accessTokenSelector = createSelector(getAuth, auth =>
+  auth.get('accessToken'),
+);
+export const refreshTokenSelector = createSelector(getAuth, auth =>
+  auth.get('refreshToken'),
+);
+export const isLoggedIn = createSelector(accessTokenSelector, jwt =>
+  Boolean(jwt),
+);

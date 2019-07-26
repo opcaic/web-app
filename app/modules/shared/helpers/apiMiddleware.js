@@ -2,7 +2,7 @@ import { put, takeEvery, all, call, select } from 'redux-saga/effects';
 import axios from 'axios';
 import {
   isLoggedIn as isLoggedInSelector,
-  jwtSelector,
+  accessTokenSelector,
 } from '../selectors/auth';
 
 export const API_BASE = 'http://localhost:5000';
@@ -31,9 +31,9 @@ function* handleApiCalls({ request }) {
   const isLoggedIn = yield select(isLoggedInSelector);
 
   if (isLoggedIn) {
-    const jwt = yield select(jwtSelector);
+    const accessToken = yield select(accessTokenSelector);
     requestParams.headers = {
-      Authorization: `Bearer ${jwt}`,
+      Authorization: `Bearer ${accessToken}`,
     };
   }
 

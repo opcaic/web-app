@@ -1,17 +1,20 @@
 import actionCreatorsFactory from './actionCreatorsFactory';
 import actionTypesFactory from './actionTypesFactory';
 import reducersFactory from './reducersFactory';
+import selectorsFactory from '@/modules/shared/helpers/resourceManager/selectorsFactory';
 
-const resourceFactory = ({ endpoint, resourceName }) => {
+const resourceFactory = ({ endpoint, resourceName, storePath }) => {
   const apiEndpointFactory = (id = '') => `${endpoint}/${id}`;
   const actionTypes = actionTypesFactory({ resourceName });
   const actions = actionCreatorsFactory({ apiEndpointFactory, actionTypes });
   const reducers = reducersFactory({ actionTypes });
+  const selectors = selectorsFactory({ storePath: storePath || resourceName });
 
   return {
     actionTypes,
     actions,
     reducers,
+    selectors,
   };
 };
 

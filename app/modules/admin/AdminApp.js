@@ -7,8 +7,9 @@ import TournamentListPage from './pages/Tournaments/TournamentListPage';
 import tournamentsReducers from './ducks/tournaments';
 import injectReducer from '../../utils/injectReducer';
 import TournamentDetailPage from './pages/Tournaments/TournamentDetailPage';
-import UsersListPage from '@/modules/admin/pages/Users/UsersListPage';
+import UserListPage from '@/modules/admin/pages/Users/UserListPage';
 import usersReducers from './ducks/users';
+import UserDetailPage from '@/modules/admin/pages/Users/UserDetail';
 
 /* eslint-disable react/prefer-stateless-function */
 export class AdminApp extends React.PureComponent {
@@ -32,7 +33,8 @@ export class AdminApp extends React.PureComponent {
             component={TournamentListPage}
           />
 
-          <Route exact path="/admin/users/" component={UsersListPage} />
+          <Route exact path="/admin/users/" component={UserListPage} />
+          <Route exact path="/admin/users/:id" component={UserDetailPage} />
         </Switch>
       </PageLayout>
     );

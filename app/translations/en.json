@@ -1,4 +1,10 @@
 {
+  "app.admin.userList.role": "Role",
+  "app.generic.action": "Action",
+  "app.generic.edit": "Edit",
+  "app.generic.email": "Email",
+  "app.generic.id": "ID",
+  "app.generic.save": "Save",
   "app.registrationForm.confirmPassword": "Confirm password",
   "app.registrationForm.email": "Email",
   "app.registrationForm.password": "Password",

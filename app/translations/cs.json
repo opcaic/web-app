@@ -1,4 +1,10 @@
 {
+  "app.admin.userList.role": "",
+  "app.generic.action": "",
+  "app.generic.edit": "",
+  "app.generic.email": "",
+  "app.generic.id": "",
+  "app.generic.save": "",
   "app.registrationForm.confirmPassword": "Potvrdit heslo",
   "app.registrationForm.email": "Email",
   "app.registrationForm.password": "Heslo",
