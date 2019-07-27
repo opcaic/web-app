@@ -115,7 +115,7 @@ function* loginFlow() {
       actionTypes.LOAD_AUTH_FAILURE,
     ]);
 
-    localStorage.setItem('user', null);
+    localStorage.setItem('auth', null);
 
     if (refreshTask) yield cancel(refreshTask);
     if (action.type === actionTypes.LOGOUT_REQUEST) {
@@ -149,7 +149,7 @@ function* authorize(email, password, errorsCallback) {
       payload: data,
     });
 
-    localStorage.setItem('user', JSON.stringify(data));
+    localStorage.setItem('auth', JSON.stringify(data));
 
     const routerState = yield select(routerStateSelector);
     console.log(routerState);
@@ -173,26 +173,22 @@ function* authorize(email, password, errorsCallback) {
   }
 }
 
-function* handleRefreshToken(action) {
+function* handleRefreshToken() {
   try {
-    if (action.type === actionTypes.LOAD_AUTH_SUCCESS) {
-      yield call(refreshTokenSaga);
-    }
+    const currentUser = yield select(currentUserSelector);
 
     while (yield call(delay, 1800 * 1000)) {
-      yield call(refreshTokenSaga);
+      const refreshToken = yield select(refreshTokenSelector);
+      yield call(refreshTokenSaga, currentUser.id, refreshToken);
     }
   } catch (error) {
     console.log(error);
   }
 }
 
-function* refreshTokenSaga() {
-  const refreshToken = yield select(refreshTokenSelector);
-  const currentUser = yield select(currentUserSelector);
-
+function* refreshTokenSaga(userId, refreshToken) {
   const { data } = yield call(callApi, {
-    endpoint: `/api/users/${currentUser.id}/refresh`,
+    endpoint: `/api/users/${userId}/refresh`,
     method: 'POST',
     data: {
       token: refreshToken,
@@ -201,37 +197,38 @@ function* refreshTokenSaga() {
 
   yield put(updateTokens(data.accessToken, data.refreshToken));
 
-  let oldUser = localStorage.getItem('user');
+  let oldUser = localStorage.getItem('auth');
   oldUser = JSON.parse(oldUser);
 
   const user = Object.assign({}, oldUser, data);
 
-  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem('auth', JSON.stringify(user));
 }
 
 function* handleLoadAuth() {
   try {
-    const userString = localStorage.getItem('user');
-    const user = JSON.parse(userString);
+    const authString = localStorage.getItem('auth');
+    const auth = JSON.parse(authString);
 
-    if (user === null) {
+    if (auth === null) {
       yield put(
         loadAuthFailure(
-          new Error('User could not be loaded from local storage'),
+          new Error('Auth could not be loaded from local storage'),
         ),
       );
       return;
     }
 
-    const refreshToken = jwtDecode(user.refreshToken);
+    const decodedToken = jwtDecode(auth.refreshToken);
 
     // Subtract 5 seconds from the token to account for network lag
-    if (refreshToken.exp * 1000 - 5000 < new Date().getTime()) {
+    if (decodedToken.exp * 1000 - 5000 < new Date().getTime()) {
       yield put(loadAuthFailure(new Error('Refresh token is expired')));
       return;
     }
 
-    yield put(loadAuthSuccess(user));
+    yield call(refreshTokenSaga, auth.id, auth.refreshToken);
+    yield put(loadAuthSuccess(auth));
   } catch (e) {
     yield put(loadAuthFailure(e));
   }
@@ -249,22 +246,29 @@ export function* saga() {
  */
 const initialState = fromJS({
   id: null,
-  email: null,
   accessToken: null,
   refreshToken: null,
   role: null,
+  initialLoadCompleted: false,
 });
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.LOGIN_SUCCESS:
-      return state.merge(action.payload);
     case actionTypes.LOAD_AUTH_SUCCESS:
-      return state.merge(action.payload);
+    case actionTypes.LOGIN_SUCCESS:
+      return state
+        .set('id', action.payload.id)
+        .set('accessToken', action.payload.accessToken)
+        .set('refreshToken', action.payload.refreshToken)
+        .set('initialLoadCompleted', true);
+    case actionTypes.LOAD_AUTH_FAILURE:
+      return state.set('initialLoadCompleted', true);
     case actionTypes.LOGOUT_SUCCESS:
-      return initialState;
+      return initialState.set('initialLoad', true);
     case actionTypes.TOKENS_UPDATED:
-      return state.merge(action.payload);
+      return state
+        .set('accessToken', action.payload.accessToken)
+        .set('refreshToken', action.payload.refreshToken);
     default:
       return state;
   }

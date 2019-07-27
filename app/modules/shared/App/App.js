@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { Spin } from 'antd';
 import PublicApp from '../../public';
 import GlobalStyle from '../../../global-styles';
 import AdminApp from '../../admin';
@@ -16,6 +18,7 @@ import registrationReducer, {
 import authReducer, { saga as authSaga, loadAuth } from '../ducks/auth';
 import localizationReducer from '../ducks/localization';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
+import { initialLoadCompleted } from '@/modules/shared/selectors/auth';
 
 /* eslint-disable react/prefer-stateless-function */
 export class App extends React.Component {
@@ -24,6 +27,10 @@ export class App extends React.Component {
   }
 
   render() {
+    if (!this.props.initialLoadCompleted) {
+      return <Spin size="large" />;
+    }
+
     return (
       <div>
         <GlobalStyle />
@@ -38,6 +45,7 @@ export class App extends React.Component {
 
 App.propTypes = {
   loadAuth: PropTypes.func.isRequired,
+  initialLoadCompleted: PropTypes.bool.isRequired,
 };
 
 const withSagas = [
@@ -52,6 +60,10 @@ const withReducers = [
   injectReducer({ key: 'language', reducer: localizationReducer }),
 ];
 
+const mapStateToProps = createStructuredSelector({
+  initialLoadCompleted,
+});
+
 export function mapDispatchToProps(dispatch) {
   return {
     loadAuth: () => dispatch(loadAuth()),
@@ -59,7 +71,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const withConnect = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

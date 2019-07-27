@@ -16,3 +16,6 @@ export const refreshTokenSelector = createSelector(getAuth, auth =>
 export const isLoggedIn = createSelector(accessTokenSelector, jwt =>
   Boolean(jwt),
 );
+export const initialLoadCompleted = createSelector(getAuth, auth =>
+  auth.get('initialLoadCompleted'),
+);
