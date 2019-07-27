@@ -2,6 +2,10 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import {
+  isMinLength,
+  isValidEmail,
+} from '@/modules/shared/helpers/formValidations';
 
 class RegisterForm extends React.PureComponent {
   state = {
@@ -12,11 +16,7 @@ class RegisterForm extends React.PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const newValues = Object.assign({}, values, {
-          passwordHash: values.password,
-        }); // TODO: remove
-        this.props.onSubmit(newValues, this.submitErrorsCallback);
-        // this.props.onSubmit(values, this.submitErrorsCallback);
+        this.props.onSubmit(values, this.submitErrorsCallback);
       }
     });
   };
@@ -94,62 +94,45 @@ class RegisterForm extends React.PureComponent {
         style={{ width: 600 }}
       >
         <Form.Item
-          label={
-            <FormattedMessage
-              id="app.registrationForm.username"
-              defaultMessage="Username"
-            />
-          }
+          label={<FormattedMessage id="app.registrationForm.username" />}
         >
           {getFieldDecorator('username', {
             rules: [
               {
                 required: true,
-                message: 'Please input your username!',
+                message: (
+                  <FormattedMessage id="app.registrationForm.usernameRequired" />
+                ),
               },
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item
-          label={
-            <FormattedMessage
-              id="app.registrationForm.email"
-              defaultMessage="Email"
-            />
-          }
-        >
+        <Form.Item label={<FormattedMessage id="app.registrationForm.email" />}>
           {getFieldDecorator('email', {
             rules: [
-              {
-                type: 'email',
-                message: 'The input is not valid e-mail!',
-              },
+              isValidEmail(),
               {
                 required: true,
-                message: 'Please input your e-mail!',
+                message: (
+                  <FormattedMessage id="app.registrationForm.emailRequired" />
+                ),
               },
             ],
           })(<Input />)}
         </Form.Item>
         <Form.Item
-          label={
-            <FormattedMessage
-              id="app.registrationForm.password"
-              defaultMessage="Password"
-            />
-          }
+          label={<FormattedMessage id="app.registrationForm.password" />}
           hasFeedback
         >
           {getFieldDecorator('password', {
             rules: [
               {
                 required: true,
-                message: 'Please input your password!',
+                message: (
+                  <FormattedMessage id="app.registrationForm.passwordRequired" />
+                ),
               },
-              {
-                min: 8,
-                message: 'The password must be at least 8 characters long',
-              },
+              isMinLength(8, 'password'),
               {
                 validator: this.validateToNextPassword,
               },
@@ -157,19 +140,16 @@ class RegisterForm extends React.PureComponent {
           })(<Input.Password />)}
         </Form.Item>
         <Form.Item
-          label={
-            <FormattedMessage
-              id="app.registrationForm.confirmPassword"
-              defaultMessage="Confirm password"
-            />
-          }
+          label={<FormattedMessage id="app.registrationForm.confirmPassword" />}
           hasFeedback
         >
           {getFieldDecorator('confirm', {
             rules: [
               {
                 required: true,
-                message: 'Please confirm your password!',
+                message: (
+                  <FormattedMessage id="app.registrationForm.confirmPasswordRequired" />
+                ),
               },
               {
                 validator: this.compareToFirstPassword,
@@ -188,10 +168,7 @@ class RegisterForm extends React.PureComponent {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
-            <FormattedMessage
-              id="app.registrationForm.register"
-              defaultMessage="Register"
-            />
+            <FormattedMessage id="app.registrationForm.register" />
           </Button>
         </Form.Item>
       </Form>

@@ -10,6 +10,9 @@ const selectorsFactory = ({ storePath }) => {
       state => state.get('item') && state.get('item').toJS(),
     ),
     isFetching: createSelector(getState, state => state.get('isFetching')),
+    isFetchingItem: createSelector(getState, state =>
+      state.get('isFetchingItem'),
+    ),
   };
 };
 

@@ -1,13 +1,27 @@
 {
+  "app.admin.userForm.email": "",
+  "app.admin.userForm.firstName": "",
+  "app.admin.userForm.lastName": "",
   "app.admin.userList.role": "",
+  "app.formValidations.isRequired": "",
+  "app.formValidations.isValidEmail": "",
   "app.generic.action": "",
+  "app.generic.delete": "",
   "app.generic.edit": "",
   "app.generic.email": "",
   "app.generic.id": "",
   "app.generic.save": "",
+  "app.generic.username": "",
   "app.registrationForm.confirmPassword": "Potvrdit heslo",
+  "app.registrationForm.confirmPasswordRequired": "Prosím potvrďte své heslo",
   "app.registrationForm.email": "Email",
+  "app.registrationForm.emailRequired": "Prosín vyplňte svůj email",
   "app.registrationForm.password": "Heslo",
+  "app.registrationForm.passwordRequired": "Prosím vyplňte své heslo",
   "app.registrationForm.register": "Registrovat",
-  "app.registrationForm.username": "Uživatelské jméno"
+  "app.registrationForm.username": "Přezdívka",
+  "app.registrationForm.usernameRequired": "Prosím vyplňte svou přezdívku",
+  "app.roles.admin": "",
+  "app.roles.organizer": "",
+  "app.roles.user": ""
 }

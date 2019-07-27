@@ -1,13 +1,27 @@
 {
+  "app.admin.userForm.email": "Email",
+  "app.admin.userForm.firstName": "First name",
+  "app.admin.userForm.lastName": "Last name",
   "app.admin.userList.role": "Role",
+  "app.formValidations.isRequired": "The {field} is required",
+  "app.formValidations.isValidEmail": "The input is not a valid email",
   "app.generic.action": "Action",
+  "app.generic.delete": "Delete",
   "app.generic.edit": "Edit",
   "app.generic.email": "Email",
   "app.generic.id": "ID",
   "app.generic.save": "Save",
+  "app.generic.username": "Username",
   "app.registrationForm.confirmPassword": "Confirm password",
+  "app.registrationForm.confirmPasswordRequired": "Please confirm your password!",
   "app.registrationForm.email": "Email",
+  "app.registrationForm.emailRequired": "Please input your email!",
   "app.registrationForm.password": "Password",
+  "app.registrationForm.passwordRequired": "Please input your password!",
   "app.registrationForm.register": "Register",
-  "app.registrationForm.username": "Username"
+  "app.registrationForm.username": "Username",
+  "app.registrationForm.usernameRequired": "",
+  "app.roles.admin": "Admin",
+  "app.roles.organizer": "Organizer",
+  "app.roles.user": "User"
 }

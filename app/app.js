@@ -38,6 +38,22 @@ const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
+// Disable missing translation message as translations will be added later.
+// We can add a toggle for this later when we have most translations.
+// eslint-disable-next-line
+const consoleError = console.error.bind(console);
+// eslint-disable-next-line
+console.error = (message, ...args) => {
+  if (
+    typeof message === 'string' &&
+    (message.startsWith('[React Intl] Missing message:') ||
+      message.startsWith('[React Intl] Cannot format message:'))
+  ) {
+    return;
+  }
+  consoleError(message, ...args);
+};
+
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>

@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
-import { roleIdToText } from '@/modules/shared/helpers/role';
+import { roleIdToText } from '@/modules/shared/helpers/roles';
 
 const columns = [
   {
@@ -28,7 +28,7 @@ const columns = [
       <FormattedMessage id="app.admin.userList.role" defaultMessage="Role" />
     ),
     dataIndex: 'roleId',
-    key: 'role',
+    key: 'roles.js',
     render: text => roleIdToText(text),
     filters: [1, 2, 3].map(x => ({
       value: x,

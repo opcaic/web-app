@@ -2,7 +2,7 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Spin } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import PropTypes from 'prop-types';
 import {
   actions as usersActions,
@@ -13,7 +13,7 @@ import UserForm from '@/modules/admin/components/User/UserForm';
 /* eslint-disable react/prefer-stateless-function */
 class UserDetailPage extends React.PureComponent {
   componentWillMount() {
-    this.props.fetchResource(1);
+    this.props.fetchResource(this.props.match.params.id);
   }
 
   handleSubmit = values => {
@@ -24,11 +24,15 @@ class UserDetailPage extends React.PureComponent {
   render() {
     return (
       <Spin spinning={this.props.isFetching}>
-        <UserForm
-          user={this.props.user || {}}
-          onSubmit={values => this.handleSubmit(values)}
-          onChange={changedFields => console.log(changedFields)}
-        />
+        <Row>
+          <Col span={12}>
+            <UserForm
+              user={this.props.user || {}}
+              onSubmit={values => this.handleSubmit(values)}
+              onChange={changedFields => console.log(changedFields)}
+            />
+          </Col>
+        </Row>
       </Spin>
     );
   }
@@ -39,6 +43,7 @@ UserDetailPage.propTypes = {
   updateResource: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   user: PropTypes.object,
+  match: PropTypes.object.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -50,7 +55,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  isFetching: userSelectors.isFetching,
+  isFetching: userSelectors.isFetchingItem,
   user: userSelectors.getItem,
 });
 
