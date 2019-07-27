@@ -135,7 +135,7 @@ function* authorize(email, password, errorsCallback) {
     const { data } = yield call(callApi, {
       endpoint: '/api/users/login',
       method: 'POST',
-      body: {
+      data: {
         email,
         password,
       },
@@ -194,7 +194,7 @@ function* refreshTokenSaga() {
   const { data } = yield call(callApi, {
     endpoint: `/api/users/${currentUser.id}/refresh`,
     method: 'POST',
-    body: {
+    data: {
       token: refreshToken,
     },
   });

@@ -17,7 +17,11 @@ class UserListPage extends React.PureComponent {
 
   render() {
     return (
-      <UserList dataSource={this.props.users} loading={this.props.isFetching} />
+      <UserList
+        dataSource={this.props.users}
+        loading={this.props.isFetching}
+        fetch={this.props.fetchUsers}
+      />
     );
   }
 }
@@ -30,7 +34,7 @@ UserListPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchUsers: () => dispatch(userActions.fetchMany()),
+    fetchUsers: params => dispatch(userActions.fetchMany({ params })),
   };
 }
 

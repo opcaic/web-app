@@ -9,12 +9,12 @@ export const API_BASE = 'http://localhost:5000';
 export const CALL_API = 'app/CALL_API';
 export const createApiAction = request => ({ type: CALL_API, request });
 
-function prepareAxiosParams({ method, endpoint, body }) {
+function prepareAxiosParams({ method, endpoint, ...rest }) {
   return {
     method,
     url: API_BASE + endpoint,
     crossDomain: true,
-    data: body,
+    ...rest,
   };
 }
 

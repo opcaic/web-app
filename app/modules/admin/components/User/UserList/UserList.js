@@ -2,6 +2,8 @@ import { Table } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import withAjax from '@/modules/shared/helpers/hocs/withAjax';
+import { roleIdToText } from '@/modules/shared/helpers/role';
 
 const columns = [
   {
@@ -16,10 +18,22 @@ const columns = [
   },
   {
     title: (
+      <FormattedMessage id="app.generic.username" defaultMessage="Username" />
+    ),
+    dataIndex: 'email',
+    key: 'username',
+  },
+  {
+    title: (
       <FormattedMessage id="app.admin.userList.role" defaultMessage="Role" />
     ),
     dataIndex: 'roleId',
     key: 'role',
+    render: text => roleIdToText(text),
+    filters: [1, 2, 3].map(x => ({
+      value: x,
+      text: roleIdToText(x),
+    })),
   },
   {
     title: <FormattedMessage id="app.generic.action" defaultMessage="Action" />,
@@ -38,4 +52,4 @@ const UserList = props => (
   <Table columns={columns} rowKey={record => record.id} {...props} />
 );
 
-export default UserList;
+export default withAjax(UserList);
