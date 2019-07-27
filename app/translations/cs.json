@@ -23,5 +23,14 @@
   "app.registrationForm.usernameRequired": "Prosím vyplňte svou přezdívku",
   "app.roles.admin": "",
   "app.roles.organizer": "",
-  "app.roles.user": ""
+  "app.roles.user": "",
+  "app.topMenu.administration": "",
+  "app.topMenu.czech": "",
+  "app.topMenu.english": "",
+  "app.topMenu.home": "",
+  "app.topMenu.language": "",
+  "app.topMenu.login": "",
+  "app.topMenu.logout": "",
+  "app.topMenu.register": "",
+  "app.topMenu.tournaments": ""
 }

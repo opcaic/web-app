@@ -20,8 +20,17 @@
   "app.registrationForm.passwordRequired": "Please input your password!",
   "app.registrationForm.register": "Register",
   "app.registrationForm.username": "Username",
-  "app.registrationForm.usernameRequired": "",
+  "app.registrationForm.usernameRequired": "Please input your username!",
   "app.roles.admin": "Admin",
   "app.roles.organizer": "Organizer",
-  "app.roles.user": "User"
+  "app.roles.user": "User",
+  "app.topMenu.administration": "Administration",
+  "app.topMenu.czech": "Česky",
+  "app.topMenu.english": "English",
+  "app.topMenu.home": "Home",
+  "app.topMenu.language": "Language",
+  "app.topMenu.login": "Login",
+  "app.topMenu.logout": "Logout",
+  "app.topMenu.register": "Register",
+  "app.topMenu.tournaments": "Tournaments"
 }

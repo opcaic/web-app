@@ -264,7 +264,7 @@ function authReducer(state = initialState, action) {
     case actionTypes.LOAD_AUTH_FAILURE:
       return state.set('initialLoadCompleted', true);
     case actionTypes.LOGOUT_SUCCESS:
-      return initialState.set('initialLoad', true);
+      return initialState.set('initialLoadCompleted', true);
     case actionTypes.TOKENS_UPDATED:
       return state
         .set('accessToken', action.payload.accessToken)
