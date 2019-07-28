@@ -16,12 +16,12 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
       method: 'GET',
     });
 
-  const updateResource = (id, body) =>
+  const updateResource = (id, data) =>
     createApiAction({
       type: actionTypes.UPDATE,
       endpoint: apiEndpointFactory(id),
       method: 'PUT',
-      body,
+      data,
     });
 
   return {

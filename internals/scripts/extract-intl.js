@@ -20,8 +20,6 @@ const babel = require('../../babel.config.js');
 const { presets } = babel;
 let plugins = babel.plugins || [];
 
-plugins.push('react-intl');
-
 // NOTE: styled-components plugin is filtered out as it creates errors when used with transform
 plugins = plugins.filter(p => p !== 'styled-components');
 
@@ -142,7 +140,7 @@ memoryTask.then(files => {
       Object.keys(localeMappings[locale])
         .sort()
         .forEach(key => {
-          messages[key] = localeMappings[locale][key];
+          messages[key] = localeMappings[locale][key] || '';
         });
 
       // Write to file the JSON representation of the translation messages

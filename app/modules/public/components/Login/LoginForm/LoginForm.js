@@ -6,7 +6,29 @@ import { PropTypes } from 'prop-types';
 class LoginForm extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.props.form.getFieldsValue());
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      console.log(values);
+      if (!err) {
+        this.props.onSubmit(values, this.submitErrorsCallback);
+      }
+    });
+  };
+
+  submitErrorsCallback = errors => {
+    const values = this.props.form.getFieldsValue();
+    const fieldsData = {};
+
+    Object.entries(errors).forEach(element => {
+      const key = element[0];
+      const fieldErrors = element[1];
+
+      fieldsData[key] = {
+        value: values[key],
+        errors: fieldErrors.map(error => new Error(error)),
+      };
+    });
+
+    this.props.form.setFields(fieldsData);
   };
 
   render() {
@@ -18,12 +40,12 @@ class LoginForm extends React.PureComponent {
     return (
       <Form onSubmit={this.handleSubmit} {...formItemLayout}>
         <Form.Item>
-          {getFieldDecorator('username', {
+          {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input your username!' }],
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Username"
+              placeholder="Email"
             />,
           )}
         </Form.Item>
@@ -68,15 +90,5 @@ LoginForm.propTypes = {
 };
 
 export default Form.create({
-  name: 'global_state',
-  mapPropsToFields(props) {
-    return {
-      name: Form.createFormField({
-        ...props.name,
-      }),
-      description: Form.createFormField({
-        ...props.description,
-      }),
-    };
-  },
+  name: 'login',
 })(LoginForm);

@@ -6,12 +6,12 @@ import Sidebar from '../Sidebar';
 const { Header, Content } = Layout;
 
 const PageLayout = props => (
-  <Layout style={{ height: '100vh' }}>
-    <Header className="header">
-      <div className="logo" />
-    </Header>
+  <Layout style={{ minHeight: '100vh' }}>
+    <Sidebar />
     <Layout>
-      <Sidebar />
+      <Header className="header" style={{ background: '#fff', padding: 0 }}>
+        <div className="logo" />
+      </Header>
       <Layout style={{ padding: '0 24px 24px' }}>
         <Breadcrumb style={{ margin: '16px 0' }}>
           <Breadcrumb.Item>Home</Breadcrumb.Item>

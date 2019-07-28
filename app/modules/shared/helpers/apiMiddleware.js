@@ -1,16 +1,20 @@
-import { put, takeEvery, all, call } from 'redux-saga/effects';
+import { put, takeEvery, all, call, select } from 'redux-saga/effects';
 import axios from 'axios';
+import {
+  isLoggedIn as isLoggedInSelector,
+  accessTokenSelector,
+} from '../selectors/auth';
 
 export const API_BASE = process.env.API_URL;
 export const CALL_API = 'app/CALL_API';
 export const createApiAction = request => ({ type: CALL_API, request });
 
-function prepareAxiosParams({ method, endpoint, body }) {
+function prepareAxiosParams({ method, endpoint, ...rest }) {
   return {
     method,
     url: API_BASE + endpoint,
     crossDomain: true,
-    data: body,
+    ...rest,
   };
 }
 
@@ -23,8 +27,18 @@ function* handleApiCalls({ request }) {
     type: `${type}_REQUEST`,
   });
 
+  const requestParams = prepareAxiosParams(request);
+  const isLoggedIn = yield select(isLoggedInSelector);
+
+  if (isLoggedIn) {
+    const accessToken = yield select(accessTokenSelector);
+    requestParams.headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+  }
+
   try {
-    const { data } = yield call(axios.request, prepareAxiosParams(request));
+    const { data } = yield call(axios.request, requestParams);
 
     yield put({
       type: `${type}_SUCCESS`,
