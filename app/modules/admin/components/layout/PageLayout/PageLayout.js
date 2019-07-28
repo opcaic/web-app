@@ -2,12 +2,14 @@ import React from 'react';
 import { Layout, Breadcrumb } from 'antd';
 import PropTypes from 'prop-types';
 import Sidebar from '../Sidebar';
+import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
 
 const { Header, Content } = Layout;
+const SyncedSidebar = withSyncedActiveItems(Sidebar, 'adminSidebar');
 
 const PageLayout = props => (
   <Layout style={{ minHeight: '100vh' }}>
-    <Sidebar />
+    <SyncedSidebar />
     <Layout>
       <Header className="header" style={{ background: '#fff', padding: 0 }}>
         <div className="logo" />

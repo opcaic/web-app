@@ -16,6 +16,7 @@ import registrationReducer, {
   saga as registrationSaga,
 } from '../ducks/registration';
 import authReducer, { saga as authSaga, loadAuth } from '../ducks/auth';
+import uiReducer from '../ducks/ui';
 import localizationReducer from '../ducks/localization';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
 import { initialLoadCompleted } from '@/modules/shared/selectors/auth';
@@ -58,6 +59,7 @@ const withReducers = [
   injectReducer({ key: 'registration', reducer: registrationReducer }),
   injectReducer({ key: 'auth', reducer: authReducer }),
   injectReducer({ key: 'language', reducer: localizationReducer }),
+  injectReducer({ key: 'ui', reducer: uiReducer }),
 ];
 
 const mapStateToProps = createStructuredSelector({
