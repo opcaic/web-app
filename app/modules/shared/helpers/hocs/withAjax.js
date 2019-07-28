@@ -15,12 +15,25 @@ function withAjax(WrappedComponent) {
           { current: pagination.current },
         ),
       }));
+
+      const newFilters = {};
+      Object.keys(filters).forEach(key => {
+        const filter = filters[key];
+
+        if (Array.isArray(filter)) {
+          // eslint-disable-next-line prefer-destructuring
+          newFilters[key] = filter[0];
+        } else {
+          newFilters[key] = filter;
+        }
+      });
+
       this.props.fetch({
         results: pagination.pageSize,
         page: pagination.current,
         sortField: sorter.field,
         sortOrder: sorter.order,
-        ...filters,
+        ...newFilters,
       });
     };
 

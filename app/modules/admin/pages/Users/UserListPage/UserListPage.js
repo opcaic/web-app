@@ -34,7 +34,10 @@ UserListPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchUsers: params => dispatch(userActions.fetchMany({ params })),
+    fetchUsers: params =>
+      dispatch(
+        userActions.fetchMany({ params: Object.assign({ count: 10 }, params) }),
+      ),
   };
 }
 

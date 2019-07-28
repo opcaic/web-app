@@ -177,7 +177,7 @@ function* handleRefreshToken() {
   try {
     const currentUser = yield select(currentUserSelector);
 
-    while (yield call(delay, 1800 * 1000)) {
+    while (yield call(delay, 45 * 1000)) {
       const refreshToken = yield select(refreshTokenSelector);
       yield call(refreshTokenSaga, currentUser.id, refreshToken);
     }

@@ -7,41 +7,38 @@ import { roleIdToText } from '@/modules/shared/helpers/roles';
 
 const columns = [
   {
-    title: <FormattedMessage id="app.generic.id" defaultMessage="ID" />,
+    title: <FormattedMessage id="app.generic.id" />,
     dataIndex: 'id',
     key: 'id',
   },
   {
-    title: <FormattedMessage id="app.generic.email" defaultMessage="Email" />,
+    title: <FormattedMessage id="app.generic.email" />,
     dataIndex: 'email',
     key: 'email',
   },
   {
-    title: (
-      <FormattedMessage id="app.generic.username" defaultMessage="Username" />
-    ),
-    dataIndex: 'email',
+    title: <FormattedMessage id="app.generic.username" />,
+    dataIndex: 'userName',
     key: 'username',
   },
   {
-    title: (
-      <FormattedMessage id="app.admin.userList.role" defaultMessage="Role" />
-    ),
-    dataIndex: 'roleId',
-    key: 'roles.js',
+    title: <FormattedMessage id="app.admin.userList.role" />,
+    dataIndex: 'userRole',
+    key: 'userRole',
     render: text => roleIdToText(text),
     filters: [1, 2, 3].map(x => ({
       value: x,
       text: roleIdToText(x),
     })),
+    filterMultiple: false,
   },
   {
-    title: <FormattedMessage id="app.generic.action" defaultMessage="Action" />,
+    title: <FormattedMessage id="app.generic.action" />,
     key: 'action',
     render: (text, record) => (
       <span>
         <Link to={`/admin/users/${record.id}`}>
-          <FormattedMessage id="app.generic.edit" defaultMessage="Edit" />
+          <FormattedMessage id="app.generic.edit" />
         </Link>
       </span>
     ),
