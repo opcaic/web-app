@@ -3,6 +3,7 @@ import { fromJS } from 'immutable';
 const initialState = fromJS({
   // FETCH props
   items: [],
+  totalItems: 0,
   isFetching: false,
   lastUpdated: 0,
   didInvalidate: true,
@@ -46,6 +47,7 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
     case actionTypes.FETCH_MANY_SUCCESS:
       return state.merge({
         items: action.payload.list,
+        totalItems: action.payload.total,
         isFetching: false,
       });
     case actionTypes.FETCH_MANY_FAILURE:
