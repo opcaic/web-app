@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
 import { FormattedMessage } from 'react-intl';
 const { Sider } = Layout;
 
-const Sidebar = () => (
+const Sidebar = ({ activeItems }) => (
   <Sider width={250}>
     <Link to="/admin">
       <div
@@ -21,7 +22,7 @@ const Sidebar = () => (
       mode="inline"
       theme="dark"
       style={{ height: '100%', borderRight: 0 }}
-      selectedKeys={['system']}
+      selectedKeys={activeItems}
     >
       <Menu.Item key="dashboard">
         <Link to="/admin">
@@ -57,5 +58,9 @@ const Sidebar = () => (
     </Menu>
   </Sider>
 );
+
+Sidebar.propTypes = {
+  activeItems: PropTypes.array,
+};
 
 export default Sidebar;
