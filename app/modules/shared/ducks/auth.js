@@ -203,6 +203,8 @@ function* refreshTokenSaga(userId, refreshToken) {
   const user = Object.assign({}, oldUser, data);
 
   localStorage.setItem('auth', JSON.stringify(user));
+
+  return { accessToken: data.accessToken, refreshToken: data.refreshToken };
 }
 
 function* handleLoadAuth() {
@@ -227,8 +229,13 @@ function* handleLoadAuth() {
       return;
     }
 
-    yield call(refreshTokenSaga, auth.id, auth.refreshToken);
-    yield put(loadAuthSuccess(auth));
+    const refreshedTokens = yield call(
+      refreshTokenSaga,
+      auth.id,
+      auth.refreshToken,
+    );
+
+    yield put(loadAuthSuccess(Object.assign({}, auth, refreshedTokens)));
   } catch (e) {
     yield put(loadAuthFailure(e));
   }
