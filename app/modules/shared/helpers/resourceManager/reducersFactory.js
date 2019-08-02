@@ -25,6 +25,10 @@ const initialState = fromJS({
 const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
   switch (action.type) {
     // FETCH
+    case 'app/CALL_API':
+      return state.merge({
+        isFetching: true,
+      });
     case actionTypes.FETCH_REQUEST:
       return state.merge({
         isFetchingItem: true,

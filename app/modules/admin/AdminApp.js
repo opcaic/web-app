@@ -6,6 +6,9 @@ import injectReducer from '../../utils/injectReducer';
 import UserListPage from '@/modules/admin/pages/Users/UserListPage';
 import usersReducers from './ducks/users';
 import gamesReducer, { saga as gamesSaga } from './ducks/games';
+import tournamentsReducer, {
+  saga as tournamentsSaga,
+} from './ducks/tournaments';
 import UserDetailPage from '@/modules/admin/pages/Users/UserDetailPage';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import TournamentListPage from '@/modules/admin/pages/Tournaments/TournamentListPage';
@@ -15,6 +18,8 @@ import SystemPage from '@/modules/admin/pages/SystemPage';
 import GameDetailPage from '@/modules/admin/pages/Games/GameDetailPage';
 import GameNewPage from '@/modules/admin/pages/Games/GameNewPage';
 import injectSaga from '@/utils/injectSaga';
+import TournamentNewPage from '@/modules/admin/pages/Tournaments/TournamentNewPage';
+import TournamentDetailPage from '@/modules/admin/pages/Tournaments/TournamentDetailPage';
 
 // TODO: check if withMenuSync can be called directly in the component prop or if it should be declared beforehand
 
@@ -36,6 +41,20 @@ export class AdminApp extends React.PureComponent {
             exact
             path="/admin/tournaments/"
             component={withMenuSync(TournamentListPage, {
+              adminSidebar: ['tournaments_list'],
+            })}
+          />
+          <Route
+            exact
+            path="/admin/tournaments/new"
+            component={withMenuSync(TournamentNewPage, {
+              adminSidebar: ['tournaments_list'],
+            })}
+          />
+          <Route
+            exact
+            path="/admin/tournaments/:id"
+            component={withMenuSync(TournamentDetailPage, {
               adminSidebar: ['tournaments_list'],
             })}
           />
@@ -90,10 +109,14 @@ export class AdminApp extends React.PureComponent {
   }
 }
 
-const withSagas = [injectSaga({ key: 'games', saga: gamesSaga })];
+const withSagas = [
+  injectSaga({ key: 'games', saga: gamesSaga }),
+  injectSaga({ key: 'tournaments', saga: tournamentsSaga }),
+];
 const withReducers = [
   injectReducer({ key: 'users', reducer: usersReducers }),
   injectReducer({ key: 'games', reducer: gamesReducer }),
+  injectReducer({ key: 'tournaments', reducer: tournamentsReducer }),
 ];
 
 export default compose(

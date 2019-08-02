@@ -8,7 +8,7 @@ import {
   actions as gamesActions,
   selectors as gamesSelectors,
 } from '@/modules/admin/ducks/games';
-import GameForm from '@/modules/admin/components/Game/UserForm';
+import GameForm from '@/modules/admin/components/Game/GameForm';
 
 /* eslint-disable react/prefer-stateless-function */
 class GameNewPage extends React.PureComponent {
