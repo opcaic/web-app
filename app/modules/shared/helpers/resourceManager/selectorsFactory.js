@@ -5,6 +5,7 @@ const selectorsFactory = ({ storePath }) => {
 
   return {
     getItems: createSelector(getState, state => state.get('items').toJS()),
+    getTotalItems: createSelector(getState, state => state.get('totalItems')),
     getItem: createSelector(
       getState,
       state => state.get('item') && state.get('item').toJS(),

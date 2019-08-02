@@ -1,9 +1,9 @@
 import React from 'react';
 
-function withAjax(WrappedComponent) {
+function withAjax(WrappedComponent, pageSize = 10) {
   return class extends React.Component {
     state = {
-      pagination: {},
+      pagination: { pageSize },
     };
 
     handleTableChange = (pagination, filters, sorter) => {
@@ -29,18 +29,24 @@ function withAjax(WrappedComponent) {
       });
 
       this.props.fetch({
-        results: pagination.pageSize,
-        page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
+        count: pagination.pageSize,
+        offset: (pagination.current - 1) * pagination.pageSize,
+        sortBy: sorter.field,
+        asc: sorter.order === 'ascend',
         ...newFilters,
       });
     };
 
     render() {
+      const pagination = Object.assign({}, this.state.pagination);
+
+      if (this.props.totalItems) {
+        pagination.total = this.props.totalItems;
+      }
+
       return (
         <WrappedComponent
-          pagination={this.state.pagination}
+          pagination={pagination}
           onChange={this.handleTableChange}
           {...this.props}
         />

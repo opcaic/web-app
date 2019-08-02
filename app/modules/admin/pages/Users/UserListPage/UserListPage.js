@@ -21,6 +21,7 @@ class UserListPage extends React.PureComponent {
         dataSource={this.props.users}
         loading={this.props.isFetching}
         fetch={this.props.fetchUsers}
+        totalItems={this.props.totalItems}
       />
     );
   }
@@ -30,6 +31,7 @@ UserListPage.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object),
   isFetching: PropTypes.bool.isRequired,
   fetchUsers: PropTypes.func.isRequired,
+  totalItems: PropTypes.number.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -44,6 +46,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   users: userSelectors.getItems,
   isFetching: userSelectors.isFetching,
+  totalItems: userSelectors.getTotalItems,
 });
 
 const withConnect = connect(

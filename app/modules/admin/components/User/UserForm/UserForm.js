@@ -1,7 +1,6 @@
 import { Form, Input, Button, Typography } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { isRequired } from '@/modules/shared/helpers/formValidations';
 const { Text } = Typography;
 
 class UserForm extends React.PureComponent {
@@ -46,10 +45,7 @@ class UserForm extends React.PureComponent {
         <Form.Item
           label={<FormattedMessage id="app.admin.userForm.username" />}
         >
-          {getFieldDecorator('username', {
-            initialValue: this.props.user.userName,
-            rules: [isRequired('username')],
-          })(<Input />)}
+          <span className="ant-form-text">{this.props.user.username}</span>
         </Form.Item>
         <Form.Item
           label={<FormattedMessage id="app.admin.userForm.organization" />}
