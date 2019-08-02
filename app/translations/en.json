@@ -1,4 +1,7 @@
 {
+  "app.admin.gameForm.name": "Name",
+  "app.admin.gameList.createNew": "Create new game",
+  "app.admin.gameList.name": "Name",
   "app.admin.sidebar.backToPublic": "Back to public area",
   "app.admin.sidebar.dashboard": "Dashboard",
   "app.admin.sidebar.games": "Games",
@@ -14,6 +17,7 @@
   "app.formValidations.isRequired": "The {field} is required",
   "app.formValidations.isValidEmail": "The input is not a valid email",
   "app.generic.action": "Action",
+  "app.generic.create": "Create",
   "app.generic.delete": "Delete",
   "app.generic.edit": "Edit",
   "app.generic.email": "Email",

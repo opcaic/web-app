@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Spin } from 'antd';
+import styled from 'styled-components';
 import PublicApp from '../../public';
 import GlobalStyle from '../../../global-styles';
 import AdminApp from '../../admin';
@@ -21,6 +22,11 @@ import localizationReducer from '../ducks/localization';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
 import { initialLoadCompleted } from '@/modules/shared/selectors/auth';
 
+const SpinnerContainer = styled.div`
+  text-align: center;
+  padding-top: calc(50vh - 18px);
+`;
+
 /* eslint-disable react/prefer-stateless-function */
 export class App extends React.Component {
   componentWillMount() {
@@ -29,7 +35,11 @@ export class App extends React.Component {
 
   render() {
     if (!this.props.initialLoadCompleted) {
-      return <Spin size="large" />;
+      return (
+        <SpinnerContainer>
+          <Spin size="large" />
+        </SpinnerContainer>
+      );
     }
 
     return (

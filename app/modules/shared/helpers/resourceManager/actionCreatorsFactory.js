@@ -24,10 +24,19 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
       data,
     });
 
+  const createResource = data =>
+    createApiAction({
+      type: actionTypes.CREATE,
+      endpoint: apiEndpointFactory(),
+      method: 'POST',
+      data,
+    });
+
   return {
     fetchMany,
     fetchResource,
     updateResource,
+    createResource,
   };
 };
 

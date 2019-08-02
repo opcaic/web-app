@@ -69,6 +69,20 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
         isUpdating: false,
       });
 
+    // CREATE
+    case actionTypes.CREATE_REQUEST:
+      return state.merge({
+        isCreating: true,
+      });
+    case actionTypes.CREATE_SUCCESS:
+      return state.merge({
+        isCreating: false,
+      });
+    case actionTypes.CREATE_FAILURE:
+      return state.merge({
+        isCreating: false,
+      });
+
     // DEFAULT
     default:
       return state;

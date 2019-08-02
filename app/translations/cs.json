@@ -1,4 +1,7 @@
 {
+  "app.admin.gameForm.name": "",
+  "app.admin.gameList.createNew": "",
+  "app.admin.gameList.name": "",
   "app.admin.sidebar.backToPublic": "",
   "app.admin.sidebar.dashboard": "",
   "app.admin.sidebar.games": "",
@@ -14,6 +17,7 @@
   "app.formValidations.isRequired": "",
   "app.formValidations.isValidEmail": "",
   "app.generic.action": "",
+  "app.generic.create": "",
   "app.generic.delete": "",
   "app.generic.edit": "",
   "app.generic.email": "",

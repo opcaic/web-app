@@ -5,12 +5,16 @@ import PageLayout from './components/layout/PageLayout';
 import injectReducer from '../../utils/injectReducer';
 import UserListPage from '@/modules/admin/pages/Users/UserListPage';
 import usersReducers from './ducks/users';
+import gamesReducer, { saga as gamesSaga } from './ducks/games';
 import UserDetailPage from '@/modules/admin/pages/Users/UserDetailPage';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import TournamentListPage from '@/modules/admin/pages/Tournaments/TournamentListPage';
 import DashboardPage from '@/modules/admin/pages/DashboardPage';
 import GameListPage from '@/modules/admin/pages/Games/GameListPage';
 import SystemPage from '@/modules/admin/pages/SystemPage';
+import GameDetailPage from '@/modules/admin/pages/Games/GameDetailPage';
+import GameNewPage from '@/modules/admin/pages/Games/GameNewPage';
+import injectSaga from '@/utils/injectSaga';
 
 // TODO: check if withMenuSync can be called directly in the component prop or if it should be declared beforehand
 
@@ -43,6 +47,20 @@ export class AdminApp extends React.PureComponent {
               adminSidebar: ['games_list'],
             })}
           />
+          <Route
+            exact
+            path="/admin/games/new"
+            component={withMenuSync(GameNewPage, {
+              adminSidebar: ['games_list'],
+            })}
+          />
+          <Route
+            exact
+            path="/admin/games/:id"
+            component={withMenuSync(GameDetailPage, {
+              adminSidebar: ['games_list'],
+            })}
+          />
 
           <Route
             exact
@@ -72,8 +90,11 @@ export class AdminApp extends React.PureComponent {
   }
 }
 
-const withSagas = [];
-const withReducers = [injectReducer({ key: 'users', reducer: usersReducers })];
+const withSagas = [injectSaga({ key: 'games', saga: gamesSaga })];
+const withReducers = [
+  injectReducer({ key: 'users', reducer: usersReducers }),
+  injectReducer({ key: 'games', reducer: gamesReducer }),
+];
 
 export default compose(
   ...withReducers,
