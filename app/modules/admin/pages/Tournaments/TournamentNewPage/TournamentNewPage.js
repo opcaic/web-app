@@ -55,7 +55,7 @@ export function mapDispatchToProps(dispatch) {
       dispatch(
         gameActions.fetchMany({
           params: {
-            count: 1000,
+            count: 100,
             sortBy: 'name',
             asc: true,
           },
