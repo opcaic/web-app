@@ -25,6 +25,10 @@ const initialState = fromJS({
 const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
   switch (action.type) {
     // FETCH
+    case 'app/CALL_API':
+      return state.merge({
+        isFetching: true,
+      });
     case actionTypes.FETCH_REQUEST:
       return state.merge({
         isFetchingItem: true,
@@ -67,6 +71,20 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
     case actionTypes.UDPATE_FAILURE:
       return state.merge({
         isUpdating: false,
+      });
+
+    // CREATE
+    case actionTypes.CREATE_REQUEST:
+      return state.merge({
+        isCreating: true,
+      });
+    case actionTypes.CREATE_SUCCESS:
+      return state.merge({
+        isCreating: false,
+      });
+    case actionTypes.CREATE_FAILURE:
+      return state.merge({
+        isCreating: false,
       });
 
     // DEFAULT

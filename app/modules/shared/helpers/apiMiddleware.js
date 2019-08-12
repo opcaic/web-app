@@ -14,6 +14,10 @@ function prepareAxiosParams({ method, endpoint, ...rest }) {
     method,
     url: API_BASE + endpoint,
     crossDomain: true,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: {},
     ...rest,
   };
 }
@@ -32,9 +36,7 @@ function* handleApiCalls({ request }) {
 
   if (isLoggedIn) {
     const accessToken = yield select(accessTokenSelector);
-    requestParams.headers = {
-      Authorization: `Bearer ${accessToken}`,
-    };
+    requestParams.headers.Authorization = `Bearer ${accessToken}`;
   }
 
   try {

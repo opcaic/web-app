@@ -37,6 +37,10 @@ function withAjax(WrappedComponent, pageSize = 10) {
       });
     };
 
+    componentWillMount() {
+      this.props.fetch();
+    }
+
     render() {
       const pagination = Object.assign({}, this.state.pagination);
 
