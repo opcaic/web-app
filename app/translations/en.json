@@ -2,6 +2,8 @@
   "app.admin.gameForm.name": "Name",
   "app.admin.gameList.createNew": "Create new game",
   "app.admin.gameList.name": "Name",
+  "app.admin.notFound.backToDashboard": "Back to dashboard",
+  "app.admin.notFound.text": "Sorry, the page you visited does not exist.",
   "app.admin.sidebar.backToPublic": "Back to public area",
   "app.admin.sidebar.dashboard": "Dashboard",
   "app.admin.sidebar.games": "Games",

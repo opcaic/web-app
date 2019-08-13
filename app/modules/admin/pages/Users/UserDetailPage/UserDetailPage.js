@@ -9,6 +9,7 @@ import {
   selectors as userSelectors,
 } from '@/modules/admin/ducks/users';
 import UserForm from '@/modules/admin/components/User/UserForm';
+import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class UserDetailPage extends React.PureComponent {
@@ -23,17 +24,18 @@ class UserDetailPage extends React.PureComponent {
 
   render() {
     return (
-      <Spin spinning={this.props.isFetching}>
-        <Row>
-          <Col span={12}>
-            <UserForm
-              user={this.props.user || {}}
-              onSubmit={values => this.handleSubmit(values)}
-              onChange={changedFields => console.log(changedFields)}
-            />
-          </Col>
-        </Row>
-      </Spin>
+      <PageLayout>
+        <Spin spinning={this.props.isFetching}>
+          <Row>
+            <Col span={12}>
+              <UserForm
+                user={this.props.user || {}}
+                onSubmit={values => this.handleSubmit(values)}
+              />
+            </Col>
+          </Row>
+        </Spin>
+      </PageLayout>
     );
   }
 }

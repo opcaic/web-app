@@ -1,9 +1,14 @@
 import React from 'react';
+import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class DashboardPage extends React.PureComponent {
   render() {
-    return <div>Nothing here yet :(</div>;
+    return (
+      <PageLayout>
+        <div>Nothing here yet :(</div>
+      </PageLayout>
+    );
   }
 }
 

@@ -8,6 +8,7 @@ import {
   selectors as userSelectors,
 } from '../../../ducks/users';
 import UserList from '@/modules/admin/components/User/UserList';
+import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class UserListPage extends React.PureComponent {
@@ -17,12 +18,14 @@ class UserListPage extends React.PureComponent {
 
   render() {
     return (
-      <UserList
-        dataSource={this.props.users}
-        loading={this.props.isFetching}
-        fetch={this.props.fetchUsers}
-        totalItems={this.props.totalItems}
-      />
+      <PageLayout>
+        <UserList
+          dataSource={this.props.users}
+          loading={this.props.isFetching}
+          fetch={this.props.fetchUsers}
+          totalItems={this.props.totalItems}
+        />
+      </PageLayout>
     );
   }
 }

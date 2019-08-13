@@ -10,6 +10,7 @@ import {
   selectors as gameSelectors,
 } from '@/modules/admin/ducks/games';
 import TournamentForm from '@/modules/admin/components/Tournament/TournamentForm';
+import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentNewPage extends React.PureComponent {
@@ -27,15 +28,17 @@ class TournamentNewPage extends React.PureComponent {
     }
 
     return (
-      <Row>
-        <Col span={12}>
-          <TournamentForm
-            resource={{}}
-            onSubmit={values => this.handleSubmit(values)}
-            games={this.props.games}
-          />
-        </Col>
-      </Row>
+      <PageLayout>
+        <Row>
+          <Col span={12}>
+            <TournamentForm
+              resource={{}}
+              onSubmit={values => this.handleSubmit(values)}
+              games={this.props.games}
+            />
+          </Col>
+        </Row>
+      </PageLayout>
     );
   }
 }

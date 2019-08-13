@@ -13,6 +13,7 @@ import {
   selectors as gameSelectors,
 } from '@/modules/admin/ducks/games';
 import TournamentForm from '@/modules/admin/components/Tournament/TournamentForm';
+import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentDetailPage extends React.PureComponent {
@@ -37,17 +38,19 @@ class TournamentDetailPage extends React.PureComponent {
     }
 
     return (
-      <Spin spinning={this.props.isFetching || this.props.isFetchingGames}>
-        <Row>
-          <Col span={12}>
-            <TournamentForm
-              resource={this.props.resource || {}}
-              onSubmit={values => this.handleSubmit(values)}
-              games={this.props.games}
-            />
-          </Col>
-        </Row>
-      </Spin>
+      <PageLayout>
+        <Spin spinning={this.props.isFetching || this.props.isFetchingGames}>
+          <Row>
+            <Col span={12}>
+              <TournamentForm
+                resource={this.props.resource || {}}
+                onSubmit={values => this.handleSubmit(values)}
+                games={this.props.games}
+              />
+            </Col>
+          </Row>
+        </Spin>
+      </PageLayout>
     );
   }
 }

@@ -9,6 +9,7 @@ import {
   selectors as gamesSelectors,
 } from '@/modules/admin/ducks/games';
 import GameForm from '@/modules/admin/components/Game/GameForm';
+import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class GameDetailPage extends React.PureComponent {
@@ -23,16 +24,18 @@ class GameDetailPage extends React.PureComponent {
 
   render() {
     return (
-      <Spin spinning={this.props.isFetching}>
-        <Row>
-          <Col span={12}>
-            <GameForm
-              game={this.props.game || {}}
-              onSubmit={values => this.handleSubmit(values)}
-            />
-          </Col>
-        </Row>
-      </Spin>
+      <PageLayout>
+        <Spin spinning={this.props.isFetching}>
+          <Row>
+            <Col span={12}>
+              <GameForm
+                game={this.props.game || {}}
+                onSubmit={values => this.handleSubmit(values)}
+              />
+            </Col>
+          </Row>
+        </Spin>
+      </PageLayout>
     );
   }
 }

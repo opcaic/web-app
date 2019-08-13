@@ -11,12 +11,13 @@ import {
   actions as gameActions,
   selectors as gameSelectos,
 } from '../../../ducks/games';
+import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class GameListPage extends React.PureComponent {
   render() {
     return (
-      <div>
+      <PageLayout>
         <Button type="primary" style={{ marginBottom: 20 }}>
           <Link to="/admin/games/new">
             <FormattedMessage id="app.admin.gameList.createNew" />
@@ -29,7 +30,7 @@ class GameListPage extends React.PureComponent {
           fetch={this.props.fetchGames}
           totalItems={this.props.totalItems}
         />
-      </div>
+      </PageLayout>
     );
   }
 }

@@ -15,6 +15,7 @@ import {
   selectors as gameSelectors,
 } from '../../../ducks/games';
 import TournamentList from '@/modules/admin/components/Tournament/TournamentList';
+import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentListPage extends React.PureComponent {
@@ -24,7 +25,7 @@ class TournamentListPage extends React.PureComponent {
 
   render() {
     return (
-      <div>
+      <PageLayout>
         <Button type="primary" style={{ marginBottom: 20 }}>
           <Link to="/admin/tournaments/new">
             <FormattedMessage id="app.admin.tournamentList.createNew" />
@@ -38,7 +39,7 @@ class TournamentListPage extends React.PureComponent {
           totalItems={this.props.totalItems}
           games={this.props.games}
         />
-      </div>
+      </PageLayout>
     );
   }
 }
