@@ -167,6 +167,8 @@ function* authorize(email, password, errorsCallback) {
 
     console.log(e);
 
+    // const formErrors = prepareFormErrorsFromResponse()
+
     errorsCallback({
       username: ['Server-side validation error'],
     });

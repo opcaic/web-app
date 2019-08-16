@@ -22,19 +22,18 @@ class TournamentDetailPage extends React.PureComponent {
     this.props.fetchGames();
   }
 
-  handleSubmit = values => {
-    const resource = Object.assign({}, this.props.resource, values);
-    this.props.updateResource(resource);
-  };
-
   render() {
-    // TODO: handle better
+    // // TODO: handle better
     if (
       this.props.resource === null ||
       this.props.isFetching ||
       this.props.isFetchingGames
     ) {
-      return <Spin />;
+      return (
+        <PageLayout>
+          <Spin />
+        </PageLayout>
+      );
     }
 
     return (
@@ -44,8 +43,14 @@ class TournamentDetailPage extends React.PureComponent {
             <Col span={12}>
               <TournamentForm
                 resource={this.props.resource || {}}
-                onSubmit={values => this.handleSubmit(values)}
                 games={this.props.games}
+                onSubmit={(values, successCallback, failureCallback) =>
+                  this.props.updateResource(
+                    Object.assign({}, this.props.resource, values),
+                    successCallback,
+                    failureCallback,
+                  )
+                }
               />
             </Col>
           </Row>
@@ -69,8 +74,13 @@ TournamentDetailPage.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: id => dispatch(tournamentsActions.fetchResource(id)),
-    updateResource: resource =>
-      dispatch(tournamentsActions.updateResource(resource.id, resource)),
+    updateResource: (resource, successCallback, failureCallback) =>
+      dispatch(
+        tournamentsActions.updateResource(resource.id, resource, null, {
+          successCallback,
+          failureCallback,
+        }),
+      ),
     fetchGames: () =>
       dispatch(
         gameActions.fetchMany({

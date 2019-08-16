@@ -32,6 +32,7 @@ import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
+import IntlGlobalProvider from '@/modules/shared/helpers/IntlGlobalProvider';
 
 // Create redux store with history
 const initialState = {};
@@ -58,9 +59,11 @@ const render = messages => {
   ReactDOM.render(
     <Provider store={store}>
       <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
+        <IntlGlobalProvider>
+          <ConnectedRouter history={history}>
+            <App />
+          </ConnectedRouter>
+        </IntlGlobalProvider>
       </LanguageProvider>
     </Provider>,
     MOUNT_NODE,

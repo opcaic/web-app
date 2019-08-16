@@ -13,18 +13,20 @@ import PageLayout from '@/modules/admin/components/layout/PageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 class GameNewPage extends React.PureComponent {
-  handleSubmit = values => {
-    this.props.createResource(values);
-  };
-
   render() {
     return (
       <PageLayout>
         <Row>
           <Col span={12}>
             <GameForm
-              game={{}}
-              onSubmit={values => this.handleSubmit(values)}
+              resource={{}}
+              onSubmit={(values, successCallback, failureCallback) =>
+                this.props.createResource(
+                  values,
+                  successCallback,
+                  failureCallback,
+                )
+              }
             />
           </Col>
         </Row>
@@ -39,7 +41,13 @@ GameNewPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    createResource: resource => dispatch(gamesActions.createResource(resource)),
+    createResource: (resource, successCallback, failureCallback) =>
+      dispatch(
+        gamesActions.createResource(resource, null, {
+          successCallback,
+          failureCallback,
+        }),
+      ),
   };
 }
 

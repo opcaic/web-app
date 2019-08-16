@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import {
   isMinLength,
   isValidEmail,
-} from '@/modules/shared/helpers/formValidations';
+} from '@/modules/shared/helpers/errors/formValidations';
 
 class RegisterForm extends React.PureComponent {
   state = {

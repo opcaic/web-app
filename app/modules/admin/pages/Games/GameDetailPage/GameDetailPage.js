@@ -17,11 +17,6 @@ class GameDetailPage extends React.PureComponent {
     this.props.fetchResource(this.props.match.params.id);
   }
 
-  handleSubmit = values => {
-    const resource = Object.assign({}, this.props.game, values);
-    this.props.updateResource(resource);
-  };
-
   render() {
     return (
       <PageLayout>
@@ -29,8 +24,14 @@ class GameDetailPage extends React.PureComponent {
           <Row>
             <Col span={12}>
               <GameForm
-                game={this.props.game || {}}
-                onSubmit={values => this.handleSubmit(values)}
+                resource={this.props.resource || {}}
+                onSubmit={(values, successCallback, failureCallback) =>
+                  this.props.updateResource(
+                    Object.assign({}, this.props.resource, values),
+                    successCallback,
+                    failureCallback,
+                  )
+                }
               />
             </Col>
           </Row>
@@ -44,21 +45,26 @@ GameDetailPage.propTypes = {
   fetchResource: PropTypes.func.isRequired,
   updateResource: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  game: PropTypes.object,
+  resource: PropTypes.object,
   match: PropTypes.object.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: id => dispatch(gamesActions.fetchResource(id)),
-    updateResource: resource =>
-      dispatch(gamesActions.updateResource(resource.id, resource)),
+    updateResource: (resource, successCallback, failureCallback) =>
+      dispatch(
+        gamesActions.updateResource(resource.id, resource, null, {
+          successCallback,
+          failureCallback,
+        }),
+      ),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   isFetching: gamesSelectors.isFetchingItem,
-  game: gamesSelectors.getItem,
+  resource: gamesSelectors.getItem,
 });
 
 const withConnect = connect(

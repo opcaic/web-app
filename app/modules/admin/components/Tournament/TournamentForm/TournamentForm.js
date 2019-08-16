@@ -1,12 +1,13 @@
 import { Form, Input, Button, Select } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { isRequired } from '@/modules/shared/helpers/formValidations';
+import { isRequired } from '@/modules/shared/helpers/errors/formValidations';
 import {
   tournamentFormatEnum,
   tournamentRankingStrategyEnum,
   tournamentScopeEnum,
 } from '@/modules/shared/helpers/enumHelpers';
+import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 const { Option } = Select;
 
 class TournamentForm extends React.PureComponent {
@@ -138,7 +139,11 @@ class TournamentForm extends React.PureComponent {
         <Form.Item {...tailFormItemLayout}>
           {this.props.resource.id ? (
             <div>
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={this.props.isSubmitting}
+              >
                 <FormattedMessage id="app.generic.save" />
               </Button>
               <Button
@@ -152,7 +157,10 @@ class TournamentForm extends React.PureComponent {
           ) : (
             <div>
               <Button type="primary" htmlType="submit">
-                <FormattedMessage id="app.generic.create" />
+                <FormattedMessage
+                  id="app.generic.create"
+                  loading={this.props.isSubmitting}
+                />
               </Button>
             </div>
           )}
@@ -164,4 +172,4 @@ class TournamentForm extends React.PureComponent {
 
 export default Form.create({
   name: 'user_form',
-})(TournamentForm);
+})(withEnhancedForm(TournamentForm));

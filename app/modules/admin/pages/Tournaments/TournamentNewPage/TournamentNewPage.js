@@ -18,13 +18,13 @@ class TournamentNewPage extends React.PureComponent {
     this.props.fetchGames();
   }
 
-  handleSubmit = values => {
-    this.props.createResource(values);
-  };
-
   render() {
     if (!this.props.games.length || this.props.isFetchingGames) {
-      return <Spin />;
+      return (
+        <PageLayout>
+          <Spin />
+        </PageLayout>
+      );
     }
 
     return (
@@ -33,8 +33,14 @@ class TournamentNewPage extends React.PureComponent {
           <Col span={12}>
             <TournamentForm
               resource={{}}
-              onSubmit={values => this.handleSubmit(values)}
               games={this.props.games}
+              onSubmit={(values, successCallback, failureCallback) =>
+                this.props.createResource(
+                  values,
+                  successCallback,
+                  failureCallback,
+                )
+              }
             />
           </Col>
         </Row>
@@ -52,8 +58,13 @@ TournamentNewPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    createResource: resource =>
-      dispatch(tournamentsActions.createResource(resource)),
+    createResource: (resource, successCallback, failureCallback) =>
+      dispatch(
+        tournamentsActions.createResource(resource, null, {
+          successCallback,
+          failureCallback,
+        }),
+      ),
     fetchGames: () =>
       dispatch(
         gameActions.fetchMany({
