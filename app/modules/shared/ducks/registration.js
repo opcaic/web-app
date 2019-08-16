@@ -2,6 +2,7 @@ import { fromJS } from 'immutable';
 import { put, takeEvery, all, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { callApi } from '../helpers/apiMiddleware';
+import { prepareFormErrorsFromResponse } from '@/modules/shared/helpers/errors/errors';
 
 /*
  * Action types
@@ -56,9 +57,11 @@ function* handleRegister({ username, password, errorsCallback }) {
       },
     });
 
-    errorsCallback({
-      username: ['Server-side validation error'],
-    });
+    console.log(e.response.data);
+    const formErrors = prepareFormErrorsFromResponse(e.response.data);
+    console.log(formErrors);
+
+    errorsCallback(prepareFormErrorsFromResponse(e.response.data));
   }
 }
 

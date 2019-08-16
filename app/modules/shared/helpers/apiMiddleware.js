@@ -4,10 +4,15 @@ import {
   isLoggedIn as isLoggedInSelector,
   accessTokenSelector,
 } from '../selectors/auth';
+import { prepareFormErrorsFromResponse } from '@/modules/shared/helpers/errors/errors';
 
 export const API_BASE = process.env.API_URL;
 export const CALL_API = 'app/CALL_API';
-export const createApiAction = request => ({ type: CALL_API, request });
+export const createApiAction = (request, meta) => ({
+  type: CALL_API,
+  request,
+  meta,
+});
 
 function prepareAxiosParams({ method, endpoint, ...rest }) {
   return {
@@ -24,7 +29,7 @@ function prepareAxiosParams({ method, endpoint, ...rest }) {
 
 export const callApi = request => axios.request(prepareAxiosParams(request));
 
-function* handleApiCalls({ request }) {
+function* handleApiCalls({ request, meta = {} }) {
   const { type } = request;
 
   yield put({
@@ -46,11 +51,21 @@ function* handleApiCalls({ request }) {
       type: `${type}_SUCCESS`,
       payload: data,
     });
+
+    if (meta.successCallback) {
+      meta.successCallback();
+    }
   } catch (e) {
     yield put({
       type: `${type}_FAILURE`,
       exception: e,
     });
+
+    const errors = prepareFormErrorsFromResponse(e.response);
+
+    if (meta.failureCallback) {
+      meta.failureCallback(errors);
+    }
   }
 }
 

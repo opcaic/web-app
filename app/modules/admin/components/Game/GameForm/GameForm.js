@@ -1,7 +1,8 @@
 import { Form, Input, Button } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { isRequired } from '@/modules/shared/helpers/formValidations';
+import { isRequired } from '@/modules/shared/helpers/errors/formValidations';
+import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 
 class GameForm extends React.PureComponent {
   handleSubmit = e => {
@@ -25,22 +26,26 @@ class GameForm extends React.PureComponent {
 
     return (
       <Form onSubmit={this.handleSubmit} {...formItemLayout}>
-        {this.props.game.id && (
+        {this.props.resource.id && (
           <Form.Item label={<FormattedMessage id="app.generic.id" />}>
-            <span className="ant-form-text">{this.props.game.id}</span>
+            <span className="ant-form-text">{this.props.resource.id}</span>
           </Form.Item>
         )}
 
         <Form.Item label={<FormattedMessage id="app.admin.gameForm.name" />}>
           {getFieldDecorator('name', {
-            initialValue: this.props.game.name,
+            initialValue: this.props.resource.name,
             rules: [isRequired('name')],
           })(<Input />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          {this.props.game.id ? (
+          {this.props.resource.id ? (
             <div>
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={this.props.isSubmitting}
+              >
                 <FormattedMessage id="app.generic.save" />
               </Button>
               <Button
@@ -53,7 +58,11 @@ class GameForm extends React.PureComponent {
             </div>
           ) : (
             <div>
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={this.props.isSubmitting}
+              >
                 <FormattedMessage id="app.generic.create" />
               </Button>
             </div>
@@ -66,4 +75,4 @@ class GameForm extends React.PureComponent {
 
 export default Form.create({
   name: 'user_form',
-})(GameForm);
+})(withEnhancedForm(GameForm));

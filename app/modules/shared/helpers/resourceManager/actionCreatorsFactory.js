@@ -16,21 +16,29 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
       method: 'GET',
     });
 
-  const updateResource = (id, data) =>
-    createApiAction({
-      type: actionTypes.UPDATE,
-      endpoint: apiEndpointFactory(id),
-      method: 'PUT',
-      data,
-    });
+  const updateResource = (id, data, apiOptions, meta) =>
+    createApiAction(
+      {
+        type: actionTypes.UPDATE,
+        endpoint: apiEndpointFactory(id),
+        method: 'PUT',
+        data,
+        ...apiOptions,
+      },
+      meta,
+    );
 
-  const createResource = data =>
-    createApiAction({
-      type: actionTypes.CREATE,
-      endpoint: apiEndpointFactory(),
-      method: 'POST',
-      data,
-    });
+  const createResource = (data, apiOptions, meta) =>
+    createApiAction(
+      {
+        type: actionTypes.CREATE,
+        endpoint: apiEndpointFactory(),
+        method: 'POST',
+        data,
+        ...apiOptions,
+      },
+      meta,
+    );
 
   return {
     fetchMany,
