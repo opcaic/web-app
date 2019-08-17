@@ -2,7 +2,7 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Col, Row, Spin } from 'antd';
+import { Col, Row } from 'antd';
 import PropTypes from 'prop-types';
 import {
   actions as usersActions,
@@ -10,6 +10,7 @@ import {
 } from '@/modules/admin/ducks/users';
 import UserForm from '@/modules/admin/components/User/UserForm';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
+import Spin from '@/modules/shared/components/Spin';
 
 /* eslint-disable react/prefer-stateless-function */
 class UserDetailPage extends React.PureComponent {
@@ -18,18 +19,18 @@ class UserDetailPage extends React.PureComponent {
   }
 
   handleSubmit = values => {
-    const resource = Object.assign({}, this.props.user, values);
+    const resource = Object.assign({}, this.props.resource, values);
     this.props.updateResource(resource);
   };
 
   render() {
     return (
       <PageLayout>
-        <Spin spinning={this.props.isFetching}>
+        <Spin spinning={this.props.isFetching || this.props.resource == null}>
           <Row>
             <Col span={12}>
               <UserForm
-                user={this.props.user || {}}
+                user={this.props.resource}
                 onSubmit={values => this.handleSubmit(values)}
               />
             </Col>
@@ -44,7 +45,7 @@ UserDetailPage.propTypes = {
   fetchResource: PropTypes.func.isRequired,
   updateResource: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  user: PropTypes.object,
+  resource: PropTypes.object,
   match: PropTypes.object.isRequired,
 };
 
@@ -58,7 +59,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   isFetching: userSelectors.isFetchingItem,
-  user: userSelectors.getItem,
+  resource: userSelectors.getItem,
 });
 
 const withConnect = connect(

@@ -1,9 +1,8 @@
 import { Table } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
-import { getSearchProps } from '@/modules/shared/helpers/table';
+import { getActionProps, getSearchProps } from '@/modules/shared/helpers/table';
 import {
   tournamentFormatEnum,
   tournamentRankingStrategyEnum,
@@ -11,12 +10,6 @@ import {
 } from '@/modules/shared/helpers/enumHelpers';
 
 const columns = props => [
-  {
-    title: <FormattedMessage id="app.generic.id" />,
-    dataIndex: 'id',
-    key: 'id',
-    sorter: true,
-  },
   {
     title: <FormattedMessage id="app.admin.tournamentList.name" />,
     dataIndex: 'name',
@@ -59,15 +52,7 @@ const columns = props => [
     filterMultiple: false,
   },
   {
-    title: <FormattedMessage id="app.generic.action" />,
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        <Link to={`/admin/tournaments/${record.id}`}>
-          <FormattedMessage id="app.generic.edit" />
-        </Link>
-      </span>
-    ),
+    ...getActionProps(record => `/admin/tournaments/${record.id}`),
   },
 ];
 

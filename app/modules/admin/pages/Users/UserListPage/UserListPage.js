@@ -9,13 +9,10 @@ import {
 } from '../../../ducks/users';
 import UserList from '@/modules/admin/components/User/UserList';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
+import { prepareFilterParams } from '@/modules/shared/helpers/table';
 
 /* eslint-disable react/prefer-stateless-function */
 class UserListPage extends React.PureComponent {
-  componentWillMount() {
-    this.props.fetchUsers();
-  }
-
   render() {
     return (
       <PageLayout>
@@ -41,7 +38,9 @@ export function mapDispatchToProps(dispatch) {
   return {
     fetchUsers: params =>
       dispatch(
-        userActions.fetchMany({ params: Object.assign({ count: 10 }, params) }),
+        userActions.fetchMany({
+          params: prepareFilterParams(params, 'username', true),
+        }),
       ),
   };
 }

@@ -28,6 +28,7 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
     case actionTypes.FETCH_REQUEST:
       return state.merge({
         isFetchingItem: true,
+        item: null,
       });
     case actionTypes.FETCH_SUCCESS:
       return state.merge({

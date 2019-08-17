@@ -28,17 +28,25 @@ function withAjax(WrappedComponent, pageSize = 10) {
         }
       });
 
-      this.props.fetch({
+      const requestParams = {
         count: pagination.pageSize,
         offset: (pagination.current - 1) * pagination.pageSize,
-        sortBy: sorter.field,
-        asc: sorter.order === 'ascend',
         ...newFilters,
-      });
+      };
+
+      if (sorter.field) {
+        requestParams.sortBy = sorter.field;
+      }
+
+      if (sorter.order) {
+        requestParams.asc = sorter.order === 'ascend';
+      }
+
+      this.props.fetch(requestParams);
     };
 
     componentWillMount() {
-      this.props.fetch();
+      this.props.fetch({ count: this.state.pagination.pageSize });
     }
 
     render() {

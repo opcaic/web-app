@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import injectReducer from '../../utils/injectReducer';
 import usersReducers from './ducks/users';
 import gamesReducer, { saga as gamesSaga } from './ducks/games';
+import documentsReducer, { saga as documentsSaga } from './ducks/documents';
 import tournamentsReducer, {
   saga as tournamentsSaga,
 } from './ducks/tournaments';
@@ -54,11 +55,13 @@ export class AdminApp extends React.PureComponent {
 const withSagas = [
   injectSaga({ key: 'games', saga: gamesSaga }),
   injectSaga({ key: 'tournaments', saga: tournamentsSaga }),
+  injectSaga({ key: 'documents', saga: documentsSaga }),
 ];
 const withReducers = [
   injectReducer({ key: 'users', reducer: usersReducers }),
   injectReducer({ key: 'games', reducer: gamesReducer }),
   injectReducer({ key: 'tournaments', reducer: tournamentsReducer }),
+  injectReducer({ key: 'documents', reducer: documentsReducer }),
 ];
 
 export default compose(
