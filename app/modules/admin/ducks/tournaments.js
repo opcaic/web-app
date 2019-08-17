@@ -1,34 +1,43 @@
-import { all, takeLatest, take, put, call } from 'redux-saga/effects';
+import { all, takeLatest, put, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import resourceFactory from '../../shared/helpers/resourceManager';
+import { defineMessages } from 'react-intl';
+import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   endpoint: 'api/tournaments',
   resourceName: 'tournaments',
 });
 
+const intlMessages = defineMessages({
+  createSuccessNotification: {
+    id: 'app.admin.tournaments.createSuccessNotification',
+  },
+  updateSuccessNotification: {
+    id: 'app.admin.tournaments.updateSuccessNotification',
+  },
+});
+
 /*
  * Sagas
  */
-function* handleCreate() {
-  const action = yield take([
-    actionTypes.CREATE_SUCCESS,
-    actionTypes.CREATE_FAILURE,
-  ]);
+function* handleCreateSuccess(action) {
+  yield put(push(`/admin/tournaments/${action.payload.id}`));
+  yield call(notification.success, {
+    message: intl.formatMessage(intlMessages.createSuccessNotification),
+  });
+}
 
-  if (action.type === actionTypes.CREATE_SUCCESS) {
-    yield put(push(`/admin/tournaments/${action.payload.id}`));
-    yield call(notification.success, {
-      message: 'Tournament successfully created', // TODO: needs to be translated
-    });
-  } else {
-    // TODO: handle failure
-  }
+function* handleUpdateSuccess() {
+  yield call(notification.success, {
+    message: intl.formatMessage(intlMessages.updateSuccessNotification),
+  });
 }
 
 export function* saga() {
-  yield all([takeLatest(actionTypes.CREATE_REQUEST, handleCreate)]);
+  yield all([takeLatest(actionTypes.CREATE_SUCCESS, handleCreateSuccess)]);
+  yield all([takeLatest(actionTypes.UPDATE_SUCCESS, handleUpdateSuccess)]);
 }
 
 export default reducers;

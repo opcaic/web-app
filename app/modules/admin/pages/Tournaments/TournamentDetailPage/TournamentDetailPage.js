@@ -2,58 +2,37 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Col, Row, Spin } from 'antd';
 import PropTypes from 'prop-types';
 import {
   actions as tournamentsActions,
   selectors as tournamentsSelectors,
 } from '@/modules/admin/ducks/tournaments';
-import {
-  actions as gameActions,
-  selectors as gameSelectors,
-} from '@/modules/admin/ducks/games';
-import TournamentForm from '@/modules/admin/components/Tournament/TournamentForm';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
+import TournamentMenu from '@/modules/admin/components/Tournament/TournamentMenu';
+import { withRouter } from 'react-router-dom';
+import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
+import TournamentDetailRoutes from '@/modules/admin/pages/Tournaments/TournamentDetailRoutes';
+import Spin from '@/modules/shared/components/Spin';
+
+const SyncedTournamentMenu = withSyncedActiveItems(
+  TournamentMenu,
+  'tournamentMenu',
+);
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentDetailPage extends React.PureComponent {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchResource(this.props.match.params.id);
-    this.props.fetchGames();
   }
 
   render() {
-    // // TODO: handle better
-    if (
-      this.props.resource === null ||
-      this.props.isFetching ||
-      this.props.isFetchingGames
-    ) {
-      return (
-        <PageLayout>
-          <Spin />
-        </PageLayout>
-      );
-    }
-
     return (
       <PageLayout>
-        <Spin spinning={this.props.isFetching || this.props.isFetchingGames}>
-          <Row>
-            <Col span={12}>
-              <TournamentForm
-                resource={this.props.resource || {}}
-                games={this.props.games}
-                onSubmit={(values, successCallback, failureCallback) =>
-                  this.props.updateResource(
-                    Object.assign({}, this.props.resource, values),
-                    successCallback,
-                    failureCallback,
-                  )
-                }
-              />
-            </Col>
-          </Row>
+        <SyncedTournamentMenu id={this.props.match.params.id} />
+        <div style={{ height: 40 }} />
+
+        <Spin spinning={this.props.resource === null || this.props.isFetching}>
+          <TournamentDetailRoutes tournament={this.props.resource} />
         </Spin>
       </PageLayout>
     );
@@ -62,43 +41,20 @@ class TournamentDetailPage extends React.PureComponent {
 
 TournamentDetailPage.propTypes = {
   fetchResource: PropTypes.func.isRequired,
-  updateResource: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.object,
   match: PropTypes.object.isRequired,
-  games: PropTypes.arrayOf(PropTypes.object),
-  isFetchingGames: PropTypes.bool.isRequired,
-  fetchGames: PropTypes.func.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: id => dispatch(tournamentsActions.fetchResource(id)),
-    updateResource: (resource, successCallback, failureCallback) =>
-      dispatch(
-        tournamentsActions.updateResource(resource.id, resource, null, {
-          successCallback,
-          failureCallback,
-        }),
-      ),
-    fetchGames: () =>
-      dispatch(
-        gameActions.fetchMany({
-          params: {
-            count: 100,
-            sortBy: 'name',
-            asc: true,
-          },
-        }),
-      ),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   isFetching: tournamentsSelectors.isFetchingItem,
   resource: tournamentsSelectors.getItem,
-  isFetchingGames: gameSelectors.isFetching,
-  games: gameSelectors.getItems,
 });
 
 const withConnect = connect(
@@ -106,4 +62,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(TournamentDetailPage);
+export default compose(
+  withRouter,
+  withConnect,
+)(TournamentDetailPage);

@@ -2,7 +2,7 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Col, Row, Spin } from 'antd';
+import { Col, Row } from 'antd';
 import PropTypes from 'prop-types';
 import {
   actions as gamesActions,
@@ -10,17 +10,18 @@ import {
 } from '@/modules/admin/ducks/games';
 import GameForm from '@/modules/admin/components/Game/GameForm';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
+import Spin from '@/modules/shared/components/Spin';
 
 /* eslint-disable react/prefer-stateless-function */
 class GameDetailPage extends React.PureComponent {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchResource(this.props.match.params.id);
   }
 
   render() {
     return (
       <PageLayout>
-        <Spin spinning={this.props.isFetching}>
+        <Spin spinning={this.props.isFetching || this.props.resource === null}>
           <Row>
             <Col span={12}>
               <GameForm

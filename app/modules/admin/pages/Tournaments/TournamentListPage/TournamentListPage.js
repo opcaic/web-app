@@ -16,6 +16,7 @@ import {
 } from '../../../ducks/games';
 import TournamentList from '@/modules/admin/components/Tournament/TournamentList';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
+import { prepareFilterParams } from '@/modules/shared/helpers/table';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentListPage extends React.PureComponent {
@@ -59,7 +60,7 @@ export function mapDispatchToProps(dispatch) {
     fetchItems: params =>
       dispatch(
         tournamentActions.fetchMany({
-          params: Object.assign({ count: 10 }, params),
+          params: prepareFilterParams(params, 'name', true),
         }),
       ),
     fetchGames: () =>

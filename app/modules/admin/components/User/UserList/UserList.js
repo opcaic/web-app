@@ -1,17 +1,17 @@
 import { Table } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 import { roleIdToText } from '@/modules/shared/helpers/roles';
-import { getSearchProps } from '@/modules/shared/helpers/table';
+import { getActionProps, getSearchProps } from '@/modules/shared/helpers/table';
 
 const columns = [
   {
-    title: <FormattedMessage id="app.generic.id" />,
-    dataIndex: 'id',
-    key: 'id',
+    title: <FormattedMessage id="app.generic.username" />,
+    dataIndex: 'username',
+    key: 'username',
     sorter: true,
+    ...getSearchProps('username'),
   },
   {
     title: <FormattedMessage id="app.generic.email" />,
@@ -19,13 +19,6 @@ const columns = [
     key: 'email',
     sorter: true,
     ...getSearchProps('email'),
-  },
-  {
-    title: <FormattedMessage id="app.generic.username" />,
-    dataIndex: 'username',
-    key: 'username',
-    sorter: true,
-    ...getSearchProps('username'),
   },
   {
     title: <FormattedMessage id="app.admin.userList.role" />,
@@ -39,15 +32,7 @@ const columns = [
     filterMultiple: false,
   },
   {
-    title: <FormattedMessage id="app.generic.action" />,
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        <Link to={`/admin/users/${record.id}`}>
-          <FormattedMessage id="app.generic.edit" />
-        </Link>
-      </span>
-    ),
+    ...getActionProps(record => `/admin/users/${record.id}`),
   },
 ];
 

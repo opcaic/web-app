@@ -15,14 +15,12 @@ const TournamentRoutes = () => (
       })}
     />
     <Route
-      exact
       path="/admin/tournaments/new"
       component={withMenuSync(TournamentNewPage, {
         adminSidebar: ['tournaments_list'],
       })}
     />
     <Route
-      exact
       path="/admin/tournaments/:id"
       component={withMenuSync(TournamentDetailPage, {
         adminSidebar: ['tournaments_list'],

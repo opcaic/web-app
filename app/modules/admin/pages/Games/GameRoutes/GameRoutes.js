@@ -15,14 +15,12 @@ const GameRoutes = () => (
       })}
     />
     <Route
-      exact
       path="/admin/games/new"
       component={withMenuSync(GameNewPage, {
         adminSidebar: ['games_list'],
       })}
     />
     <Route
-      exact
       path="/admin/games/:id"
       component={withMenuSync(GameDetailPage, {
         adminSidebar: ['games_list'],

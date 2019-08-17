@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, Icon, Input } from 'antd';
+import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 export function getSearchProps(field) {
   return {
@@ -52,4 +54,36 @@ export function getSearchProps(field) {
       <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
   };
+}
+
+export function getActionProps(linkGenerator) {
+  return {
+    title: <FormattedMessage id="app.generic.action" />,
+    key: 'action',
+    width: 150,
+    align: 'center',
+    render: (text, record) => (
+      <Button type="primary">
+        <Link to={linkGenerator(record)}>
+          <FormattedMessage id="app.generic.edit" />
+        </Link>
+      </Button>
+    ),
+  };
+}
+
+export function prepareFilterParams(
+  params,
+  defaultSortBy = 'id',
+  defaultAsc = true,
+  additionalParams = {},
+) {
+  return Object.assign(
+    {
+      sortBy: defaultSortBy,
+      asc: defaultAsc,
+    },
+    params,
+    additionalParams,
+  );
 }

@@ -9,9 +9,10 @@ import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import {
   actions as gameActions,
-  selectors as gameSelectos,
+  selectors as gameSelectors,
 } from '../../../ducks/games';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
+import { prepareFilterParams } from '@/modules/shared/helpers/table';
 
 /* eslint-disable react/prefer-stateless-function */
 class GameListPage extends React.PureComponent {
@@ -46,15 +47,17 @@ export function mapDispatchToProps(dispatch) {
   return {
     fetchGames: params =>
       dispatch(
-        gameActions.fetchMany({ params: Object.assign({ count: 10 }, params) }),
+        gameActions.fetchMany({
+          params: prepareFilterParams(params, 'name', true),
+        }),
       ),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  users: gameSelectos.getItems,
-  isFetching: gameSelectos.isFetching,
-  totalItems: gameSelectos.getTotalItems,
+  users: gameSelectors.getItems,
+  isFetching: gameSelectors.isFetching,
+  totalItems: gameSelectors.getTotalItems,
 });
 
 const withConnect = connect(

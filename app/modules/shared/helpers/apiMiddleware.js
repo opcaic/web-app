@@ -34,6 +34,7 @@ function* handleApiCalls({ request, meta = {} }) {
 
   yield put({
     type: `${type}_REQUEST`,
+    payload: request,
   });
 
   const requestParams = prepareAxiosParams(request);
