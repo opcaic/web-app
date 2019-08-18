@@ -60,19 +60,19 @@ export function mapDispatchToProps(dispatch) {
   return {
     createResource: (resource, successCallback, failureCallback) =>
       dispatch(
-        tournamentsActions.createResource(resource, null, {
-          successCallback,
-          failureCallback,
+        tournamentsActions.createResource(resource, {
+          meta: {
+            successCallback,
+            failureCallback,
+          },
         }),
       ),
     fetchGames: () =>
       dispatch(
         gameActions.fetchMany({
-          params: {
-            count: 100,
-            sortBy: 'name',
-            asc: true,
-          },
+          count: 100,
+          sortBy: 'name',
+          asc: true,
         }),
       ),
   };

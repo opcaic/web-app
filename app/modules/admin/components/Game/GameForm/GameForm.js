@@ -74,5 +74,5 @@ class GameForm extends React.PureComponent {
 }
 
 export default Form.create({
-  name: 'user_form',
+  name: 'game_form',
 })(withEnhancedForm(GameForm));

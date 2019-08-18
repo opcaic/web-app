@@ -38,9 +38,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     fetchUsers: params =>
       dispatch(
-        userActions.fetchMany({
-          params: prepareFilterParams(params, 'username', true),
-        }),
+        userActions.fetchMany(prepareFilterParams(params, 'username', true)),
       ),
   };
 }

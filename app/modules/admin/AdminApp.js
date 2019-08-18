@@ -8,6 +8,9 @@ import documentsReducer, { saga as documentsSaga } from './ducks/documents';
 import tournamentsReducer, {
   saga as tournamentsSaga,
 } from './ducks/tournaments';
+import tournamentParticipantsReducer, {
+  saga as tournamentParticipantsSaga,
+} from './ducks/tournamentParticipants';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import DashboardPage from '@/modules/admin/pages/DashboardPage';
 import SystemPage from '@/modules/admin/pages/SystemPage';
@@ -55,12 +58,20 @@ export class AdminApp extends React.PureComponent {
 const withSagas = [
   injectSaga({ key: 'games', saga: gamesSaga }),
   injectSaga({ key: 'tournaments', saga: tournamentsSaga }),
+  injectSaga({
+    key: 'tournamentParticipants',
+    saga: tournamentParticipantsSaga,
+  }),
   injectSaga({ key: 'documents', saga: documentsSaga }),
 ];
 const withReducers = [
   injectReducer({ key: 'users', reducer: usersReducers }),
   injectReducer({ key: 'games', reducer: gamesReducer }),
   injectReducer({ key: 'tournaments', reducer: tournamentsReducer }),
+  injectReducer({
+    key: 'tournamentParticipants',
+    reducer: tournamentParticipantsReducer,
+  }),
   injectReducer({ key: 'documents', reducer: documentsReducer }),
 ];
 

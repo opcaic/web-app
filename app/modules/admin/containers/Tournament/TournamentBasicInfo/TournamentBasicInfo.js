@@ -53,19 +53,19 @@ export function mapDispatchToProps(dispatch) {
   return {
     updateResource: (resource, successCallback, failureCallback) =>
       dispatch(
-        tournamentsActions.updateResource(resource.id, resource, null, {
-          successCallback,
-          failureCallback,
+        tournamentsActions.updateResource(resource.id, resource, {
+          meta: {
+            successCallback,
+            failureCallback,
+          },
         }),
       ),
     fetchGames: () =>
       dispatch(
         gameActions.fetchMany({
-          params: {
-            count: 100,
-            sortBy: 'name',
-            asc: true,
-          },
+          count: 100,
+          sortBy: 'name',
+          asc: true,
         }),
       ),
   };

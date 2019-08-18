@@ -21,10 +21,6 @@ class DocumentForm extends React.PureComponent {
     this.state = { selectedTab: 'write', content: props.resource.content };
   }
 
-  static getDerivedStateFromProps(props) {
-    return { content: props.resource.content };
-  }
-
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {

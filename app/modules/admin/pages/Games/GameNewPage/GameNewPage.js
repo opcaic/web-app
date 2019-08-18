@@ -43,9 +43,11 @@ export function mapDispatchToProps(dispatch) {
   return {
     createResource: (resource, successCallback, failureCallback) =>
       dispatch(
-        gamesActions.createResource(resource, null, {
-          successCallback,
-          failureCallback,
+        gamesActions.createResource(resource, {
+          meta: {
+            successCallback,
+            failureCallback,
+          },
         }),
       ),
   };

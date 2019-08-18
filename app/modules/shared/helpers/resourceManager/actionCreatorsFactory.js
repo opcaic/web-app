@@ -1,43 +1,51 @@
 import { createApiAction } from '../apiMiddleware';
 
 const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
-  const fetchMany = apiOptions =>
-    createApiAction({
-      type: actionTypes.FETCH_MANY,
-      endpoint: apiEndpointFactory(),
-      method: 'GET',
-      ...apiOptions,
-    });
+  const fetchMany = (queryParams, options = {}) =>
+    createApiAction(
+      {
+        type: actionTypes.FETCH_MANY,
+        endpoint: apiEndpointFactory(undefined, options.endpointParams),
+        method: 'GET',
+        params: queryParams,
+        ...options.request,
+      },
+      options.meta,
+    );
 
-  const fetchResource = id =>
-    createApiAction({
-      type: actionTypes.FETCH,
-      endpoint: apiEndpointFactory(id),
-      method: 'GET',
-    });
+  const fetchResource = (id, options = {}) =>
+    createApiAction(
+      {
+        type: actionTypes.FETCH,
+        endpoint: apiEndpointFactory(id, options.endpointParams),
+        method: 'GET',
+        ...options.request,
+      },
+      options.meta,
+    );
 
-  const updateResource = (id, data, apiOptions, meta) =>
+  const updateResource = (id, data, options = {}) =>
     createApiAction(
       {
         type: actionTypes.UPDATE,
-        endpoint: apiEndpointFactory(id),
+        endpoint: apiEndpointFactory(id, options.endpointParams),
         method: 'PUT',
         data,
-        ...apiOptions,
+        ...options.request,
       },
-      meta,
+      options.meta,
     );
 
-  const createResource = (data, apiOptions, meta) =>
+  const createResource = (data, options = {}) =>
     createApiAction(
       {
         type: actionTypes.CREATE,
-        endpoint: apiEndpointFactory(),
+        endpoint: apiEndpointFactory(undefined, options.endpointParams),
         method: 'POST',
         data,
-        ...apiOptions,
+        ...options.request,
       },
-      meta,
+      options.meta,
     );
 
   return {

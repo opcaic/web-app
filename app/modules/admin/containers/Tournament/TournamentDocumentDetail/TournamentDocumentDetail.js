@@ -67,9 +67,11 @@ export function mapDispatchToProps(dispatch) {
     fetchResource: id => dispatch(documentsActions.fetchResource(id)),
     updateResource: (resource, successCallback, failureCallback) =>
       dispatch(
-        documentsActions.updateResource(resource.id, resource, null, {
-          successCallback,
-          failureCallback,
+        documentsActions.updateResource(resource.id, resource, {
+          meta: {
+            successCallback,
+            failureCallback,
+          },
         }),
       ),
   };

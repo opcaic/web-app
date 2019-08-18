@@ -47,9 +47,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     fetchGames: params =>
       dispatch(
-        gameActions.fetchMany({
-          params: prepareFilterParams(params, 'name', true),
-        }),
+        gameActions.fetchMany(prepareFilterParams(params, 'name', true)),
       ),
   };
 }

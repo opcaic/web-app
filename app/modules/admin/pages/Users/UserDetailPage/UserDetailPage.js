@@ -14,7 +14,7 @@ import Spin from '@/modules/shared/components/Spin';
 
 /* eslint-disable react/prefer-stateless-function */
 class UserDetailPage extends React.PureComponent {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchResource(this.props.match.params.id);
   }
 

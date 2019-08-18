@@ -49,9 +49,11 @@ export function mapDispatchToProps(dispatch) {
   return {
     createResource: (resource, successCallback, failureCallback) =>
       dispatch(
-        documentsActions.createResource(resource, null, {
-          successCallback,
-          failureCallback,
+        documentsActions.createResource(resource, {
+          meta: {
+            successCallback,
+            failureCallback,
+          },
         }),
       ),
   };

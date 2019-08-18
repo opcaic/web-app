@@ -52,9 +52,9 @@ export function mapDispatchToProps(dispatch) {
   return {
     fetchItems: tournamentId => params =>
       dispatch(
-        documentActions.fetchMany({
-          params: prepareFilterParams(params, 'name', true, { tournamentId }),
-        }),
+        documentActions.fetchMany(
+          prepareFilterParams(params, 'name', true, { tournamentId }),
+        ),
       ),
   };
 }
