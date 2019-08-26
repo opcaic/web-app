@@ -14,6 +14,7 @@ import RegisterPage from '@/modules/public/pages/RegisterPage';
 // import competitionsSaga from './ducks/competitions/sagas';
 import competitionsReducer from './ducks/competitions/reducers';
 import tournamentsReducers from './ducks/tournaments';
+import RegistrationSuccessfulPage from '@/modules/public/pages/RegistrationSuccessfulPage';
 
 /* eslint-disable react/prefer-stateless-function */
 export class PublicApp extends React.Component {
@@ -25,6 +26,10 @@ export class PublicApp extends React.Component {
         <Route path="/competition/:slug" component={CompetitionPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
+        <Route
+          path="/registration-successful"
+          component={RegistrationSuccessfulPage}
+        />
         <Route path="/" component={NotFoundPage} />
       </Switch>
     );

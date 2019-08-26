@@ -1,5 +1,4 @@
 import React from 'react';
-import PageLayout from '@/modules/public/components/layout/PageLayout';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -8,20 +7,19 @@ import { withRouter } from 'react-router-dom';
 import RegisterForm from '../../components/Login/RegisterForm';
 import { register } from '../../../shared/ducks/registration';
 import { makeSelectRegistrationErrors } from './selectors';
+import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 export class RegisterPage extends React.PureComponent {
   render() {
     return (
-      <PageLayout>
-        <div style={{ margin: 'auto' }}>
-          <RegisterForm
-            onSubmit={(values, errorsCallback) =>
-              this.props.register(values, errorsCallback)
-            }
-          />
-        </div>
-      </PageLayout>
+      <NoMenuPageLayout size="small">
+        <RegisterForm
+          onSubmit={(values, successCallback, failureCallback) =>
+            this.props.register(values, successCallback, failureCallback)
+          }
+        />
+      </NoMenuPageLayout>
     );
   }
 }
@@ -32,8 +30,16 @@ RegisterPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    register: (values, errorsCallback) =>
-      dispatch(register(values.username, values.email, errorsCallback)),
+    register: (values, successCallback, failureCallback) =>
+      dispatch(
+        register(
+          values.username,
+          values.email,
+          values.password,
+          successCallback,
+          failureCallback,
+        ),
+      ),
   };
 }
 

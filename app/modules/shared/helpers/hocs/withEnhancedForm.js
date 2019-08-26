@@ -8,6 +8,7 @@ function withEnhancedForm(WrappedComponent, hocOptions) {
   return class extends React.Component {
     state = {
       isSubmitting: false,
+      errors: [],
     };
 
     options = Object.assign({}, defaultOptions, hocOptions);
@@ -47,7 +48,7 @@ function withEnhancedForm(WrappedComponent, hocOptions) {
       const values = this.props.form.getFieldsValue();
       const fieldsData = {};
 
-      Object.entries(errors).forEach(element => {
+      Object.entries(errors.withField).forEach(element => {
         const key = element[0];
         const fieldErrors = element[1];
 
@@ -57,6 +58,7 @@ function withEnhancedForm(WrappedComponent, hocOptions) {
         };
       });
 
+      this.setState({ errors: errors.withoutField });
       this.props.form.setFields(fieldsData);
     };
 
@@ -66,6 +68,7 @@ function withEnhancedForm(WrappedComponent, hocOptions) {
           {...this.props}
           isSubmitting={this.state.isSubmitting}
           onSubmit={this.onSubmit(this.props.onSubmit)}
+          errors={this.state.errors}
         />
       );
     }

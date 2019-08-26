@@ -4,7 +4,7 @@ import {
   isLoggedIn as isLoggedInSelector,
   accessTokenSelector,
 } from '../selectors/auth';
-import { prepareFormErrorsFromResponse } from '@/modules/shared/helpers/errors/errors';
+import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 
 export const API_BASE = process.env.API_URL;
 export const CALL_API = 'app/CALL_API';
@@ -23,6 +23,9 @@ function prepareAxiosParams({ method, endpoint, ...rest }) {
       'Content-Type': 'application/json',
     },
     data: {},
+    validateStatus(status) {
+      return status >= 200 && status < 500;
+    },
     ...rest,
   };
 }
@@ -46,27 +49,31 @@ function* handleApiCalls({ request, meta = {} }) {
   }
 
   try {
-    const { data } = yield call(axios.request, requestParams);
+    const response = yield call(axios.request, requestParams);
+    const { data, status } = response;
 
-    yield put({
-      type: `${type}_SUCCESS`,
-      payload: data,
-    });
+    if (status < 400) {
+      yield put({
+        type: `${type}_SUCCESS`,
+        payload: data,
+      });
 
-    if (meta.successCallback) {
-      meta.successCallback();
+      if (meta.successCallback) {
+        meta.successCallback();
+      }
+    } else {
+      yield put({
+        type: `${type}_FAILURE`,
+      });
+
+      const errors = prepareFormErrors(data);
+
+      if (meta.failureCallback) {
+        meta.failureCallback(errors);
+      }
     }
   } catch (e) {
-    yield put({
-      type: `${type}_FAILURE`,
-      exception: e,
-    });
-
-    const errors = prepareFormErrorsFromResponse(e.response);
-
-    if (meta.failureCallback) {
-      meta.failureCallback(errors);
-    }
+    console.log(e);
   }
 }
 

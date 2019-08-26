@@ -21,39 +21,58 @@ export const errorIntlMessages = defineMessages({
   oldPasswordConflict: { id: 'app.errors.oldPasswordConflict' },
   passwordKeyConflict: { id: 'app.errors.passwordKeyConflict' },
   userWithEmailNotFound: { id: 'app.errors.userWithEmailNotFound' },
+  // Unauthorized user
+  loginEmailNotConfirmed: { id: 'app.errors.loginEmailNotConfirmed' },
+  loginLockout: { id: 'app.errors.loginLockout' },
+  loginInvalid: { id: 'app.errors.loginInvalid' },
+  invalidToken: { id: 'app.errors.invalidToken' },
 });
 
-export function prepareFormErrorsFromResponse(apiResponse) {
-  const errors = {};
+export function prepareFormErrors(data) {
+  const errors = { withField: {}, withoutField: [] };
+  let apiErrors;
 
-  if (Array.isArray(apiResponse.data.errors)) {
-    apiResponse.data.errors.forEach(x => {
-      if (!errors[x.field]) {
-        errors[x.field] = [];
-      }
-
-      let error = null;
-
-      const camelCasedCode = toCamelCase(x.code);
-
-      if (errorIntlMessages[camelCasedCode]) {
-        error = intl.formatMessage(errorIntlMessages[camelCasedCode], x);
-      } else {
-        error = x.message;
-
-        if (error === null) {
-          error = intl.formatMessage(errorIntlMessages.missingError, {
-            code: x.code,
-          });
-        }
-
-        console.error(`Error message not found, see the error below:`);
-        console.error(x);
-      }
-
-      errors[x.field].push(error);
-    });
+  if (Array.isArray(data.errors)) {
+    apiErrors = data.errors;
+  } else if (data.code) {
+    apiErrors = [{ field: null, code: data.code, message: data.message }];
+  } else {
+    return {};
   }
+
+  apiErrors.forEach(x => {
+    let error = null;
+    let errorContainer = null;
+
+    if (x.field !== null) {
+      if (!errors.withField[x.field]) {
+        errors.withField[x.field] = [];
+      }
+
+      errorContainer = errors.withField[x.field];
+    } else {
+      errorContainer = errors.withoutField;
+    }
+
+    const camelCasedCode = toCamelCase(x.code);
+
+    if (errorIntlMessages[camelCasedCode]) {
+      error = intl.formatMessage(errorIntlMessages[camelCasedCode], x);
+    } else {
+      error = x.message;
+
+      if (error === null) {
+        error = intl.formatMessage(errorIntlMessages.missingError, {
+          code: x.code,
+        });
+      }
+
+      console.error(`Error message not found, see the error below:`);
+      console.error(x);
+    }
+
+    errorContainer.push(error);
+  });
 
   return errors;
 }

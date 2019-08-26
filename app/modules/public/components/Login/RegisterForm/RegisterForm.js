@@ -1,4 +1,4 @@
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Alert } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
@@ -6,6 +6,11 @@ import {
   isMinLength,
   isValidEmail,
 } from '@/modules/shared/helpers/errors/formValidations';
+import LoginFormWrapper from '@/modules/public/components/Login/LoginFormWrapper';
+import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlMessages } from '@/modules/public/components/Login/RegisterForm/localization';
+import PropTypes from 'prop-types';
+import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 
 class RegisterForm extends React.PureComponent {
   state = {
@@ -16,26 +21,9 @@ class RegisterForm extends React.PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.onSubmit(values, this.submitErrorsCallback);
+        this.props.onSubmit(values);
       }
     });
-  };
-
-  submitErrorsCallback = errors => {
-    const values = this.props.form.getFieldsValue();
-    const fieldsData = {};
-
-    Object.entries(errors).forEach(element => {
-      const key = element[0];
-      const fieldErrors = element[1];
-
-      fieldsData[key] = {
-        value: values[key],
-        errors: fieldErrors.map(error => new Error(error)),
-      };
-    });
-
-    this.props.form.setFields(fieldsData);
   };
 
   compareToFirstPassword = (rule, value, callback) => {
@@ -64,118 +52,120 @@ class RegisterForm extends React.PureComponent {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
-      },
-    };
 
     return (
-      <Form
-        {...formItemLayout}
-        onSubmit={this.handleSubmit}
-        style={{ width: 600 }}
-      >
-        <Form.Item
-          label={<FormattedMessage id="app.registrationForm.username" />}
-        >
-          {getFieldDecorator('username', {
-            rules: [
-              {
-                required: true,
-                message: (
-                  <FormattedMessage id="app.registrationForm.usernameRequired" />
-                ),
-              },
-            ],
-          })(<Input />)}
-        </Form.Item>
-        <Form.Item label={<FormattedMessage id="app.registrationForm.email" />}>
-          {getFieldDecorator('email', {
-            rules: [
-              isValidEmail(),
-              {
-                required: true,
-                message: (
-                  <FormattedMessage id="app.registrationForm.emailRequired" />
-                ),
-              },
-            ],
-          })(<Input />)}
-        </Form.Item>
-        <Form.Item
-          label={<FormattedMessage id="app.registrationForm.password" />}
-          hasFeedback
-        >
-          {getFieldDecorator('password', {
-            rules: [
-              {
-                required: true,
-                message: (
-                  <FormattedMessage id="app.registrationForm.passwordRequired" />
-                ),
-              },
-              isMinLength(8, 'password'),
-              {
-                validator: this.validateToNextPassword,
-              },
-            ],
-          })(<Input.Password />)}
-        </Form.Item>
-        <Form.Item
-          label={<FormattedMessage id="app.registrationForm.confirmPassword" />}
-          hasFeedback
-        >
-          {getFieldDecorator('confirm', {
-            rules: [
-              {
-                required: true,
-                message: (
-                  <FormattedMessage id="app.registrationForm.confirmPasswordRequired" />
-                ),
-              },
-              {
-                validator: this.compareToFirstPassword,
-              },
-            ],
-          })(<Input.Password onBlur={this.handleConfirmBlur} />)}
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          {getFieldDecorator('agreement', {
-            valuePropName: 'checked',
-          })(
-            <Checkbox>
-              I have read the <Link to="/agreement">agreement</Link>
-            </Checkbox>,
+      <LoginFormWrapper title={intl.formatMessage(intlMessages.title)}>
+        <Form onSubmit={this.handleSubmit}>
+          {this.props.errors && (
+            <div style={{ marginBottom: 10 }}>
+              {this.props.errors.map((x, key) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Alert message={x} key={key} type="error" />
+              ))}
+            </div>
           )}
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
-            <FormattedMessage id="app.registrationForm.register" />
-          </Button>
-        </Form.Item>
-      </Form>
+
+          <Form.Item style={{ marginBottom: 5 }}>
+            {getFieldDecorator('username', {
+              rules: [
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage id="app.registrationForm.usernameRequired" />
+                  ),
+                },
+              ],
+            })(
+              <Input placeholder={intl.formatMessage(intlMessages.username)} />,
+            )}
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 5 }}>
+            {getFieldDecorator('email', {
+              rules: [
+                isValidEmail(),
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage id="app.registrationForm.emailRequired" />
+                  ),
+                },
+              ],
+            })(<Input placeholder={intl.formatMessage(intlMessages.email)} />)}
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 5 }}>
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage id="app.registrationForm.passwordRequired" />
+                  ),
+                },
+                isMinLength(8, 'password'),
+                {
+                  validator: this.validateToNextPassword,
+                },
+              ],
+            })(
+              <Input.Password
+                placeholder={intl.formatMessage(intlMessages.password)}
+              />,
+            )}
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 5 }}>
+            {getFieldDecorator('confirm', {
+              rules: [
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage id="app.registrationForm.confirmPasswordRequired" />
+                  ),
+                },
+                {
+                  validator: this.compareToFirstPassword,
+                },
+              ],
+            })(
+              <Input.Password
+                onBlur={this.handleConfirmBlur}
+                placeholder={intl.formatMessage(intlMessages.confirmPassword)}
+              />,
+            )}
+          </Form.Item>
+          {/* <Form.Item>
+            {getFieldDecorator('agreement', {
+              valuePropName: 'checked',
+            })(
+              <Checkbox>
+                I have read the <Link to="/agreement">agreement</Link>
+              </Checkbox>,
+            )}
+          </Form.Item> */}
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{
+                width: '100%',
+              }}
+            >
+              <FormattedMessage id="app.registrationForm.register" />
+            </Button>
+            {intl.formatMessage(intlMessages.alreadyHaveAccount)}{' '}
+            <Link to="/login">{intl.formatMessage(intlMessages.login)}</Link>
+          </Form.Item>
+        </Form>
+      </LoginFormWrapper>
     );
   }
 }
 
+RegisterForm.propTypes = {
+  onSubmit: PropTypes.func,
+  form: PropTypes.object,
+  errors: PropTypes.array,
+};
+
 export default Form.create({
   name: 'register',
-})(RegisterForm);
+})(withEnhancedForm(RegisterForm));

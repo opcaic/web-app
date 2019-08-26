@@ -3,12 +3,12 @@ import { delay } from 'redux-saga';
 import {
   all,
   call,
+  cancel,
+  fork,
   put,
-  takeEvery,
   select,
   take,
-  fork,
-  cancel,
+  takeEvery,
 } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import jwtDecode from 'jwt-decode';
@@ -18,6 +18,7 @@ import {
   currentUserSelector,
   refreshTokenSelector,
 } from '@/modules/shared/selectors/auth';
+import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 
 /*
  * Action types
@@ -51,20 +52,20 @@ export function loadAuthSuccess(user) {
   };
 }
 
-export function loadAuthFailure(error) {
+export function loadAuthFailure() {
   return {
     type: actionTypes.LOAD_AUTH_FAILURE,
-    error,
   };
 }
 
-export function login(email, password, errorsCallback) {
+export function login(email, password, successCallback, failureCallback) {
   return {
     type: actionTypes.LOGIN,
     payload: {
       email,
       password,
-      errorsCallback,
+      successCallback,
+      failureCallback,
     },
   };
 }
@@ -102,9 +103,15 @@ function* loginFlow() {
 
     if (action.type === actionTypes.LOGIN) {
       const {
-        payload: { email, password, errorsCallback },
+        payload: { email, password, successCallback, failureCallback },
       } = action;
-      task = yield fork(authorize, email, password, errorsCallback);
+      task = yield fork(
+        authenticate,
+        email,
+        password,
+        successCallback,
+        failureCallback,
+      );
     }
 
     const refreshTask = yield fork(handleRefreshToken, action);
@@ -126,13 +133,13 @@ function* loginFlow() {
   }
 }
 
-function* authorize(email, password, errorsCallback) {
+function* authenticate(email, password, successCallback, failureCallback) {
   yield put({
     type: actionTypes.LOGIN_REQUEST,
   });
 
   try {
-    const { data } = yield call(callApi, {
+    const { data, status } = yield call(callApi, {
       endpoint: 'api/users/login',
       method: 'POST',
       data: {
@@ -141,37 +148,39 @@ function* authorize(email, password, errorsCallback) {
       },
     });
 
-    const token = jwtDecode(data.accessToken);
-    console.log(token);
+    if (status >= 200 && status < 300) {
+      // Dispatch success action
+      yield put({
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: data,
+      });
 
-    yield put({
-      type: actionTypes.LOGIN_SUCCESS,
-      payload: data,
-    });
+      if (successCallback) {
+        successCallback();
+      }
 
-    localStorage.setItem('auth', JSON.stringify(data));
+      // Save data to local storage
+      // TODO: if the user does not want the password to be remembered, maybe use cookies?
+      localStorage.setItem('auth', JSON.stringify(data));
 
-    const routerState = yield select(routerStateSelector);
-    console.log(routerState);
-    const { from } = routerState || {
-      from: { pathname: '/' },
-    };
-    console.log(from);
-    const redirectTo = from; // TODO: handle search and hash
+      // Redirect to previous location if possible
+      const routerState = yield select(routerStateSelector);
+      const { from } = routerState || {
+        from: { pathname: '/' },
+      };
+      yield put(push(from));
+    } else {
+      yield put({
+        type: actionTypes.LOGIN_FAILURE,
+      });
 
-    yield put(push(redirectTo));
+      if (failureCallback) {
+        const errors = prepareFormErrors(data);
+        failureCallback(errors);
+      }
+    }
   } catch (e) {
-    yield put({
-      type: actionTypes.LOGIN_FAILURE,
-    });
-
     console.log(e);
-
-    // const formErrors = prepareFormErrorsFromResponse()
-
-    errorsCallback({
-      username: ['Server-side validation error'],
-    });
   }
 }
 
@@ -189,13 +198,17 @@ function* handleRefreshToken() {
 }
 
 function* refreshTokenSaga(userId, refreshToken) {
-  const { data } = yield call(callApi, {
+  const { data, status } = yield call(callApi, {
     endpoint: `api/users/${userId}/refresh`,
     method: 'POST',
     data: {
       token: refreshToken,
     },
   });
+
+  if (status !== 200) {
+    return null;
+  }
 
   yield put(updateTokens(data.accessToken, data.refreshToken));
 
@@ -237,9 +250,13 @@ function* handleLoadAuth() {
       auth.refreshToken,
     );
 
-    yield put(loadAuthSuccess(Object.assign({}, auth, refreshedTokens)));
+    if (refreshedTokens !== null) {
+      yield put(loadAuthSuccess(Object.assign({}, auth, refreshedTokens)));
+    } else {
+      yield put(loadAuthFailure());
+    }
   } catch (e) {
-    yield put(loadAuthFailure(e));
+    console.log(e);
   }
 }
 

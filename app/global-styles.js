@@ -44,6 +44,10 @@ const GlobalStyle = createGlobalStyle`
       max-width: 1140px;
     }
   }
+  
+  audio, canvas, iframe, img, svg, video {
+    vertical-align: initial;
+  }
 `;
 
 export default GlobalStyle;

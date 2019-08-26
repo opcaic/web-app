@@ -1,5 +1,4 @@
 import React from 'react';
-import PageLayout from '@/modules/public/components/layout/PageLayout';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -7,20 +6,19 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import LoginForm from '../../components/Login/LoginForm';
 import { login } from '../../../shared/ducks/auth';
+import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
 export class LoginPage extends React.PureComponent {
   render() {
     return (
-      <PageLayout>
-        <div style={{ margin: 'auto' }}>
-          <LoginForm
-            onSubmit={(values, errorsCallback) =>
-              this.props.login(values, errorsCallback)
-            }
-          />
-        </div>
-      </PageLayout>
+      <NoMenuPageLayout size="small">
+        <LoginForm
+          onSubmit={(values, successCallback, failureCallback) =>
+            this.props.login(values, successCallback, failureCallback)
+          }
+        />
+      </NoMenuPageLayout>
     );
   }
 }
@@ -31,8 +29,10 @@ LoginPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    login: (values, errorsCallback) =>
-      dispatch(login(values.email, values.password, errorsCallback)),
+    login: (values, successCallback, failureCallback) =>
+      dispatch(
+        login(values.email, values.password, successCallback, failureCallback),
+      ),
   };
 }
 

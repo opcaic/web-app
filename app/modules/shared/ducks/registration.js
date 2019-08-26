@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import { put, takeEvery, all, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { callApi } from '../helpers/apiMiddleware';
-import { prepareFormErrorsFromResponse } from '@/modules/shared/helpers/errors/errors';
+import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 
 /*
  * Action types
@@ -17,51 +17,71 @@ export const actionTypes = {
 /*
  * Action creators
  */
-export function register(username, password, errorsCallback) {
+export function register(
+  username,
+  email,
+  password,
+  successCallback,
+  failureCallback,
+) {
   return {
     type: actionTypes.REGISTER,
     username,
+    email,
     password,
-    errorsCallback,
+    successCallback,
+    failureCallback,
   };
 }
 
 /*
  * Sagas
  */
-function* handleRegister({ username, password, errorsCallback }) {
+function* handleRegister({
+  username,
+  email,
+  password,
+  successCallback,
+  failureCallback,
+}) {
   yield put({
     type: actionTypes.REGISTER_REQUEST,
   });
 
   try {
-    yield call(callApi, {
+    const { data, status } = yield call(callApi, {
       endpoint: 'api/users',
       method: 'POST',
-      body: {
+      data: {
         username,
+        email,
         password,
+        localizationLanguage: 'en',
       },
     });
 
-    yield put({
-      type: actionTypes.REGISTER_SUCCESS,
-    });
+    if (status >= 200 && status < 300) {
+      yield put({
+        type: actionTypes.REGISTER_SUCCESS,
+      });
 
-    yield put(push('/login'));
+      if (successCallback) {
+        successCallback();
+      }
+
+      yield put(push(`/registration-successful?email=${email}`));
+    } else {
+      yield put({
+        type: actionTypes.REGISTER_FAILURE,
+      });
+
+      if (failureCallback) {
+        const errors = prepareFormErrors(data);
+        failureCallback(errors);
+      }
+    }
   } catch (e) {
-    yield put({
-      type: actionTypes.REGISTER_FAILURE,
-      errors: {
-        username: 'Server-side validation error',
-      },
-    });
-
-    console.log(e.response.data);
-    const formErrors = prepareFormErrorsFromResponse(e.response.data);
-    console.log(formErrors);
-
-    errorsCallback(prepareFormErrorsFromResponse(e.response.data));
+    console.log(e);
   }
 }
 
