@@ -9,6 +9,8 @@
   "app.admin.games.updateSuccessNotification": "Game successfully updated",
   "app.admin.notFound.backToDashboard": "Back to dashboard",
   "app.admin.notFound.text": "Sorry, the page you visited does not exist.",
+  "app.admin.forbidden.backToDashboard": "Back to dashboard",
+  "app.admin.forbidden.text": "Sorry, you don't have sufficient permissions to access this page.",
   "app.admin.sidebar.backToPublic": "Back to public area",
   "app.admin.sidebar.dashboard": "Dashboard",
   "app.admin.sidebar.games": "Games",

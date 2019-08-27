@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Breadcrumb } from 'antd';
 import PropTypes from 'prop-types';
-import Sidebar from '../Sidebar';
+import Sidebar from '@/modules/admin/containers/layout/Sidebar';
 import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
 
 const { Header, Content } = Layout;

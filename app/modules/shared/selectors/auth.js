@@ -19,3 +19,4 @@ export const isLoggedIn = createSelector(accessTokenSelector, jwt =>
 export const initialLoadCompleted = createSelector(getAuth, auth =>
   auth.get('initialLoadCompleted'),
 );
+export const roleSelector = createSelector(getAuth, auth => auth.get('role'));

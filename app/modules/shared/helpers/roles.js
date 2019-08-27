@@ -15,3 +15,9 @@ export function roleIdToText(roleId) {
       return 'Undefined';
   }
 }
+
+export const ROLE_USER = 1;
+
+export const ROLE_ORGANIZER = 2;
+
+export const ROLE_ADMIN = 3;

@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
-import { FormattedMessage } from 'react-intl';
+import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlMessages } from './localization';
 const { Sider } = Layout;
 
-const Sidebar = ({ activeItems }) => (
+const Sidebar = ({ activeItems, allItems }) => (
   <Sider width={250}>
     <Link to="/admin">
       <div
@@ -24,35 +25,20 @@ const Sidebar = ({ activeItems }) => (
       style={{ height: '100%', borderRight: 0 }}
       selectedKeys={activeItems}
     >
-      <Menu.Item key="dashboard">
-        <Link to="/admin">
-          <FormattedMessage id="app.admin.sidebar.dashboard" />
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="tournaments_list">
-        <Link to="/admin/tournaments">
-          <FormattedMessage id="app.admin.sidebar.tournaments" />
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="games_list">
-        <Link to="/admin/games">
-          <FormattedMessage id="app.admin.sidebar.games" />
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="users_list">
-        <Link to="/admin/users">
-          <FormattedMessage id="app.admin.sidebar.users" />
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="system">
-        <Link to="/admin/system">
-          <FormattedMessage id="app.admin.sidebar.system" />
-        </Link>
-      </Menu.Item>
+      {allItems.map(item => (
+        <Menu.Item key={item.key}>
+          <Link to={item.link}>
+            <div>{intl.formatMessage(intlMessages[item.labelName])}</div>
+          </Link>
+        </Menu.Item>
+      ))}
+
       <Menu.Divider />
       <Menu.Item key="public">
         <Link to="/">
-          <FormattedMessage id="app.admin.sidebar.backToPublic" />
+          <div>
+            {intl.formatMessage({ id: 'app.admin.sidebar.backToPublic' })}
+          </div>
         </Link>
       </Menu.Item>
     </Menu>
@@ -60,7 +46,8 @@ const Sidebar = ({ activeItems }) => (
 );
 
 Sidebar.propTypes = {
-  activeItems: PropTypes.array,
+  activeItems: PropTypes.arrayOf(PropTypes.string),
+  allItems: PropTypes.array,
 };
 
 export default Sidebar;

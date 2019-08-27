@@ -19,6 +19,8 @@ import NotFoundPage from '@/modules/admin/pages/NotFoundPage';
 import TournamentRoutes from '@/modules/admin/pages/Tournaments/TournamentRoutes/TournamentRoutes';
 import UserRoutes from '@/modules/admin/pages/Users/UserRoutes';
 import GameRoutes from '@/modules/admin/pages/Games/GameRoutes';
+import AuthorizedRoute from '../shared/containers/AuthorizedRoute/AuthorizedRoute';
+import { ROLE_ORGANIZER, ROLE_ADMIN } from '../shared/helpers/roles';
 
 // TODO: check if withMenuSync can be called directly in the component prop or if it should be declared beforehand
 
@@ -27,23 +29,37 @@ export class AdminApp extends React.PureComponent {
   render() {
     return (
       <Switch>
-        <Route
+        <AuthorizedRoute
           exact
           path="/admin/"
+          requiredRole={ROLE_ORGANIZER}
           component={withMenuSync(DashboardPage, {
             adminSidebar: ['dashboard'],
           })}
         />
 
-        <Route path="/admin/tournaments/" component={TournamentRoutes} />
+        <AuthorizedRoute
+          path="/admin/tournaments/"
+          requiredRole={ROLE_ORGANIZER}
+          component={TournamentRoutes}
+        />
 
-        <Route path="/admin/games/" component={GameRoutes} />
+        <AuthorizedRoute
+          path="/admin/games/"
+          requiredRole={ROLE_ORGANIZER}
+          component={GameRoutes}
+        />
 
-        <Route path="/admin/users/" component={UserRoutes} />
+        <AuthorizedRoute
+          path="/admin/users/"
+          requiredRole={ROLE_ADMIN}
+          component={UserRoutes}
+        />
 
-        <Route
+        <AuthorizedRoute
           exact
           path="/admin/system/"
+          requiredRole={ROLE_ADMIN}
           component={withMenuSync(SystemPage, {
             adminSidebar: ['system'],
           })}
