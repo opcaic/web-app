@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon, Input } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+import StyledButton from '@/modules/shared/components/StyledButton';
 
 export function getSearchProps(field) {
   return {
@@ -69,6 +70,29 @@ export function getActionProps(linkGenerator) {
         </Link>
       </Button>
     ),
+  };
+}
+
+export function getDetailActionProps(linkGenerator, color) {
+  return {
+    title: <FormattedMessage id="app.generic.action" />,
+    key: 'action',
+    width: 150,
+    align: 'center',
+    render: (text, record) => (
+      <StyledButton color={color} type="primary">
+        <Link to={linkGenerator(record)}>
+          <FormattedMessage id="app.generic.detail" />
+        </Link>
+      </StyledButton>
+    ),
+  };
+}
+
+export function getEmptyColumnProps() {
+  return {
+    key: 'empty',
+    render: () => null,
   };
 }
 

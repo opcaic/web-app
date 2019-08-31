@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TopMenu from '@/modules/public/containers/TopMenu';
 
 const PageLayout = props => (
-  <Layout className="layout" style={{ height: '100vh' }}>
+  <Layout className="layout" style={{ minHeight: '100vh', paddingBottom: 50 }}>
     <TopMenu />
     {props.children}
   </Layout>

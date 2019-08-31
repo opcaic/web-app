@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
-import TopMenuComponent from '@/modules/public/components/TopMenu';
+import TopMenuComponent from '@/modules/public/components/layout/TopMenu';
 import { changeLocale } from '@/modules/shared/ducks/localization';
 import { isLoggedIn } from '@/modules/shared/selectors/auth';
 import { logout } from '@/modules/shared/ducks/auth';
