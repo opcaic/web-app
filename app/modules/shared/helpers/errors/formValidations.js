@@ -1,24 +1,34 @@
 import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { errorIntlMessages } from '@/modules/shared/helpers/errors/errors';
 
-export function isRequired(field) {
+function getErrorMessage(key, errorMessageProvider, values) {
+  if (errorMessageProvider && errorMessageProvider(key, values)) {
+    return intl.formatMessage(errorMessageProvider(key, values), values);
+  }
+
+  return intl.formatMessage(errorIntlMessages[key], values);
+}
+
+export function isRequired(field, errorMessageProvider) {
   return {
     required: true,
-    message: intl.formatMessage(errorIntlMessages.fieldRequired, { field }),
+    message: getErrorMessage('fieldRequired', errorMessageProvider, {
+      field,
+    }),
   };
 }
 
-export function isValidEmail() {
+export function isValidEmail(overriddenErrorMessages) {
   return {
     type: 'email',
-    message: intl.formatMessage(errorIntlMessages.fieldInvalidEmail),
+    message: getErrorMessage('fieldInvalidEmail', overriddenErrorMessages),
   };
 }
 
-export function isMinLength(length, field = 'input') {
+export function isMinLength(length, field = 'input', overriddenErrorMessages) {
   return {
     min: length,
-    message: intl.formatMessage(errorIntlMessages.fieldMinLength, {
+    message: getErrorMessage('fieldMinLength', overriddenErrorMessages, {
       length,
       field,
     }),

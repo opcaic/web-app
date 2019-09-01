@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import { delay } from 'redux-saga';
+import Cookies from 'js-cookie';
 import {
   all,
   call,
@@ -58,12 +59,19 @@ export function loadAuthFailure() {
   };
 }
 
-export function login(email, password, successCallback, failureCallback) {
+export function login(
+  email,
+  password,
+  rememberMe,
+  successCallback,
+  failureCallback,
+) {
   return {
     type: actionTypes.LOGIN,
     payload: {
       email,
       password,
+      rememberMe,
       successCallback,
       failureCallback,
     },
@@ -95,6 +103,10 @@ export function updateTokens(accessToken, refreshToken) {
 /*
  * Sagas
  */
+
+/*
+ * Implementation of the main login flow.
+ */
 function* loginFlow() {
   while (true) {
     let action = yield take([actionTypes.LOGIN, actionTypes.LOAD_AUTH_SUCCESS]);
@@ -103,12 +115,19 @@ function* loginFlow() {
 
     if (action.type === actionTypes.LOGIN) {
       const {
-        payload: { email, password, successCallback, failureCallback },
+        payload: {
+          email,
+          password,
+          rememberMe,
+          successCallback,
+          failureCallback,
+        },
       } = action;
       task = yield fork(
         authenticate,
         email,
         password,
+        rememberMe,
         successCallback,
         failureCallback,
       );
@@ -122,7 +141,7 @@ function* loginFlow() {
       actionTypes.LOAD_AUTH_FAILURE,
     ]);
 
-    localStorage.setItem('auth', null);
+    clearStorages();
 
     if (refreshTask) yield cancel(refreshTask);
     if (action.type === actionTypes.LOGOUT_REQUEST) {
@@ -133,7 +152,16 @@ function* loginFlow() {
   }
 }
 
-function* authenticate(email, password, successCallback, failureCallback) {
+/*
+ * Tries to authenticate with given credentials
+ */
+function* authenticate(
+  email,
+  password,
+  rememberMe,
+  successCallback,
+  failureCallback,
+) {
   yield put({
     type: actionTypes.LOGIN_REQUEST,
   });
@@ -152,7 +180,7 @@ function* authenticate(email, password, successCallback, failureCallback) {
       // Dispatch success action
       yield put({
         type: actionTypes.LOGIN_SUCCESS,
-        payload: data,
+        payload: Object.assign({ useLocalStorage: rememberMe }, data),
       });
 
       if (successCallback) {
@@ -160,8 +188,7 @@ function* authenticate(email, password, successCallback, failureCallback) {
       }
 
       // Save data to local storage
-      // TODO: if the user does not want the password to be remembered, maybe use cookies?
-      localStorage.setItem('auth', JSON.stringify(data));
+      setAuthData(data, rememberMe);
 
       // Redirect to previous location if possible
       const routerState = yield select(routerStateSelector);
@@ -184,20 +211,24 @@ function* authenticate(email, password, successCallback, failureCallback) {
   }
 }
 
+/*
+ * Periodically tries to refresh access and refresh tokens
+ */
 function* handleRefreshToken() {
-  try {
-    const currentUser = yield select(currentUserSelector);
+  const currentUser = yield select(currentUserSelector);
 
-    while (yield call(delay, 45 * 1000)) {
-      const refreshToken = yield select(refreshTokenSelector);
-      yield call(refreshTokenSaga, currentUser.id, refreshToken);
-    }
-  } catch (error) {
-    console.log(error);
+  while (yield call(delay, 45 * 1000)) {
+    const refreshToken = yield select(refreshTokenSelector);
+    yield call(
+      refreshTokenSaga,
+      currentUser.id,
+      refreshToken,
+      currentUser.useLocalStorage,
+    );
   }
 }
 
-function* refreshTokenSaga(userId, refreshToken) {
+function* refreshTokenSaga(userId, refreshToken, useLocalStorage) {
   const { data, status } = yield call(callApi, {
     endpoint: `api/users/${userId}/refresh`,
     method: 'POST',
@@ -212,27 +243,30 @@ function* refreshTokenSaga(userId, refreshToken) {
 
   yield put(updateTokens(data.accessToken, data.refreshToken));
 
-  let oldUser = localStorage.getItem('auth');
-  oldUser = JSON.parse(oldUser);
-
+  const oldUser = getAuthData(useLocalStorage);
   const user = Object.assign({}, oldUser, data);
 
-  localStorage.setItem('auth', JSON.stringify(user));
+  setAuthData(user, useLocalStorage);
 
   return { accessToken: data.accessToken, refreshToken: data.refreshToken };
 }
 
 function* handleLoadAuth() {
   try {
-    const authString = localStorage.getItem('auth');
-    const auth = JSON.parse(authString);
+    // Try to load auth information from local storage
+    let authString = localStorage.getItem('auth');
+    let useLocalStorage = true;
 
-    if (auth === null) {
-      yield put(
-        loadAuthFailure(
-          new Error('Auth could not be loaded from local storage'),
-        ),
-      );
+    // If nothing found in local storage, try cookies
+    if (authString === 'null') {
+      authString = Cookies.get('auth');
+      useLocalStorage = false;
+    }
+
+    const auth = authString && JSON.parse(authString);
+
+    if (!auth) {
+      yield put(loadAuthFailure(new Error('Auth could not be loaded')));
       return;
     }
 
@@ -248,16 +282,55 @@ function* handleLoadAuth() {
       refreshTokenSaga,
       auth.id,
       auth.refreshToken,
+      useLocalStorage,
     );
 
     if (refreshedTokens !== null) {
-      yield put(loadAuthSuccess(Object.assign({}, auth, refreshedTokens)));
+      yield put(
+        loadAuthSuccess(
+          Object.assign({ useLocalStorage }, auth, refreshedTokens),
+        ),
+      );
     } else {
       yield put(loadAuthFailure());
     }
   } catch (e) {
     console.log(e);
   }
+}
+
+/*
+ * Helper functions
+ */
+function getAuthData(useLocalStorage) {
+  let dataString = null;
+
+  if (useLocalStorage) {
+    dataString = localStorage.getItem('auth');
+  } else {
+    dataString = Cookies.get('auth');
+  }
+
+  if (dataString) {
+    return JSON.parse(dataString);
+  }
+
+  return null;
+}
+
+function setAuthData(data, useLocalStorage) {
+  if (useLocalStorage) {
+    localStorage.setItem('auth', JSON.stringify(data));
+    console.log('Set local storage');
+  } else {
+    Cookies.set('auth', JSON.stringify(data));
+    console.log('Set cookies');
+  }
+}
+
+function clearStorages() {
+  localStorage.setItem('auth', null);
+  Cookies.set('auth', null);
 }
 
 export function* saga() {
@@ -276,6 +349,7 @@ const initialState = fromJS({
   refreshToken: null,
   role: null,
   initialLoadCompleted: false,
+  useLocalStorage: false,
 });
 
 function authReducer(state = initialState, action) {
@@ -287,7 +361,8 @@ function authReducer(state = initialState, action) {
         .set('accessToken', action.payload.accessToken)
         .set('refreshToken', action.payload.refreshToken)
         .set('role', action.payload.role)
-        .set('initialLoadCompleted', true);
+        .set('initialLoadCompleted', true)
+        .set('useLocalStorage', action.payload.useLocalStorage);
     case actionTypes.LOAD_AUTH_FAILURE:
       return state.set('initialLoadCompleted', true);
     case actionTypes.LOGOUT_SUCCESS:
