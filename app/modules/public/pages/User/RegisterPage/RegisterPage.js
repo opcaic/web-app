@@ -4,18 +4,19 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import LoginForm from '../../components/Login/LoginForm';
-import { login } from '../../../shared/ducks/auth';
+import RegisterForm from '../../../components/Login/RegisterForm';
+import { register } from '../../../ducks/registration';
+import { makeSelectRegistrationErrors } from './selectors';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
-export class LoginPage extends React.PureComponent {
+export class RegisterPage extends React.PureComponent {
   render() {
     return (
       <NoMenuPageLayout size="small">
-        <LoginForm
+        <RegisterForm
           onSubmit={(values, successCallback, failureCallback) =>
-            this.props.login(values, successCallback, failureCallback)
+            this.props.register(values, successCallback, failureCallback)
           }
         />
       </NoMenuPageLayout>
@@ -23,20 +24,28 @@ export class LoginPage extends React.PureComponent {
   }
 }
 
-LoginPage.propTypes = {
-  login: PropTypes.func,
+RegisterPage.propTypes = {
+  register: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    login: (values, successCallback, failureCallback) =>
+    register: (values, successCallback, failureCallback) =>
       dispatch(
-        login(values.email, values.password, successCallback, failureCallback),
+        register(
+          values.username,
+          values.email,
+          values.password,
+          successCallback,
+          failureCallback,
+        ),
       ),
   };
 }
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  errors: makeSelectRegistrationErrors(),
+});
 
 const withConnect = connect(
   mapStateToProps,
@@ -46,4 +55,4 @@ const withConnect = connect(
 export default compose(
   withRouter,
   withConnect,
-)(LoginPage);
+)(RegisterPage);

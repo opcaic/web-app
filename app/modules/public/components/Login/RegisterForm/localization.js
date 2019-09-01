@@ -1,11 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export const intlMessages = defineMessages({
-  title: { id: 'app.registrationForm.title' },
-  username: { id: 'app.registrationForm.username' },
-  email: { id: 'app.registrationForm.email' },
-  password: { id: 'app.registrationForm.password' },
-  confirmPassword: { id: 'app.registrationForm.confirmPassword' },
-  alreadyHaveAccount: { id: 'app.registrationForm.alreadyHaveAccount' },
-  login: { id: 'app.registrationForm.login' },
+  title: { id: 'app.public.registrationForm.title' },
+  register: { id: 'app.public.registrationForm.register' },
+  alreadyHaveAccount: { id: 'app.public.registrationForm.alreadyHaveAccount' },
+  login: { id: 'app.public.registrationForm.login' },
 });

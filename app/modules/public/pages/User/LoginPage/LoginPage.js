@@ -4,19 +4,18 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import RegisterForm from '../../components/Login/RegisterForm';
-import { register } from '../../../shared/ducks/registration';
-import { makeSelectRegistrationErrors } from './selectors';
+import LoginForm from '../../../components/Login/LoginForm';
+import { login } from '../../../../shared/ducks/auth';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
 
 /* eslint-disable react/prefer-stateless-function */
-export class RegisterPage extends React.PureComponent {
+export class LoginPage extends React.PureComponent {
   render() {
     return (
       <NoMenuPageLayout size="small">
-        <RegisterForm
+        <LoginForm
           onSubmit={(values, successCallback, failureCallback) =>
-            this.props.register(values, successCallback, failureCallback)
+            this.props.login(values, successCallback, failureCallback)
           }
         />
       </NoMenuPageLayout>
@@ -24,18 +23,18 @@ export class RegisterPage extends React.PureComponent {
   }
 }
 
-RegisterPage.propTypes = {
-  register: PropTypes.func,
+LoginPage.propTypes = {
+  login: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    register: (values, successCallback, failureCallback) =>
+    login: (values, successCallback, failureCallback) =>
       dispatch(
-        register(
-          values.username,
+        login(
           values.email,
           values.password,
+          values.rememberMe,
           successCallback,
           failureCallback,
         ),
@@ -43,9 +42,7 @@ export function mapDispatchToProps(dispatch) {
   };
 }
 
-const mapStateToProps = createStructuredSelector({
-  errors: makeSelectRegistrationErrors(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 const withConnect = connect(
   mapStateToProps,
@@ -55,4 +52,4 @@ const withConnect = connect(
 export default compose(
   withRouter,
   withConnect,
-)(RegisterPage);
+)(LoginPage);
