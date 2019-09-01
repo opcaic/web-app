@@ -26,7 +26,6 @@ export class GameListPage extends React.PureComponent {
             dataSource={this.props.items}
             loading={this.props.isFetching}
             fetch={this.props.fetchItems}
-            totalItems={this.props.totalItems}
           />
         </div>
       </PageLayout>
@@ -38,7 +37,6 @@ GameListPage.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape(gamePropType)),
   isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,
-  totalItems: PropTypes.number.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {

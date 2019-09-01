@@ -28,7 +28,7 @@ const Content = styled.div`
       rgba(20, 20, 20, ${props => props.overlay}),
       rgba(20, 20, 20, ${props => props.overlay})
     ),
-    url(${props => props.image});
+    url(${props => props.imageUrl});
 `;
 
 const Name = styled.div`
@@ -74,7 +74,7 @@ const SubmitButton = styled(({ themeColor, ...rest }) => <Button {...rest} />)`
 const TournamentHeader = props => (
   <Container>
     <Content
-      image={props.tournament.image}
+      imageUrl={props.tournament.imageUrl}
       overlay={props.tournament.imageOverlay}
     >
       <Name>{props.tournament.name}</Name>

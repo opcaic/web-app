@@ -7,7 +7,7 @@ const GameCard = props => (
   <ListCard
     title={props.game.name}
     titleUrl={`/games/${props.game.id}`}
-    image={props.game.image}
+    imageUrl={props.game.imageUrl}
     headerUrl={`/games/${props.game.id}`}
   >
     <div>Active tournaments: {props.game.activeTournamentsCount}</div>

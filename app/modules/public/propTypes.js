@@ -15,7 +15,7 @@ export const tournamentPropType = {
   playersCount: PropTypes.number.isRequired,
   submissionsCount: PropTypes.number.isRequired,
   deadline: PropTypes.string,
-  image: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string.isRequired,
   imageOverlay: PropTypes.number.isRequired,
   themeColor: PropTypes.string.isRequired,
 };
@@ -31,7 +31,7 @@ export const tournamentListItemPropType = {
   submissionsCount: PropTypes.number.isRequired,
   deadline: PropTypes.string,
   availability: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string.isRequired,
   imageOverlay: PropTypes.number.isRequired,
   themeColor: PropTypes.string.isRequired,
 };
@@ -40,7 +40,7 @@ export const gamePropType = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   activeTournamentsCount: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string.isRequired,
   defaultTournamentImageOverlay: PropTypes.number,
   defaultTournamentImage: PropTypes.string,
   defaultTournamentThemeColor: PropTypes.string,

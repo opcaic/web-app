@@ -47,7 +47,7 @@ const TournamentCard = props => {
     <ListCard
       title={props.tournament.name}
       titleUrl={`/tournaments/${props.tournament.id}`}
-      image={props.tournament.image}
+      imageUrl={props.tournament.imageUrl}
       headerUrl={`/tournaments/${props.tournament.id}`}
       headerTags={headerTags}
       footerTags={props.tournament.footerTags.map(x => (

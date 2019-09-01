@@ -53,7 +53,7 @@ const titleMaxLength = 28;
 const ListCard = props => (
   <Card style={props.style}>
     <Link to={props.headerUrl}>
-      <Header style={{ backgroundImage: `url(${props.image})` }}>
+      <Header style={{ backgroundImage: `url(${props.imageUrl})` }}>
         {props.headerTags && <HeaderTags>{props.headerTags}</HeaderTags>}
       </Header>
     </Link>
@@ -73,7 +73,7 @@ const ListCard = props => (
 
 ListCard.propTypes = {
   title: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string.isRequired,
   style: PropTypes.object,
   headerUrl: PropTypes.string.isRequired,
   headerTags: PropTypes.array,
