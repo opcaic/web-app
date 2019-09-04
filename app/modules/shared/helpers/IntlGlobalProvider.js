@@ -39,6 +39,10 @@ class IntlTranslator {
   formatMessage(message, values) {
     return INTL.formatMessage(message, values);
   }
+
+  formatDate(value, options) {
+    return INTL.formatDate(value, options);
+  }
 }
 
 export const intl = new IntlTranslator();
