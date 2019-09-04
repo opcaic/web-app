@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button, Checkbox, Alert } from 'antd';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -6,6 +6,12 @@ import LoginFormWrapper from '@/modules/public/components/Login/LoginFormWrapper
 import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { intlMessages } from '@/modules/public/components/Login/LoginForm/localization';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
+import { isRequired } from '@/modules/shared/helpers/errors/formValidations';
+import {
+  accountErrorMessageProvider,
+  accountIntlMessages,
+} from '@/modules/public/helpers/accountHelpers';
+import FormErrors from '@/modules/shared/components/FormErrors';
 
 class LoginForm extends React.PureComponent {
   handleSubmit = e => {
@@ -22,68 +28,51 @@ class LoginForm extends React.PureComponent {
     return (
       <LoginFormWrapper title={intl.formatMessage(intlMessages.title)}>
         <Form onSubmit={this.handleSubmit}>
-          {this.props.errors && (
-            <div style={{ marginBottom: 10 }}>
-              {this.props.errors.map((x, key) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Alert message={x} key={key} type="error" />
-              ))}
-            </div>
-          )}
+          <FormErrors errors={this.props.errors} />
 
           <Form.Item style={{ marginBottom: 10 }}>
             {getFieldDecorator('email', {
-              rules: [
-                {
-                  required: true,
-                  message: intl.formatMessage(intlMessages.emailRequired),
-                },
-              ],
+              validateTrigger: 'onBlur',
+              rules: [isRequired('email', accountErrorMessageProvider)],
             })(
               <Input
                 prefix={
                   <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
-                placeholder={intl.formatMessage(intlMessages.email)}
+                placeholder={intl.formatMessage(accountIntlMessages.email)}
                 size="large"
               />,
             )}
           </Form.Item>
           <Form.Item>
             {getFieldDecorator('password', {
-              rules: [
-                {
-                  required: true,
-                  message: intl.formatMessage(intlMessages.passwordRequired),
-                },
-              ],
+              validateTrigger: 'onBlur',
+              rules: [isRequired('password', accountErrorMessageProvider)],
             })(
               <Input
                 prefix={
                   <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
                 type="password"
-                placeholder={intl.formatMessage(intlMessages.password)}
+                placeholder={intl.formatMessage(accountIntlMessages.password)}
                 size="large"
               />,
             )}
           </Form.Item>
           <Form.Item style={{ marginBottom: 0 }}>
-            {getFieldDecorator('remember', {
+            {getFieldDecorator('rememberMe', {
               valuePropName: 'checked',
               initialValue: true,
-            })(<Checkbox>Remember me</Checkbox>)}
-            <Link to="/reset-password" style={{ float: 'right' }}>
-              Forgot password
+            })(
+              <Checkbox>
+                {intl.formatMessage(intlMessages.rememberMe)}
+              </Checkbox>,
+            )}
+            <Link to="/forgot-password" style={{ float: 'right' }}>
+              {intl.formatMessage(intlMessages.forgotPassword)}
             </Link>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{
-                width: '100%',
-              }}
-            >
-              Log in
+            <Button type="primary" htmlType="submit" block>
+              {intl.formatMessage(intlMessages.login)}
             </Button>
             {intl.formatMessage(intlMessages.noAccountYet)}{' '}
             <Link to="/register">

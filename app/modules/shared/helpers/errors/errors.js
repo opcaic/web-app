@@ -26,9 +26,11 @@ export const errorIntlMessages = defineMessages({
   loginLockout: { id: 'app.errors.loginLockout' },
   loginInvalid: { id: 'app.errors.loginInvalid' },
   invalidToken: { id: 'app.errors.invalidToken' },
+  //
+  resetPasswordFailure: { id: 'app.errors.resetPasswordFailure' },
 });
 
-export function prepareFormErrors(data) {
+export function prepareFormErrors(data, errorMessageProvider) {
   const errors = { withField: {}, withoutField: [] };
   let apiErrors;
 
@@ -56,7 +58,9 @@ export function prepareFormErrors(data) {
 
     const camelCasedCode = toCamelCase(x.code);
 
-    if (errorIntlMessages[camelCasedCode]) {
+    if (errorMessageProvider && errorMessageProvider(camelCasedCode, x)) {
+      error = errorMessageProvider(camelCasedCode, x);
+    } else if (errorIntlMessages[camelCasedCode]) {
       error = intl.formatMessage(errorIntlMessages[camelCasedCode], x);
     } else {
       error = x.message;

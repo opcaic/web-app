@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import RegisterForm from '../../../components/Login/RegisterForm';
-import { register } from '../../../../shared/ducks/registration';
+import { register } from '../../../ducks/registration';
 import { makeSelectRegistrationErrors } from './selectors';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
 

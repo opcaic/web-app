@@ -13,9 +13,7 @@ import injectSaga from '../../../utils/injectSaga';
 import injectReducer from '../../../utils/injectReducer';
 
 import { apiSaga } from '@/modules/shared/helpers/apiMiddleware';
-import registrationReducer, {
-  saga as registrationSaga,
-} from '../ducks/registration';
+import registrationReducer from '../../public/ducks/registration';
 import authReducer, { saga as authSaga, loadAuth } from '../ducks/auth';
 import uiReducer from '../ducks/ui';
 import localizationReducer from '../ducks/localization';
@@ -61,7 +59,6 @@ App.propTypes = {
 
 const withSagas = [
   injectSaga({ key: 'api', saga: apiSaga }),
-  injectSaga({ key: 'registration', saga: registrationSaga }),
   injectSaga({ key: 'auth', saga: authSaga }),
 ];
 

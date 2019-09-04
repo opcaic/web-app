@@ -14,11 +14,14 @@ const Title = styled.div`
   font-size: 24px;
 `;
 
-const LoginFormWrapper = ({ children, title }) => (
+const LoginFormWrapper = ({ children, title, withAvatar }) => (
   <div>
-    <AvatarContainer>
-      <Avatar size={80} icon="user" style={{ backgroundColor: '#87d068' }} />
-    </AvatarContainer>
+    {withAvatar && (
+      <AvatarContainer>
+        <Avatar size={80} icon="user" style={{ backgroundColor: '#87d068' }} />
+      </AvatarContainer>
+    )}
+
     <Title>{title}</Title>
     {children}
   </div>
@@ -27,6 +30,11 @@ const LoginFormWrapper = ({ children, title }) => (
 LoginFormWrapper.propTypes = {
   children: PropTypes.node,
   title: PropTypes.string.isRequired,
+  withAvatar: PropTypes.bool,
+};
+
+LoginFormWrapper.defaultProps = {
+  withAvatar: true,
 };
 
 export default LoginFormWrapper;

@@ -4,18 +4,27 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import LoginForm from '../../../components/Login/LoginForm';
-import { login } from '../../../../shared/ducks/auth';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
+import { resetPassword } from '@/modules/public/ducks/accounts';
+import ResetPasswordForm from '@/modules/public/components/Login/ResetPasswordForm';
+import * as qs from 'query-string';
 
 /* eslint-disable react/prefer-stateless-function */
-export class LoginPage extends React.PureComponent {
+export class ResetPasswordPage extends React.PureComponent {
   render() {
+    const queryParams = qs.parse(this.props.location.search);
+
     return (
       <NoMenuPageLayout size="small">
-        <LoginForm
+        <ResetPasswordForm
           onSubmit={(values, successCallback, failureCallback) =>
-            this.props.login(values, successCallback, failureCallback)
+            this.props.resetPassword(
+              values,
+              queryParams.email,
+              queryParams.token,
+              successCallback,
+              failureCallback,
+            )
           }
         />
       </NoMenuPageLayout>
@@ -23,18 +32,25 @@ export class LoginPage extends React.PureComponent {
   }
 }
 
-LoginPage.propTypes = {
-  login: PropTypes.func,
+ResetPasswordPage.propTypes = {
+  resetPassword: PropTypes.func,
+  location: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    login: (values, successCallback, failureCallback) =>
+    resetPassword: (
+      values,
+      email,
+      resetToken,
+      successCallback,
+      failureCallback,
+    ) =>
       dispatch(
-        login(
-          values.email,
+        resetPassword(
+          email,
+          resetToken,
           values.password,
-          values.rememberMe,
           successCallback,
           failureCallback,
         ),
@@ -52,4 +68,4 @@ const withConnect = connect(
 export default compose(
   withRouter,
   withConnect,
-)(LoginPage);
+)(ResetPasswordPage);

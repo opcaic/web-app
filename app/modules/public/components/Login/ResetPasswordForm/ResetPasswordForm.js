@@ -1,34 +1,36 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Alert } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import LoginFormWrapper from '@/modules/public/components/Login/LoginFormWrapper';
+import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlMessages } from '@/modules/public/components/Login/ResetPasswordForm/localization';
+import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import {
   isMinLength,
   isRequired,
-  isValidEmail,
 } from '@/modules/shared/helpers/errors/formValidations';
-import LoginFormWrapper from '@/modules/public/components/Login/LoginFormWrapper';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { intlMessages } from '@/modules/public/components/Login/RegisterForm/localization';
-import PropTypes from 'prop-types';
-import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import {
   accountErrorMessageProvider,
   accountIntlMessages,
 } from '@/modules/public/helpers/accountHelpers';
-import FormErrors from '@/modules/shared/components/FormErrors';
 
-class RegisterForm extends React.PureComponent {
+class ResetPasswordForm extends React.PureComponent {
   state = {
-    confirmDirty: false,
+    hasResult: false,
   };
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.onSubmit(values);
+        this.props.onSubmit(values, this.successCallback);
       }
     });
+  };
+
+  successCallback = () => {
+    this.setState({ hasResult: true });
   };
 
   compareToFirstPassword = (rule, value, callback) => {
@@ -48,44 +50,41 @@ class RegisterForm extends React.PureComponent {
     callback();
   };
 
-  handleConfirmBlur = e => {
-    const { value } = e.target;
-    this.setState(prevState => ({
-      confirmDirty: prevState.confirmDirty || !!value,
-    }));
-  };
-
   render() {
     const { getFieldDecorator } = this.props.form;
 
-    return (
-      <LoginFormWrapper title={intl.formatMessage(intlMessages.title)}>
-        <Form onSubmit={this.handleSubmit}>
-          <FormErrors errors={this.props.errors} />
+    if (this.state.hasResult) {
+      return (
+        <LoginFormWrapper
+          title={intl.formatMessage(intlMessages.title)}
+          withAvatar={false}
+        >
+          <div style={{ marginBottom: 20 }}>
+            {intl.formatMessage(intlMessages.resultText)}
+          </div>
 
-          <Form.Item style={{ marginBottom: 5 }}>
-            {getFieldDecorator('username', {
-              validateTrigger: 'onBlur',
-              rules: [isRequired('username', accountErrorMessageProvider)],
-            })(
-              <Input
-                placeholder={intl.formatMessage(accountIntlMessages.username)}
-              />,
-            )}
-          </Form.Item>
-          <Form.Item style={{ marginBottom: 5 }}>
-            {getFieldDecorator('email', {
-              validateTrigger: 'onBlur',
-              rules: [
-                isValidEmail(),
-                isRequired('email', accountErrorMessageProvider),
-              ],
-            })(
-              <Input
-                placeholder={intl.formatMessage(accountIntlMessages.email)}
-              />,
-            )}
-          </Form.Item>
+          <Button type="primary" htmlType="button" block>
+            <Link to="/login">{intl.formatMessage(intlMessages.login)}</Link>
+          </Button>
+        </LoginFormWrapper>
+      );
+    }
+
+    return (
+      <LoginFormWrapper
+        title={intl.formatMessage(intlMessages.title)}
+        withAvatar={false}
+      >
+        <Form onSubmit={this.handleSubmit}>
+          {this.props.errors && (
+            <div style={{ marginBottom: 10 }}>
+              {this.props.errors.map((x, key) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Alert message={x} key={key} type="error" />
+              ))}
+            </div>
+          )}
+
           <Form.Item style={{ marginBottom: 5 }}>
             {getFieldDecorator('password', {
               validateTrigger: 'onBlur',
@@ -120,27 +119,11 @@ class RegisterForm extends React.PureComponent {
               />,
             )}
           </Form.Item>
-          {/* <Form.Item>
-            {getFieldDecorator('agreement', {
-              valuePropName: 'checked',
-            })(
-              <Checkbox>
-                I have read the <Link to="/agreement">agreement</Link>
-              </Checkbox>,
-            )}
-          </Form.Item> */}
+
           <Form.Item style={{ marginBottom: 0 }}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{
-                width: '100%',
-              }}
-            >
-              {intl.formatMessage(intlMessages.register)}
+            <Button type="primary" htmlType="submit" block>
+              {intl.formatMessage(intlMessages.resetPassword)}
             </Button>
-            {intl.formatMessage(intlMessages.alreadyHaveAccount)}{' '}
-            <Link to="/login">{intl.formatMessage(intlMessages.login)}</Link>
           </Form.Item>
         </Form>
       </LoginFormWrapper>
@@ -148,12 +131,12 @@ class RegisterForm extends React.PureComponent {
   }
 }
 
-RegisterForm.propTypes = {
+ResetPasswordForm.propTypes = {
   onSubmit: PropTypes.func,
   form: PropTypes.object,
   errors: PropTypes.array,
 };
 
 export default Form.create({
-  name: 'register',
-})(withEnhancedForm(RegisterForm));
+  name: 'reset_password',
+})(withEnhancedForm(ResetPasswordForm));

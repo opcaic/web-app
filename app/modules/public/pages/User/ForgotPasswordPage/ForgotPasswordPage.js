@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import LoginForm from '../../../components/Login/LoginForm';
-import { login } from '../../../../shared/ducks/auth';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
+import ForgotPasswordForm from '@/modules/public/components/Login/ForgotPasswordForm';
+import { forgotPassword } from '@/modules/public/ducks/accounts';
 
 /* eslint-disable react/prefer-stateless-function */
-export class LoginPage extends React.PureComponent {
+export class ForgotPasswordPage extends React.PureComponent {
   render() {
     return (
       <NoMenuPageLayout size="small">
-        <LoginForm
+        <ForgotPasswordForm
           onSubmit={(values, successCallback, failureCallback) =>
-            this.props.login(values, successCallback, failureCallback)
+            this.props.forgotPassword(values, successCallback, failureCallback)
           }
         />
       </NoMenuPageLayout>
@@ -23,22 +23,14 @@ export class LoginPage extends React.PureComponent {
   }
 }
 
-LoginPage.propTypes = {
-  login: PropTypes.func,
+ForgotPasswordPage.propTypes = {
+  forgotPassword: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    login: (values, successCallback, failureCallback) =>
-      dispatch(
-        login(
-          values.email,
-          values.password,
-          values.rememberMe,
-          successCallback,
-          failureCallback,
-        ),
-      ),
+    forgotPassword: (values, successCallback, failureCallback) =>
+      dispatch(forgotPassword(values.email, successCallback, failureCallback)),
   };
 }
 
@@ -52,4 +44,4 @@ const withConnect = connect(
 export default compose(
   withRouter,
   withConnect,
-)(LoginPage);
+)(ForgotPasswordPage);
