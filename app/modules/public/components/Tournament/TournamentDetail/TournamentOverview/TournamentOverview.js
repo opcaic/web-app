@@ -18,7 +18,6 @@ const WithTooltip = styled.span`
   border-bottom: 1px dotted black;
 `;
 
-/* eslint-disable react/prefer-stateless-function */
 const TournamentOverview = props => (
   <PageContent title="Overview">
     <Descriptions

@@ -37,6 +37,9 @@ const Title = styled.div`
   font-size: 18px;
   color: rgba(0, 0, 0, 0.85);
   font-weight: 400;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const HeaderTags = styled.div`
@@ -48,8 +51,6 @@ const FooterTags = styled.div`
   margin-top: 10px;
 `;
 
-const titleMaxLength = 28;
-
 const ListCard = props => (
   <Card style={props.style}>
     <Link to={props.headerUrl}>
@@ -59,11 +60,7 @@ const ListCard = props => (
     </Link>
     <Content>
       <Link to={props.titleUrl}>
-        <Title title={props.title}>
-          {props.title.length > titleMaxLength
-            ? `${props.title.substring(0, titleMaxLength - 3)}...`
-            : props.title}
-        </Title>
+        <Title title={props.title}>{props.title}</Title>
       </Link>
       <div>{props.children}</div>
       {props.footerTags && <FooterTags>{props.footerTags}</FooterTags>}
