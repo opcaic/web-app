@@ -5,6 +5,7 @@ import injectReducer from '../../utils/injectReducer';
 import usersReducers from './ducks/users';
 import gamesReducer, { saga as gamesSaga } from './ducks/games';
 import documentsReducer, { saga as documentsSaga } from './ducks/documents';
+import matchesReducer from './ducks/matches';
 import tournamentsReducer, {
   saga as tournamentsSaga,
 } from './ducks/tournaments';
@@ -89,6 +90,7 @@ const withReducers = [
     reducer: tournamentParticipantsReducer,
   }),
   injectReducer({ key: 'documents', reducer: documentsReducer }),
+  injectReducer({ key: 'matches', reducer: matchesReducer }),
 ];
 
 export default compose(
