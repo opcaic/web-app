@@ -8,5 +8,6 @@ export const getMatchesListItems = createSelector(getMatchesItems, items =>
     index: x.index,
     tournament: x.tournament,
     botResults: x.executions[x.executions.length - 1].botResults,
+    executed: x.executions[x.executions.length - 1].executed,
   })),
 );

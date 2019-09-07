@@ -8,3 +8,11 @@ export function dateDiffInDays(a, b) {
 
   return Math.floor((utc2 - utc1) / MS_PER_DAY);
 }
+
+export const longDateFormat = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  minute: 'numeric',
+  hour: 'numeric',
+};

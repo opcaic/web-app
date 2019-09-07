@@ -95,6 +95,42 @@ tournamentAvailabilityEnum.helpers = createEnum(
   }),
 );
 
+export const matchStateEnum = {
+  QUEUED: 0,
+  EXECUTED: 1,
+  FAILED: 2,
+};
+
+matchStateEnum.helpers = createEnum(
+  matchStateEnum,
+  defineMessages({
+    0: { id: 'app.enums.matchStateEnum.queued' },
+    1: { id: 'app.enums.matchStateEnum.executed' },
+    2: { id: 'app.enums.matchStateEnum.failed' },
+  }),
+);
+
+export const entryPointResultEnum = {
+  NOT_EXECUTED: 0,
+  SUCCESS: 1,
+  CANCELLED: 2,
+  USER_ERROR: 3,
+  MODULE_ERROR: 4,
+  PLATFORM_ERROR: 5,
+};
+
+entryPointResultEnum.helpers = createEnum(
+  entryPointResultEnum,
+  defineMessages({
+    0: { id: 'app.enums.entryPointResultEnum.notExecuted' },
+    1: { id: 'app.enums.entryPointResultEnum.success' },
+    2: { id: 'app.enums.entryPointResultEnum.cancelled' },
+    3: { id: 'app.enums.entryPointResultEnum.userError' },
+    4: { id: 'app.enums.entryPointResultEnum.moduleError' },
+    5: { id: 'app.enums.entryPointResultEnum.platformError' },
+  }),
+);
+
 export const menuItemTypeEnum = {
   DOCUMENT: 1,
   EXTERNAL: 2,

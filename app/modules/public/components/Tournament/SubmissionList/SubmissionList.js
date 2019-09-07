@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
-  getDetailActionProps,
+  getThemedDetailActionProps,
   getEmptyColumnProps,
 } from '@/modules/shared/helpers/table';
 import { Icon, Table, Tooltip } from 'antd';
@@ -103,7 +103,7 @@ const columns = () => [
     ...getEmptyColumnProps(),
   },
   {
-    ...getDetailActionProps(
+    ...getThemedDetailActionProps(
       record => `/tournaments/${record.tournament.id}/submissions/${record.id}`,
     ),
   },

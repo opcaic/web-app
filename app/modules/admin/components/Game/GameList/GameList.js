@@ -2,7 +2,10 @@ import { Table } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
-import { getActionProps, getSearchProps } from '@/modules/shared/helpers/table';
+import {
+  getEditResourceButton,
+  getSearchProps,
+} from '@/modules/shared/helpers/table';
 
 const columns = [
   {
@@ -13,7 +16,7 @@ const columns = [
     ...getSearchProps('name'),
   },
   {
-    ...getActionProps(record => `/admin/games/${record.id}`),
+    ...getEditResourceButton(record => `/admin/games/${record.id}`),
   },
 ];
 
