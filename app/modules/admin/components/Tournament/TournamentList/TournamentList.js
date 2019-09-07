@@ -2,7 +2,10 @@ import { Table } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
-import { getActionProps, getSearchProps } from '@/modules/shared/helpers/table';
+import {
+  getEditResourceButton,
+  getSearchProps,
+} from '@/modules/shared/helpers/table';
 import {
   tournamentFormatEnum,
   tournamentRankingStrategyEnum,
@@ -52,7 +55,7 @@ const columns = props => [
     filterMultiple: false,
   },
   {
-    ...getActionProps(record => `/admin/tournaments/${record.id}`),
+    ...getEditResourceButton(record => `/admin/tournaments/${record.id}`),
   },
 ];
 

@@ -75,7 +75,8 @@ function prepareColumns({ tournament, isAdmin }) {
       }
 
       return record.lastExecution.botResults.map((x, index) => [
-        <span>{index ? ' vs ' : ''}</span>,
+        // eslint-disable-next-line react/no-array-index-key
+        <span key={`sep_${index}`}>{index ? ' vs ' : ''}</span>,
         <span
           key={x.submission.author.id}
           style={{

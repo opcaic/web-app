@@ -3,7 +3,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
-import { getActionProps, getSearchProps } from '@/modules/shared/helpers/table';
+import {
+  getDetailActionProps,
+  getSearchProps,
+} from '@/modules/shared/helpers/table';
 
 const columns = editLinkGenerator => [
   {
@@ -19,7 +22,7 @@ const columns = editLinkGenerator => [
     ),
   },
   {
-    ...getActionProps(record => editLinkGenerator(record.id)),
+    ...getDetailActionProps(record => editLinkGenerator(record.id)),
   },
 ];
 

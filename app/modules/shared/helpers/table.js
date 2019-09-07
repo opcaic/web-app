@@ -57,19 +57,13 @@ export function getSearchProps(field) {
   };
 }
 
-export function getActionProps(linkGenerator) {
+function getActionProps(buttonGenerator) {
   return {
     title: <FormattedMessage id="app.generic.action" />,
     key: 'action',
     width: 150,
     align: 'center',
-    render: (text, record) => (
-      <Button type="primary">
-        <Link to={linkGenerator(record)}>
-          <FormattedMessage id="app.generic.edit" />
-        </Link>
-      </Button>
-    ),
+    render: (text, record) => buttonGenerator(text, record),
   };
 }
 
@@ -103,6 +97,24 @@ export function getThemedDetailActionProps(linkGenerator, color) {
       </StyledButton>
     ),
   };
+}
+
+export function getEditResourceButton(linkGenerator) {
+  return getActionProps((text, record) => (
+    <Button type="primary">
+      <Link to={linkGenerator(record)}>
+        <FormattedMessage id="app.generic.edit" />
+      </Link>
+    </Button>
+  ));
+}
+
+export function getDeleteResourceButton(deleteResourceFnc) {
+  return getActionProps((text, record) => (
+    <Button type="danger" onClick={() => deleteResourceFnc(record.email)}>
+      <FormattedMessage id="app.generic.delete" />
+    </Button>
+  ));
 }
 
 export function getEmptyColumnProps() {

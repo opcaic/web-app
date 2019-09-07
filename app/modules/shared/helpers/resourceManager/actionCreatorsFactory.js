@@ -41,8 +41,21 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
       {
         type: actionTypes.CREATE,
         endpoint: apiEndpointFactory(undefined, options.endpointParams),
+        endpointParams: options.endpointParams,
         method: 'POST',
         data,
+        ...options.request,
+      },
+      options.meta,
+    );
+
+  const deleteResource = (id, options = {}) =>
+    createApiAction(
+      {
+        type: actionTypes.DELETE,
+        endpoint: apiEndpointFactory(id, options.endpointParams),
+        endpointParams: options.endpointParams,
+        method: 'DELETE',
         ...options.request,
       },
       options.meta,
@@ -53,6 +66,7 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
     fetchResource,
     updateResource,
     createResource,
+    deleteResource,
   };
 };
 
