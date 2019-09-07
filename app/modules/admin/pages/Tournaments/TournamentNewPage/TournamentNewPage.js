@@ -30,7 +30,7 @@ class TournamentNewPage extends React.PureComponent {
     return (
       <PageLayout>
         <Row>
-          <Col span={12}>
+          <Col span={24}>
             <TournamentForm
               resource={{}}
               games={this.props.games}

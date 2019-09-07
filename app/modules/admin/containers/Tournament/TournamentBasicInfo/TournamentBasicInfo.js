@@ -9,26 +9,38 @@ import {
   actions as gameActions,
   selectors as gameSelectors,
 } from '@/modules/admin/ducks/games';
+import {
+  actions as documentActions,
+  selectors as documentSelectors,
+} from '@/modules/admin/ducks/documents';
 import { actions as tournamentsActions } from '@/modules/admin/ducks/tournaments';
 import Spin from '@/modules/shared/components/Spin';
+import { withRouter } from 'react-router-dom';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentBasicInfo extends React.PureComponent {
   componentDidMount() {
     this.props.fetchGames();
+
+    if (this.props.tournament) {
+      this.props.fetchDocuments(this.props.tournament.id);
+    }
   }
 
   render() {
     return (
-      <Spin spinning={this.props.isFetchingGames}>
+      <Spin
+        spinning={this.props.isFetchingGames || this.props.isFetchingDocuments}
+      >
         <Row>
-          <Col span={12}>
+          <Col span={24}>
             <TournamentForm
-              resource={this.props.resource || {}}
+              resource={this.props.tournament || {}}
               games={this.props.games}
+              documents={this.props.documents}
               onSubmit={(values, successCallback, failureCallback) =>
                 this.props.updateResource(
-                  Object.assign({}, this.props.resource, values),
+                  Object.assign({}, this.props.tournament, values),
                   successCallback,
                   failureCallback,
                 )
@@ -42,11 +54,14 @@ class TournamentBasicInfo extends React.PureComponent {
 }
 
 TournamentBasicInfo.propTypes = {
+  tournament: PropTypes.object,
   updateResource: PropTypes.func.isRequired,
-  resource: PropTypes.object.isRequired,
   games: PropTypes.arrayOf(PropTypes.object),
   isFetchingGames: PropTypes.bool.isRequired,
   fetchGames: PropTypes.func.isRequired,
+  documents: PropTypes.arrayOf(PropTypes.object),
+  isFetchingDocuments: PropTypes.bool.isRequired,
+  fetchDocuments: PropTypes.func.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -68,12 +83,23 @@ export function mapDispatchToProps(dispatch) {
           asc: true,
         }),
       ),
+    fetchDocuments: tournamentId =>
+      dispatch(
+        documentActions.fetchMany({
+          count: 100,
+          sortBy: 'name',
+          asc: true,
+          tournamentId,
+        }),
+      ),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   isFetchingGames: gameSelectors.isFetching,
   games: gameSelectors.getItems,
+  isFetchingDocuments: documentSelectors.isFetching,
+  documents: documentSelectors.getItems,
 });
 
 const withConnect = connect(
@@ -81,4 +107,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(TournamentBasicInfo);
+export default compose(
+  withRouter,
+  withConnect,
+)(TournamentBasicInfo);

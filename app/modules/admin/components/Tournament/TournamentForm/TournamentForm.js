@@ -8,26 +8,78 @@ import {
   tournamentScopeEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
+import * as Showdown from 'showdown';
+import ReactMde from 'react-mde';
+import TournamentMenuEditor from '@/modules/admin/components/Tournament/TournamentMenuEditor';
 const { Option } = Select;
 
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+});
+
 class TournamentForm extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedTab: 'write',
+      description: props.resource.description || '',
+    };
+
+    if (props.resource.id) {
+      this.state.menuData = this.menuDataPreprocess(
+        JSON.parse(props.resource.menuData) || [],
+      );
+    }
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.onSubmit(values);
+        this.props.onSubmit(
+          Object.assign(
+            {
+              description: this.state.description,
+              menuData: JSON.stringify(
+                this.menuDataPostprocess(this.state.menuData),
+              ),
+            },
+            values,
+          ),
+        );
       }
     });
+  };
+
+  menuDataPreprocess = menuData =>
+    menuData.map((x, index) => Object.assign({}, x, { key: index }));
+
+  menuDataPostprocess = menuData => menuData.map(({ key, ...rest }) => rest);
+
+  setEditorSelectedTab = selectedTab => {
+    this.setState({ selectedTab });
+  };
+
+  setEditorValue = value => {
+    this.setState({ description: value });
+  };
+
+  setMenuDataValue = value => {
+    this.setState({ menuData: value });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 14 },
+      labelCol: { span: 3 },
+      wrapperCol: { span: 9 },
     };
     const tailFormItemLayout = {
-      wrapperCol: { span: 14, offset: 6 },
+      wrapperCol: { span: 14, offset: 3 },
     };
 
     return (
@@ -131,11 +183,34 @@ class TournamentForm extends React.PureComponent {
         </Form.Item>
         <Form.Item
           label={<FormattedMessage id="app.admin.tournamentForm.description" />}
+          wrapperCol={{ span: 21 }}
         >
-          {getFieldDecorator('description', {
-            initialValue: this.props.resource.description,
-          })(<Input.TextArea rows={8} />)}
+          <div style={{ lineHeight: 'initial' }}>
+            <ReactMde
+              value={this.state.description}
+              onChange={this.setEditorValue}
+              selectedTab={this.state.selectedTab}
+              onTabChange={this.setEditorSelectedTab}
+              generateMarkdownPreview={markdown =>
+                Promise.resolve(converter.makeHtml(markdown))
+              }
+            />
+          </div>
         </Form.Item>
+
+        {this.props.resource.id && (
+          <Form.Item
+            label={<FormattedMessage id="app.admin.tournamentForm.menu" />}
+            wrapperCol={{ span: 21 }}
+          >
+            <TournamentMenuEditor
+              onChange={this.setMenuDataValue}
+              dataSource={this.state.menuData}
+              documents={this.props.documents}
+            />
+          </Form.Item>
+        )}
+
         <Form.Item {...tailFormItemLayout}>
           {this.props.resource.id ? (
             <div>
