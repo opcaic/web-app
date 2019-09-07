@@ -27,10 +27,13 @@ class TournamentForm extends React.PureComponent {
     this.state = {
       selectedTab: 'write',
       description: props.resource.description || '',
-      menuData: this.menuDataPreprocess(
-        JSON.parse(props.resource.menuData) || [],
-      ),
     };
+
+    if (props.resource.id) {
+      this.state.menuData = this.menuDataPreprocess(
+        JSON.parse(props.resource.menuData) || [],
+      );
+    }
   }
 
   handleSubmit = e => {
@@ -66,7 +69,6 @@ class TournamentForm extends React.PureComponent {
   };
 
   setMenuDataValue = value => {
-    console.log(value);
     this.setState({ menuData: value });
   };
 
