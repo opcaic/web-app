@@ -50,17 +50,22 @@ export const matchPropType = {
   id: PropTypes.number.isRequired,
   index: PropTypes.number,
   tournament: PropTypes.shape(entityReferencePropType).isRequired,
-  botResults: PropTypes.arrayOf(
+  executions: PropTypes.arrayOf(
     PropTypes.shape({
-      submission: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        author: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          username: PropTypes.string.isRequired,
+      executed: PropTypes.string,
+      botResults: PropTypes.arrayOf(
+        PropTypes.shape({
+          submission: PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            author: PropTypes.shape({
+              id: PropTypes.number.isRequired,
+              username: PropTypes.string.isRequired,
+            }),
+          }),
+          score: PropTypes.number.isRequired,
+          additionalDataJson: PropTypes.string,
         }),
-      }),
-      score: PropTypes.number.isRequired,
-      additionalDataJson: PropTypes.string,
+      ),
     }),
   ),
 };

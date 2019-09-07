@@ -67,14 +67,36 @@ function getActionProps(buttonGenerator) {
   };
 }
 
-export function getDetailActionProps(linkGenerator, color) {
-  return getActionProps((text, record) => (
-    <StyledButton color={color}>
-      <Link to={linkGenerator(record)}>
-        <FormattedMessage id="app.generic.edit" />
-      </Link>
-    </StyledButton>
-  ));
+export function getDetailActionProps(linkGenerator) {
+  return {
+    title: <FormattedMessage id="app.generic.action" />,
+    key: 'action',
+    width: 150,
+    align: 'center',
+    render: (text, record) => (
+      <Button type="primary">
+        <Link to={linkGenerator(record)}>
+          <FormattedMessage id="app.generic.detail" />
+        </Link>
+      </Button>
+    ),
+  };
+}
+
+export function getThemedDetailActionProps(linkGenerator, color) {
+  return {
+    title: <FormattedMessage id="app.generic.action" />,
+    key: 'action',
+    width: 150,
+    align: 'center',
+    render: (text, record) => (
+      <StyledButton color={color} type="primary">
+        <Link to={linkGenerator(record)}>
+          <FormattedMessage id="app.generic.detail" />
+        </Link>
+      </StyledButton>
+    ),
+  };
 }
 
 export function getEditResourceButton(linkGenerator) {
@@ -116,4 +138,48 @@ export function prepareFilterParams(
     params,
     additionalParams,
   );
+}
+
+function isPrimitive(val) {
+  if (typeof val === 'object') {
+    return val === null;
+  }
+  return typeof val !== 'function';
+}
+
+export function getDynamicTableChildren(key, data, getter, withSort = true) {
+  return Object.keys(data).map(x =>
+    getDynamicTableColumns(
+      x,
+      `${key}.${x}`,
+      data[x],
+      record => getter(record)[x],
+      withSort,
+    ),
+  );
+}
+
+export function getDynamicTableColumns(
+  title,
+  key,
+  data,
+  getter,
+  withSort = true,
+) {
+  const column = {
+    title,
+    key,
+  };
+
+  if (isPrimitive(data)) {
+    column.render = (text, record) => getter(record);
+
+    if (Number(data) === data && withSort) {
+      column.sorter = (a, b) => getter(a) - getter(b);
+    }
+  } else {
+    column.children = getDynamicTableChildren(key, data, getter, withSort);
+  }
+
+  return column;
 }

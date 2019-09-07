@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
 import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { FormattedMessage } from 'react-intl';
 import { intlMessages } from './localization';
 const { Sider } = Layout;
 
@@ -37,7 +38,7 @@ const Sidebar = ({ activeItems, allItems }) => (
       <Menu.Item key="public">
         <Link to="/">
           <div>
-            {intl.formatMessage({ id: 'app.admin.sidebar.backToPublic' })}
+            <FormattedMessage id="app.admin.sidebar.backToPublic" />
           </div>
         </Link>
       </Menu.Item>

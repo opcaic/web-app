@@ -1,35 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { matchPropType, tournamentPropType } from '@/modules/public/propTypes';
-import MatchList from '@/modules/public/components/Tournament/MatchList';
+import MatchList from '@/modules/shared/components/Tournament/MatchList';
 import {
   actions as matchActions,
   selectors as matchSelectors,
 } from '@/modules/public/ducks/matches';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
-import { getMatchesListItems } from '@/modules/public/selectors/matches';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PageContent from '../../../components/Tournament/PageContent';
+import { addLastExecutions } from '@/modules/shared/helpers/matches';
+import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 
 /* eslint-disable react/prefer-stateless-function */
-export class TournamentMatches extends React.PureComponent {
+export class TournamentMatchList extends React.PureComponent {
   render() {
     return (
       <PageContent title="Matches" withPadding={false}>
         <MatchList
-          dataSource={this.props.items}
+          dataSource={addLastExecutions(this.props.items)}
           loading={this.props.isFetching}
           fetch={this.props.fetchItems(this.props.tournament.id)}
           totalItems={this.props.totalItems}
+          tournament={this.props.tournament}
+          isAdmin={false}
         />
       </PageContent>
     );
   }
 }
 
-TournamentMatches.propTypes = {
+TournamentMatchList.propTypes = {
   tournament: PropTypes.shape(tournamentPropType),
   items: PropTypes.arrayOf(PropTypes.shape(matchPropType)),
   isFetching: PropTypes.bool.isRequired,
@@ -42,8 +45,9 @@ export function mapDispatchToProps(dispatch) {
     fetchItems: tournamentId => params =>
       dispatch(
         matchActions.fetchMany(
-          prepareFilterParams(params, 'name', true, {
+          prepareFilterParams(params, 'executed', false, {
             tournamentId,
+            state: matchStateEnum.EXECUTED,
           }),
         ),
       ),
@@ -51,7 +55,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  items: getMatchesListItems,
+  items: matchSelectors.getItems,
   isFetching: matchSelectors.isFetching,
   totalItems: matchSelectors.getTotalItems,
 });
@@ -61,4 +65,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(TournamentMatches);
+export default compose(withConnect)(TournamentMatchList);
