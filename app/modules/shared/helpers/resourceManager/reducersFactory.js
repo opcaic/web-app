@@ -84,6 +84,20 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
         isCreating: false,
       });
 
+    // DELETE
+    case actionTypes.DELETE_REQUEST:
+      return state.merge({
+        isDeleting: true,
+      });
+    case actionTypes.DELETE_SUCCESS:
+      return state.merge({
+        isDeleting: false,
+      });
+    case actionTypes.DELETE_FAILURE:
+      return state.merge({
+        isDeleting: false,
+      });
+
     // DEFAULT
     default:
       return state;

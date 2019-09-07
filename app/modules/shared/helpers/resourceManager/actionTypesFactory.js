@@ -1,5 +1,5 @@
 const defaultPrefix = resourceName => `app/resource/${resourceName}`;
-const operations = ['FETCH', 'FETCH_MANY', 'UPDATE', 'CREATE'];
+const operations = ['FETCH', 'FETCH_MANY', 'UPDATE', 'CREATE', 'DELETE'];
 const postfixes = ['', '_REQUEST', '_SUCCESS', '_FAILURE'];
 
 const actionTypesFactory = ({ resourceName }) => {
