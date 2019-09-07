@@ -12,6 +12,7 @@ const Container = styled.div`
 
 const Title = styled(Typography.Title)`
   padding: 15px 25px;
+  font-size: 30px !important;
 `;
 
 const Content = styled.div`

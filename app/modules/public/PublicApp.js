@@ -15,6 +15,7 @@ import gamesReducers from './ducks/games';
 import gamesFeaturedReducers from './ducks/gamesFeatured';
 import matchesReducers from './ducks/matches';
 import submissionsReducers from './ducks/submissions';
+import documentsReducers from './ducks/documents';
 import RegistrationSuccessfulPage from '@/modules/public/pages/User/RegistrationSuccessfulPage';
 import TournamentListPage from '@/modules/public/pages/Tournaments/TournamentListPage';
 import GameListPage from '@/modules/public/pages/Games/GameListPage/GameListPage';
@@ -64,6 +65,7 @@ const withReducers = [
   injectReducer({ key: 'gamesFeatured', reducer: gamesFeaturedReducers }),
   injectReducer({ key: 'matches', reducer: matchesReducers }),
   injectReducer({ key: 'submissions', reducer: submissionsReducers }),
+  injectReducer({ key: 'documents', reducer: documentsReducers }),
 ];
 
 export default compose(

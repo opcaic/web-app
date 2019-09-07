@@ -94,3 +94,16 @@ tournamentAvailabilityEnum.helpers = createEnum(
     2: { id: 'app.enums.tournamentAvailability.private' },
   }),
 );
+
+export const menuItemTypeEnum = {
+  DOCUMENT: 1,
+  EXTERNAL: 2,
+};
+
+menuItemTypeEnum.helpers = createEnum(
+  menuItemTypeEnum,
+  defineMessages({
+    1: { id: 'app.enums.menuItemType.document' },
+    2: { id: 'app.enums.menuItemType.external' },
+  }),
+);

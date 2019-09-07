@@ -28,7 +28,7 @@ const TournamentDetailRoutes = ({ tournament }) => (
     <Route
       exact
       path="/admin/tournaments/:id"
-      render={() => <MenuSyncedBasicInfo resource={tournament} />}
+      render={() => <MenuSyncedBasicInfo tournament={tournament} />}
     />
     <Route
       exact
