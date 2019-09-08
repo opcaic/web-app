@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import LoginFormWrapper from '@/modules/public/components/Login/LoginFormWrapper';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { intlMessages } from '@/modules/public/components/Login/LoginForm/localization';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import { isRequired } from '@/modules/shared/helpers/errors/formValidations';
@@ -26,7 +26,7 @@ class LoginForm extends React.PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <LoginFormWrapper title={intl.formatMessage(intlMessages.title)}>
+      <LoginFormWrapper title={intlGlobal.formatMessage(intlMessages.title)}>
         <Form onSubmit={this.handleSubmit}>
           <FormErrors errors={this.props.errors} />
 
@@ -39,7 +39,9 @@ class LoginForm extends React.PureComponent {
                 prefix={
                   <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
-                placeholder={intl.formatMessage(accountIntlMessages.email)}
+                placeholder={intlGlobal.formatMessage(
+                  accountIntlMessages.email,
+                )}
                 size="large"
               />,
             )}
@@ -54,7 +56,9 @@ class LoginForm extends React.PureComponent {
                   <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
                 type="password"
-                placeholder={intl.formatMessage(accountIntlMessages.password)}
+                placeholder={intlGlobal.formatMessage(
+                  accountIntlMessages.password,
+                )}
                 size="large"
               />,
             )}
@@ -65,18 +69,18 @@ class LoginForm extends React.PureComponent {
               initialValue: true,
             })(
               <Checkbox>
-                {intl.formatMessage(intlMessages.rememberMe)}
+                {intlGlobal.formatMessage(intlMessages.rememberMe)}
               </Checkbox>,
             )}
             <Link to="/forgot-password" style={{ float: 'right' }}>
-              {intl.formatMessage(intlMessages.forgotPassword)}
+              {intlGlobal.formatMessage(intlMessages.forgotPassword)}
             </Link>
             <Button type="primary" htmlType="submit" block>
-              {intl.formatMessage(intlMessages.login)}
+              {intlGlobal.formatMessage(intlMessages.login)}
             </Button>
-            {intl.formatMessage(intlMessages.noAccountYet)}{' '}
+            {intlGlobal.formatMessage(intlMessages.noAccountYet)}{' '}
             <Link to="/register">
-              {intl.formatMessage(intlMessages.register)}
+              {intlGlobal.formatMessage(intlMessages.register)}
             </Link>
           </Form.Item>
         </Form>

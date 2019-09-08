@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import LoginFormWrapper from '@/modules/public/components/Login/LoginFormWrapper';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { intlMessages } from '@/modules/public/components/Login/ResetPasswordForm/localization';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import {
@@ -56,15 +56,17 @@ class ResetPasswordForm extends React.PureComponent {
     if (this.state.hasResult) {
       return (
         <LoginFormWrapper
-          title={intl.formatMessage(intlMessages.title)}
+          title={intlGlobal.formatMessage(intlMessages.title)}
           withAvatar={false}
         >
           <div style={{ marginBottom: 20 }}>
-            {intl.formatMessage(intlMessages.resultText)}
+            {intlGlobal.formatMessage(intlMessages.resultText)}
           </div>
 
           <Button type="primary" htmlType="button" block>
-            <Link to="/login">{intl.formatMessage(intlMessages.login)}</Link>
+            <Link to="/login">
+              {intlGlobal.formatMessage(intlMessages.login)}
+            </Link>
           </Button>
         </LoginFormWrapper>
       );
@@ -72,7 +74,7 @@ class ResetPasswordForm extends React.PureComponent {
 
     return (
       <LoginFormWrapper
-        title={intl.formatMessage(intlMessages.title)}
+        title={intlGlobal.formatMessage(intlMessages.title)}
         withAvatar={false}
       >
         <Form onSubmit={this.handleSubmit}>
@@ -97,7 +99,9 @@ class ResetPasswordForm extends React.PureComponent {
               ],
             })(
               <Input.Password
-                placeholder={intl.formatMessage(accountIntlMessages.password)}
+                placeholder={intlGlobal.formatMessage(
+                  accountIntlMessages.password,
+                )}
               />,
             )}
           </Form.Item>
@@ -113,7 +117,7 @@ class ResetPasswordForm extends React.PureComponent {
             })(
               <Input.Password
                 onBlur={this.handleConfirmBlur}
-                placeholder={intl.formatMessage(
+                placeholder={intlGlobal.formatMessage(
                   accountIntlMessages.confirmPassword,
                 )}
               />,
@@ -122,7 +126,7 @@ class ResetPasswordForm extends React.PureComponent {
 
           <Form.Item style={{ marginBottom: 0 }}>
             <Button type="primary" htmlType="submit" block>
-              {intl.formatMessage(intlMessages.resetPassword)}
+              {intlGlobal.formatMessage(intlMessages.resetPassword)}
             </Button>
           </Form.Item>
         </Form>

@@ -1,5 +1,5 @@
 import { defineMessages } from 'react-intl';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 function toCamelCase(text) {
   return text.replace(/-([a-z])/g, g => g[1].toUpperCase());
@@ -61,12 +61,12 @@ export function prepareFormErrors(data, errorMessageProvider) {
     if (errorMessageProvider && errorMessageProvider(camelCasedCode, x)) {
       error = errorMessageProvider(camelCasedCode, x);
     } else if (errorIntlMessages[camelCasedCode]) {
-      error = intl.formatMessage(errorIntlMessages[camelCasedCode], x);
+      error = intlGlobal.formatMessage(errorIntlMessages[camelCasedCode], x);
     } else {
       error = x.message;
 
       if (error === null) {
-        error = intl.formatMessage(errorIntlMessages.missingError, {
+        error = intlGlobal.formatMessage(errorIntlMessages.missingError, {
           code: x.code,
         });
       }

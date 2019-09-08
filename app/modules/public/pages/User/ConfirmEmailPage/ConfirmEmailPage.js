@@ -10,6 +10,9 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import Spin from '@/modules/shared/components/Spin';
 import { confirmEmail } from '@/modules/public/ducks/registration';
+import PageTitle from '@/modules/shared/components/PageTitle';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ConfirmEmailPage extends React.PureComponent {
@@ -48,6 +51,10 @@ export class ConfirmEmailPage extends React.PureComponent {
 
     return (
       <NoMenuPageLayout size="medium">
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.confirmEmailPage)}
+        />
+
         {this.state.success ? (
           <Result
             status="success"

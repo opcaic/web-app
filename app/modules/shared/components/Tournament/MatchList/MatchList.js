@@ -6,7 +6,7 @@ import {
 } from '@/modules/shared/helpers/table';
 import { Table } from 'antd';
 import styled from 'styled-components';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 import {
@@ -27,7 +27,10 @@ function prepareColumns({ tournament, isAdmin }) {
       width: 200,
       align: 'center',
       render: (text, record) =>
-        intl.formatDate(new Date(record.lastExecution.created), longDateFormat),
+        intlGlobal.formatDate(
+          new Date(record.lastExecution.created),
+          longDateFormat,
+        ),
     });
   }
 
@@ -46,7 +49,7 @@ function prepareColumns({ tournament, isAdmin }) {
         return null;
       }
 
-      return intl.formatDate(
+      return intlGlobal.formatDate(
         new Date(record.lastExecution.executed),
         longDateFormat,
       );

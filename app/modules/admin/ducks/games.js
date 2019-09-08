@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import { defineMessages } from 'react-intl';
 import resourceFactory from '../../shared/helpers/resourceManager';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   endpoint: 'api/games',
@@ -25,13 +25,13 @@ const intlMessages = defineMessages({
 function* handleCreateSuccess(action) {
   yield put(push(`/admin/games/${action.payload.id}`));
   yield call(notification.success, {
-    message: intl.formatMessage(intlMessages.createSuccessNotification),
+    message: intlGlobal.formatMessage(intlMessages.createSuccessNotification),
   });
 }
 
 function* handleUpdateSuccess() {
   yield call(notification.success, {
-    message: intl.formatMessage(intlMessages.updateSuccessNotification),
+    message: intlGlobal.formatMessage(intlMessages.updateSuccessNotification),
   });
 }
 

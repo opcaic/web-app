@@ -1,19 +1,22 @@
 import React from 'react';
-import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import RegisterForm from '../../../components/Login/RegisterForm';
 import { register } from '../../../ducks/registration';
-import { makeSelectRegistrationErrors } from './selectors';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
+import PageTitle from '@/modules/shared/components/PageTitle';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class RegisterPage extends React.PureComponent {
   render() {
     return (
       <NoMenuPageLayout size="small">
+        <PageTitle title={intlGlobal.formatMessage(pageTitles.registerPage)} />
+
         <RegisterForm
           onSubmit={(values, successCallback, failureCallback) =>
             this.props.register(values, successCallback, failureCallback)
@@ -43,12 +46,8 @@ export function mapDispatchToProps(dispatch) {
   };
 }
 
-const mapStateToProps = createStructuredSelector({
-  errors: makeSelectRegistrationErrors(),
-});
-
 const withConnect = connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 );
 

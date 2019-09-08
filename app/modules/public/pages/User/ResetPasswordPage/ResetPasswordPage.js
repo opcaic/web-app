@@ -8,6 +8,9 @@ import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayou
 import { resetPassword } from '@/modules/public/ducks/accounts';
 import ResetPasswordForm from '@/modules/public/components/Login/ResetPasswordForm';
 import * as qs from 'query-string';
+import PageTitle from '@/modules/shared/components/PageTitle';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ResetPasswordPage extends React.PureComponent {
@@ -16,6 +19,10 @@ export class ResetPasswordPage extends React.PureComponent {
 
     return (
       <NoMenuPageLayout size="small">
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.resetPasswordPage)}
+        />
+
         <ResetPasswordForm
           onSubmit={(values, successCallback, failureCallback) =>
             this.props.resetPassword(

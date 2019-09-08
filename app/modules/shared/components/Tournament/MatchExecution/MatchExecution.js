@@ -5,7 +5,7 @@ import {
   getDynamicTableColumns,
 } from '@/modules/shared/helpers/table';
 import { Descriptions, Table, Typography } from 'antd';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
 import {
   entryPointResultEnum,
@@ -85,7 +85,7 @@ const MatchExecution = props => (
         <Descriptions.Item
           label={<FormattedMessage id="app.shared.matchExecution.created" />}
         >
-          {intl.formatDate(props.matchExecution.created, longDateFormat)}
+          {intlGlobal.formatDate(props.matchExecution.created, longDateFormat)}
         </Descriptions.Item>
       )}
 
@@ -94,7 +94,7 @@ const MatchExecution = props => (
         <Descriptions.Item
           label={<FormattedMessage id="app.shared.matchExecution.executed" />}
         >
-          {intl.formatDate(props.matchExecution.executed, longDateFormat)}
+          {intlGlobal.formatDate(props.matchExecution.executed, longDateFormat)}
         </Descriptions.Item>
       )}
 
