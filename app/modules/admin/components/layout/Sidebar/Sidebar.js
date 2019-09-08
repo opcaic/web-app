@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { FormattedMessage } from 'react-intl';
 import { intlMessages } from './localization';
 const { Sider } = Layout;
@@ -29,7 +29,7 @@ const Sidebar = ({ activeItems, allItems }) => (
       {allItems.map(item => (
         <Menu.Item key={item.key}>
           <Link to={item.link}>
-            <div>{intl.formatMessage(intlMessages[item.labelName])}</div>
+            <div>{intlGlobal.formatMessage(intlMessages[item.labelName])}</div>
           </Link>
         </Menu.Item>
       ))}

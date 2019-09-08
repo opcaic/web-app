@@ -7,12 +7,19 @@ import { withRouter } from 'react-router-dom';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
 import ForgotPasswordForm from '@/modules/public/components/Login/ForgotPasswordForm';
 import { forgotPassword } from '@/modules/public/ducks/accounts';
+import PageTitle from '@/modules/shared/components/PageTitle';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ForgotPasswordPage extends React.PureComponent {
   render() {
     return (
       <NoMenuPageLayout size="small">
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.forgotPasswordPage)}
+        />
+
         <ForgotPasswordForm
           onSubmit={(values, successCallback, failureCallback) =>
             this.props.forgotPassword(values, successCallback, failureCallback)

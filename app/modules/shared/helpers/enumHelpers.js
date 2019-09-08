@@ -1,11 +1,11 @@
 import { defineMessages } from 'react-intl';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 function createEnum(values, intlMessages) {
   const valuesCopy = Object.assign({}, values);
 
   function idToText(id) {
-    return intl.formatMessage(intlMessages[id]) || 'Undefined';
+    return intlGlobal.formatMessage(intlMessages[id]) || 'Undefined';
   }
 
   function getFilterOptions() {

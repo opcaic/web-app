@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Spin } from 'antd';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import PublicApp from '../../public';
 import GlobalStyle from '../../../global-styles';
 import AdminApp from '../../admin';
@@ -42,6 +43,10 @@ export class App extends React.Component {
 
     return (
       <div>
+        <Helmet>
+          <title>{process.env.APP_NAME}</title>
+        </Helmet>
+
         <GlobalStyle />
         <Switch>
           <PrivateRoute path="/admin" component={AdminApp} />

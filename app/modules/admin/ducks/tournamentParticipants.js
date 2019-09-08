@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import resourceFactory from '../../shared/helpers/resourceManager';
 import { defineMessages } from 'react-intl';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   resourceName: 'tournamentParticipants',
@@ -40,11 +40,11 @@ function* handleCreate({ payload: { endpointParams } }) {
       push(`/admin/tournaments/${endpointParams.tournamentId}/participants`),
     );
     yield call(notification.success, {
-      message: intl.formatMessage(intlMessages.createSuccessNotification),
+      message: intlGlobal.formatMessage(intlMessages.createSuccessNotification),
     });
   } else {
     yield call(notification.error, {
-      message: intl.formatMessage(intlMessages.createFailureNotification),
+      message: intlGlobal.formatMessage(intlMessages.createFailureNotification),
     });
   }
 }
@@ -60,11 +60,11 @@ function* handleDelete({ payload: { endpointParams } }) {
       push(`/admin/tournaments/${endpointParams.tournamentId}/participants`),
     );
     yield call(notification.success, {
-      message: intl.formatMessage(intlMessages.deleteSuccessNotification),
+      message: intlGlobal.formatMessage(intlMessages.deleteSuccessNotification),
     });
   } else {
     yield call(notification.error, {
-      message: intl.formatMessage(intlMessages.deleteFailureNotification),
+      message: intlGlobal.formatMessage(intlMessages.deleteFailureNotification),
     });
   }
 }

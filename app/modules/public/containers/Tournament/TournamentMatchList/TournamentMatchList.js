@@ -13,12 +13,22 @@ import { compose } from 'redux';
 import PageContent from '../../../components/Tournament/PageContent';
 import { addLastExecutions } from '@/modules/shared/helpers/matches';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
+import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentMatchList extends React.PureComponent {
   render() {
     return (
       <PageContent title="Matches" withPadding={false}>
+        <TournamentPageTitle
+          tournament={this.props.tournament}
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailMatchesPage,
+          )}
+        />
+
         <MatchList
           dataSource={addLastExecutions(this.props.items)}
           loading={this.props.isFetching}

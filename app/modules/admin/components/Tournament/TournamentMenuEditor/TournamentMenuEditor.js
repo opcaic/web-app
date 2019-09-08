@@ -4,7 +4,7 @@ import EditableTable from '@/modules/admin/components/EditableTable';
 import { Button, Form, Icon, Input, Popconfirm, Select } from 'antd';
 import { menuItemTypeEnum } from '@/modules/shared/helpers/enumHelpers';
 import { FormattedMessage } from 'react-intl';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { intlMessages } from '@/modules/admin/components/Tournament/TournamentMenuEditor/localization';
 import PropTypes from 'prop-types';
 import { isRequired } from '@/modules/shared/helpers/errors/formValidations';
@@ -37,8 +37,8 @@ class TournamentMenuEditor extends Component {
     const newData = {
       key: count,
       type: menuItemTypeEnum.EXTERNAL,
-      text: intl.formatMessage(intlMessages.textPlaceholder),
-      externalLink: intl.formatMessage(intlMessages.linkPlaceholder),
+      text: intlGlobal.formatMessage(intlMessages.textPlaceholder),
+      externalLink: intlGlobal.formatMessage(intlMessages.linkPlaceholder),
     };
     this.setState(
       {
@@ -68,7 +68,7 @@ class TournamentMenuEditor extends Component {
         initialValue: record[dataIndex],
       })(
         <Select
-          placeholder={intl.formatMessage(intlMessages.typePlaceholder)}
+          placeholder={intlGlobal.formatMessage(intlMessages.typePlaceholder)}
           ref={node => (cell.input = node)}
           onPressEnter={cell.save}
           onBlur={cell.save}
@@ -90,7 +90,9 @@ class TournamentMenuEditor extends Component {
         initialValue: record.documentId,
       })(
         <Select
-          placeholder={intl.formatMessage(intlMessages.documentPlaceholder)}
+          placeholder={intlGlobal.formatMessage(
+            intlMessages.documentPlaceholder,
+          )}
           ref={node => (cell.input = node)}
           onPressEnter={cell.save}
           onBlur={cell.save}
@@ -131,7 +133,7 @@ class TournamentMenuEditor extends Component {
         <EditableTable
           columns={[
             {
-              title: intl.formatMessage(intlMessages.type),
+              title: intlGlobal.formatMessage(intlMessages.type),
               dataIndex: 'type',
               editable: () => true,
               render: (text, record) =>
@@ -139,7 +141,7 @@ class TournamentMenuEditor extends Component {
               renderEditCell: this.renderEditTypeCell,
             },
             {
-              title: intl.formatMessage(intlMessages.text),
+              title: intlGlobal.formatMessage(intlMessages.text),
               dataIndex: 'text',
               editable: record => record.type === menuItemTypeEnum.EXTERNAL,
               render: (text, record) => {
@@ -150,14 +152,14 @@ class TournamentMenuEditor extends Component {
 
                   return document
                     ? document.name
-                    : intl.formatMessage(intlMessages.documentNotFound);
+                    : intlGlobal.formatMessage(intlMessages.documentNotFound);
                 }
 
                 return record.text;
               },
             },
             {
-              title: intl.formatMessage(intlMessages.additionalData),
+              title: intlGlobal.formatMessage(intlMessages.additionalData),
               dataIndex: 'additionalData',
               editable: () => true,
               render: (text, record) => {
@@ -168,7 +170,7 @@ class TournamentMenuEditor extends Component {
 
                   return document
                     ? document.name
-                    : intl.formatMessage(intlMessages.documentNotFound);
+                    : intlGlobal.formatMessage(intlMessages.documentNotFound);
                 }
 
                 return record.externalLink;
@@ -182,7 +184,7 @@ class TournamentMenuEditor extends Component {
               align: 'center',
               render: (text, record) => (
                 <Popconfirm
-                  title={intl.formatMessage(intlMessages.confirmDelete)}
+                  title={intlGlobal.formatMessage(intlMessages.confirmDelete)}
                   onConfirm={() => this.handleDelete(record.key)}
                 >
                   <Icon type="delete" style={{ color: '#ff4d4f' }} />

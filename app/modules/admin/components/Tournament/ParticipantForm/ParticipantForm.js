@@ -3,7 +3,7 @@ import { Select, Form, Button, notification } from 'antd';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import { FormattedMessage } from 'react-intl';
 import EmailValidator from 'email-validator';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { intlMessages } from './localization';
 
 class ParticipantForm extends React.PureComponent {
@@ -23,7 +23,7 @@ class ParticipantForm extends React.PureComponent {
       });
     } else {
       notification.error({
-        description: intl.formatMessage(intlMessages.invalidEmail),
+        description: intlGlobal.formatMessage(intlMessages.invalidEmail),
       });
     }
   };

@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import LoginFormWrapper from '@/modules/public/components/Login/LoginFormWrapper';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { intlMessages } from '@/modules/public/components/Login/ForgotPasswordForm/localization';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import FormErrors from '@/modules/shared/components/FormErrors';
@@ -37,16 +37,16 @@ class ForgotPasswordForm extends React.PureComponent {
     if (this.state.hasResult) {
       return (
         <LoginFormWrapper
-          title={intl.formatMessage(intlMessages.title)}
+          title={intlGlobal.formatMessage(intlMessages.title)}
           withAvatar={false}
         >
           <div style={{ marginBottom: 20 }}>
-            {intl.formatMessage(intlMessages.resultText)}
+            {intlGlobal.formatMessage(intlMessages.resultText)}
           </div>
 
           <Button type="default" htmlType="button" block>
             <Link to="/">
-              {intl.formatMessage(intlMessages.backToHomepage)}
+              {intlGlobal.formatMessage(intlMessages.backToHomepage)}
             </Link>
           </Button>
         </LoginFormWrapper>
@@ -55,11 +55,11 @@ class ForgotPasswordForm extends React.PureComponent {
 
     return (
       <LoginFormWrapper
-        title={intl.formatMessage(intlMessages.title)}
+        title={intlGlobal.formatMessage(intlMessages.title)}
         withAvatar={false}
       >
         <div style={{ marginBottom: 20 }}>
-          {intl.formatMessage(intlMessages.description)}
+          {intlGlobal.formatMessage(intlMessages.description)}
         </div>
 
         <Form onSubmit={this.handleSubmit}>
@@ -70,14 +70,16 @@ class ForgotPasswordForm extends React.PureComponent {
               rules: [isRequired('email', accountErrorMessageProvider)],
             })(
               <Input
-                placeholder={intl.formatMessage(accountIntlMessages.email)}
+                placeholder={intlGlobal.formatMessage(
+                  accountIntlMessages.email,
+                )}
                 size="large"
               />,
             )}
           </Form.Item>
           <Form.Item style={{ marginBottom: 0 }}>
             <Button type="primary" htmlType="submit" block>
-              {intl.formatMessage(intlMessages.sendPasswordResetEmail)}
+              {intlGlobal.formatMessage(intlMessages.sendPasswordResetEmail)}
             </Button>
           </Form.Item>
         </Form>

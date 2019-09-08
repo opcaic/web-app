@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import resourceFactory from '../../shared/helpers/resourceManager';
 import { defineMessages } from 'react-intl';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   endpoint: 'api/documents',
@@ -37,14 +37,14 @@ function* handleCreate({ payload: { data } }) {
       ),
     );
     yield call(notification.success, {
-      message: intl.formatMessage(intlMessages.createSuccessNotification),
+      message: intlGlobal.formatMessage(intlMessages.createSuccessNotification),
     });
   }
 }
 
 function* handleUpdateSuccess() {
   yield call(notification.success, {
-    message: intl.formatMessage(intlMessages.updateSuccessNotification),
+    message: intlGlobal.formatMessage(intlMessages.updateSuccessNotification),
   });
 }
 

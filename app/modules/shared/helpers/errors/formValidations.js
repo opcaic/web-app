@@ -1,12 +1,12 @@
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { errorIntlMessages } from '@/modules/shared/helpers/errors/errors';
 
 function getErrorMessage(key, errorMessageProvider, values) {
   if (errorMessageProvider && errorMessageProvider(key, values)) {
-    return intl.formatMessage(errorMessageProvider(key, values), values);
+    return intlGlobal.formatMessage(errorMessageProvider(key, values), values);
   }
 
-  return intl.formatMessage(errorIntlMessages[key], values);
+  return intlGlobal.formatMessage(errorIntlMessages[key], values);
 }
 
 export function isRequired(field, errorMessageProvider) {

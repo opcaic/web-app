@@ -6,12 +6,21 @@ import PropTypes from 'prop-types';
 import * as qs from 'query-string';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
+import PageTitle from '@/modules/shared/components/PageTitle';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class RegistrationSuccessfulPage extends React.PureComponent {
   render() {
     return (
       <NoMenuPageLayout size="medium">
+        <PageTitle
+          title={intlGlobal.formatMessage(
+            pageTitles.registrationSuccessfulPage,
+          )}
+        />
+
         <Result
           status="success"
           title={<FormattedMessage id="app.registrationSuccessful.title" />}

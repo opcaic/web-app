@@ -7,7 +7,7 @@ import {
   isValidEmail,
 } from '@/modules/shared/helpers/errors/formValidations';
 import LoginFormWrapper from '@/modules/public/components/Login/LoginFormWrapper';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { intlMessages } from '@/modules/public/components/Login/RegisterForm/localization';
 import PropTypes from 'prop-types';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
@@ -59,7 +59,7 @@ class RegisterForm extends React.PureComponent {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <LoginFormWrapper title={intl.formatMessage(intlMessages.title)}>
+      <LoginFormWrapper title={intlGlobal.formatMessage(intlMessages.title)}>
         <Form onSubmit={this.handleSubmit}>
           <FormErrors errors={this.props.errors} />
 
@@ -69,7 +69,9 @@ class RegisterForm extends React.PureComponent {
               rules: [isRequired('username', accountErrorMessageProvider)],
             })(
               <Input
-                placeholder={intl.formatMessage(accountIntlMessages.username)}
+                placeholder={intlGlobal.formatMessage(
+                  accountIntlMessages.username,
+                )}
               />,
             )}
           </Form.Item>
@@ -82,7 +84,9 @@ class RegisterForm extends React.PureComponent {
               ],
             })(
               <Input
-                placeholder={intl.formatMessage(accountIntlMessages.email)}
+                placeholder={intlGlobal.formatMessage(
+                  accountIntlMessages.email,
+                )}
               />,
             )}
           </Form.Item>
@@ -98,7 +102,9 @@ class RegisterForm extends React.PureComponent {
               ],
             })(
               <Input.Password
-                placeholder={intl.formatMessage(accountIntlMessages.password)}
+                placeholder={intlGlobal.formatMessage(
+                  accountIntlMessages.password,
+                )}
               />,
             )}
           </Form.Item>
@@ -114,7 +120,7 @@ class RegisterForm extends React.PureComponent {
             })(
               <Input.Password
                 onBlur={this.handleConfirmBlur}
-                placeholder={intl.formatMessage(
+                placeholder={intlGlobal.formatMessage(
                   accountIntlMessages.confirmPassword,
                 )}
               />,
@@ -137,10 +143,12 @@ class RegisterForm extends React.PureComponent {
                 width: '100%',
               }}
             >
-              {intl.formatMessage(intlMessages.register)}
+              {intlGlobal.formatMessage(intlMessages.register)}
             </Button>
-            {intl.formatMessage(intlMessages.alreadyHaveAccount)}{' '}
-            <Link to="/login">{intl.formatMessage(intlMessages.login)}</Link>
+            {intlGlobal.formatMessage(intlMessages.alreadyHaveAccount)}{' '}
+            <Link to="/login">
+              {intlGlobal.formatMessage(intlMessages.login)}
+            </Link>
           </Form.Item>
         </Form>
       </LoginFormWrapper>

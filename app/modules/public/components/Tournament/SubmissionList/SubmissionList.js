@@ -6,7 +6,7 @@ import {
 } from '@/modules/shared/helpers/table';
 import { Icon, Table, Tooltip } from 'antd';
 import styled from 'styled-components';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 
@@ -68,7 +68,7 @@ const columns = () => [
     width: 200,
     align: 'center',
     render: (text, record) =>
-      intl.formatDate(new Date(record.date), {
+      intlGlobal.formatDate(new Date(record.date), {
         year: 'numeric',
         month: 'numeric',
         day: 'numeric',

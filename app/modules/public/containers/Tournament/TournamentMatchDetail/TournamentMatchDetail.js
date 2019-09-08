@@ -14,6 +14,9 @@ import Spin from '@/modules/shared/components/Spin';
 import MatchExecution from '@/modules/shared/components/Tournament/MatchExecution';
 import { addLastExecution } from '@/modules/shared/helpers/matches';
 import PageContent from '@/modules/public/components/Tournament/PageContent';
+import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentMatchDetail extends React.PureComponent {
@@ -31,6 +34,11 @@ class TournamentMatchDetail extends React.PureComponent {
       <PageContent
         title={<FormattedMessage id="app.public.tournamentMatchDetail.title" />}
       >
+        <TournamentPageTitle
+          tournament={this.props.tournament}
+          title={intlGlobal.formatMessage(pageTitles.tournamentDetailMatchPage)}
+        />
+
         <Spin spinning={this.props.isFetching || this.props.resource === null}>
           <Button type="default" style={{ marginBottom: 20 }}>
             <Link to={`/tournaments/${this.props.tournament.id}/matches/`}>

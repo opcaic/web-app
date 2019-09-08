@@ -12,12 +12,22 @@ import { compose } from 'redux';
 import PageContent from '../../../components/Tournament/PageContent';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import SubmissionList from '@/modules/public/components/Tournament/SubmissionList';
+import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentSubmissions extends React.PureComponent {
   render() {
     return (
       <PageContent title="Submissions" withPadding={false}>
+        <TournamentPageTitle
+          tournament={this.props.tournament}
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailSubmissionsPage,
+          )}
+        />
+
         <SubmissionList
           dataSource={this.props.items}
           loading={this.props.isFetching}

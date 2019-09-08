@@ -11,6 +11,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { gamePropType } from '@/modules/public/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
+import PageTitle from '@/modules/shared/components/PageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 export class GameListPage extends React.PureComponent {
@@ -21,6 +24,8 @@ export class GameListPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
+        <PageTitle title={intlGlobal.formatMessage(pageTitles.gameListPage)} />
+
         <div className="container" style={{ marginTop: 30 }}>
           <GameList
             dataSource={this.props.items}

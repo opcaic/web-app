@@ -1,7 +1,7 @@
 import { Descriptions, Tooltip, Typography } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { intl } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import {
   formatTooltipIntlMessages,
   scopeTextIntlMessages,
@@ -46,14 +46,19 @@ const BasicInformation = props => (
       >
         <Tooltip
           placement="right"
-          title={intl.formatMessage(
+          title={intlGlobal.formatMessage(
             scopeTooltipIntlMessages[props.tournament.scope],
           )}
         >
           <WithTooltip>
-            {intl.formatMessage(scopeTextIntlMessages[props.tournament.scope], {
-              deadline: intl.formatDate(new Date(props.tournament.deadline)),
-            })}
+            {intlGlobal.formatMessage(
+              scopeTextIntlMessages[props.tournament.scope],
+              {
+                deadline: intlGlobal.formatDate(
+                  new Date(props.tournament.deadline),
+                ),
+              },
+            )}
           </WithTooltip>
         </Tooltip>
       </Descriptions.Item>
@@ -62,7 +67,7 @@ const BasicInformation = props => (
       >
         <Tooltip
           placement="right"
-          title={intl.formatMessage(
+          title={intlGlobal.formatMessage(
             formatTooltipIntlMessages[props.tournament.format],
           )}
         >

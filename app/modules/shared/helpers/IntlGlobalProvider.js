@@ -45,5 +45,5 @@ class IntlTranslator {
   }
 }
 
-export const intl = new IntlTranslator();
+export const intlGlobal = new IntlTranslator();
 export default IntlGlobalProvider;

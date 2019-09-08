@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import Spin from '@/modules/shared/components/Spin';
+import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentOverview extends React.PureComponent {
@@ -20,12 +21,16 @@ export class TournamentOverview extends React.PureComponent {
 
   render() {
     return (
-      <Spin spinning={this.props.isFetchingDocuments}>
-        <TournamentOverviewComponent
-          tournament={this.props.tournament}
-          documents={this.props.documents}
-        />
-      </Spin>
+      <div>
+        <TournamentPageTitle tournament={this.props.tournament} />
+
+        <Spin spinning={this.props.isFetchingDocuments}>
+          <TournamentOverviewComponent
+            tournament={this.props.tournament}
+            documents={this.props.documents}
+          />
+        </Spin>
+      </div>
     );
   }
 }

@@ -12,6 +12,9 @@ import { compose } from 'redux';
 import { tournamentListItemPropType } from '@/modules/public/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { getTournamentsListItems } from '@/modules/public/selectors/tournaments';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/pageTitles';
+import PageTitle from '@/modules/shared/components/PageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentListPage extends React.PureComponent {
@@ -22,6 +25,10 @@ export class TournamentListPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.tournamentListPage)}
+        />
+
         <div className="container" style={{ marginTop: 30 }}>
           <TournamentList
             dataSource={this.props.items}
