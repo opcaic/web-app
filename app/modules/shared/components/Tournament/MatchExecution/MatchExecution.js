@@ -101,11 +101,9 @@ const MatchExecution = props => (
       <Descriptions.Item
         label={<FormattedMessage id="app.shared.matchExecution.players" />}
       >
-        {props.matchExecution.botResults.map((x, index) => [
+        {props.match.submissions.map((x, index) => [
           <span>{index ? ', ' : ''}</span>,
-          <span key={x.submission.author.id}>
-            {x.submission.author.username}
-          </span>,
+          <span key={x.author.id}>{x.author.username}</span>,
         ])}
       </Descriptions.Item>
     </Descriptions>
@@ -161,6 +159,7 @@ const MatchExecution = props => (
 MatchExecution.propTypes = {
   matchExecution: PropTypes.object.isRequired,
   isAdmin: PropTypes.bool.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 export default MatchExecution;
