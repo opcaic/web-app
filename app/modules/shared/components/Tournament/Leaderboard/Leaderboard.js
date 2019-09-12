@@ -4,6 +4,8 @@ import { getSearchProps } from '@/modules/shared/helpers/table';
 import { Icon, Table } from 'antd';
 import styled from 'styled-components';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
+import PropTypes from 'prop-types';
+import { tournamentFormatEnum } from '@/modules/shared/helpers/enumHelpers';
 
 function getCrownColor(place) {
   if (place === 1) {
@@ -15,16 +17,28 @@ function getCrownColor(place) {
   return '#965A38';
 }
 
-const columns = () => [
-  {
+function getPlaceText(record) {
+  if (record.place !== record.placeShared) {
+    return `${record.place}.-${record.placeShared}.`;
+  }
+
+  return `${record.place}.`;
+}
+
+function prepareColumns({ leaderboard }) {
+  const columns = [];
+
+  columns.push({
     title: <FormattedMessage id="app.shared.leaderboard.place" />,
     dataIndex: 'place',
     key: 'place',
     width: 50,
     align: 'center',
-    render: (text, record) => (record.place <= 3 ? <b>{text}</b> : text),
-  },
-  {
+    render: (text, record) =>
+      record.place <= 3 ? <b>{getPlaceText(record)}</b> : getPlaceText(record),
+  });
+
+  columns.push({
     title: <FormattedMessage id="app.shared.leaderboard.name" />,
     dataIndex: 'user.username',
     key: 'user.username',
@@ -43,21 +57,32 @@ const columns = () => [
         text
       ),
     ...getSearchProps('name'),
-  },
-  {
-    title: <FormattedMessage id="app.shared.leaderboard.score" />,
-    dataIndex: 'score',
-    key: 'score',
-    align: 'center',
-    width: 100,
-  },
-  {
+  });
+
+  if (
+    leaderboard != null &&
+    (leaderboard.tournamentFormat === tournamentFormatEnum.ELO ||
+      leaderboard.tournamentFormat === tournamentFormatEnum.SINGLE_PLAYER ||
+      leaderboard.tournamentFormat === tournamentFormatEnum.TABLE)
+  ) {
+    columns.push({
+      title: <FormattedMessage id="app.shared.leaderboard.score" />,
+      dataIndex: 'score',
+      key: 'score',
+      align: 'center',
+      width: 100,
+    });
+  }
+
+  columns.push({
     title: <FormattedMessage id="app.shared.leaderboard.organization" />,
     dataIndex: 'user.organization',
     key: 'user.organization',
     width: 200,
-  },
-];
+  });
+
+  return columns;
+}
 
 const StyledTable = styled(Table)`
   & .ant-pagination.ant-table-pagination {
@@ -67,7 +92,7 @@ const StyledTable = styled(Table)`
 
 const Leaderboard = props => (
   <StyledTable
-    columns={columns(props)}
+    columns={prepareColumns(props)}
     rowKey={record => record.user.id}
     pagination={false}
     locale={{
@@ -81,6 +106,8 @@ const Leaderboard = props => (
   />
 );
 
-Leaderboard.propTypes = {};
+Leaderboard.propTypes = {
+  leaderboard: PropTypes.object,
+};
 
 export default Leaderboard;
