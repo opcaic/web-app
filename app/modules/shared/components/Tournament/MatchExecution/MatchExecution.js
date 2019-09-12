@@ -49,112 +49,129 @@ function prepareColumns({ tournament, matchExecution }) {
   // eslint-disable-next-line prefer-destructuring
   const additionalData = matchExecution.botResults[0].additionalData;
 
-  columns.push(
-    getDynamicTableColumns(
-      <FormattedMessage id="app.shared.matchExecution.additionalData" />,
-      'additionalData',
-      additionalData,
-      record => record.additionalData,
-    ),
-  );
+  if (additionalData && Object.entries(additionalData).length !== 0) {
+    columns.push(
+      getDynamicTableColumns(
+        <FormattedMessage id="app.shared.matchExecution.additionalData" />,
+        'additionalData',
+        additionalData,
+        record => record.additionalData,
+      ),
+    );
+  }
 
   return columns;
 }
 
-const MatchExecution = props => (
-  <div>
-    <Descriptions
-      title={<Typography.Title level={3}>Basic information</Typography.Title>}
-      column={1}
-      size="small"
-      bordered
-    >
-      {props.isAdmin && (
-        <Descriptions.Item
-          label={
-            <FormattedMessage id="app.shared.matchExecution.executorResult" />
-          }
-        >
-          {entryPointResultEnum.helpers.idToText(
-            props.matchExecution.executorResult,
-          )}
-        </Descriptions.Item>
-      )}
+const MatchExecution = props => {
+  // eslint-disable-next-line prefer-destructuring
+  const additionalData = props.matchExecution.additionalData;
+  const hasAdditionalData =
+    additionalData && Object.entries(additionalData).length !== 0;
 
-      {props.isAdmin && (
-        <Descriptions.Item
-          label={<FormattedMessage id="app.shared.matchExecution.created" />}
-        >
-          {intlGlobal.formatDate(props.matchExecution.created, longDateFormat)}
-        </Descriptions.Item>
-      )}
-
-      {props.matchExecution.executorResult !==
-        entryPointResultEnum.NOT_EXECUTED && (
-        <Descriptions.Item
-          label={<FormattedMessage id="app.shared.matchExecution.executed" />}
-        >
-          {intlGlobal.formatDate(props.matchExecution.executed, longDateFormat)}
-        </Descriptions.Item>
-      )}
-
-      <Descriptions.Item
-        label={<FormattedMessage id="app.shared.matchExecution.players" />}
+  return (
+    <div>
+      <Descriptions
+        title={<Typography.Title level={3}>Basic information</Typography.Title>}
+        column={1}
+        size="small"
+        bordered
       >
-        {props.match.submissions.map((x, index) => [
-          <span>{index ? ', ' : ''}</span>,
-          <span key={x.author.id}>{x.author.username}</span>,
-        ])}
-      </Descriptions.Item>
-    </Descriptions>
-
-    {props.matchExecution.executorResult === entryPointResultEnum.SUCCESS && (
-      <div>
-        <Typography.Title level={3} style={{ marginTop: 20 }}>
-          <FormattedMessage id="app.shared.matchExecution.playersData" />
-        </Typography.Title>
-
-        <Table
-          columns={prepareColumns(props)}
-          rowKey={record => record.id}
-          locale={{
-            emptyText: (
-              <EmptyTablePlaceholder
-                text={<FormattedMessage id="app.shared.matchList.noMatches" />}
-              />
-            ),
-          }}
-          dataSource={props.matchExecution.botResults}
-          bordered
-          size="middle"
-          pagination={false}
-        />
-
-        {props.matchExecution.additionalData && (
-          <div>
-            <Typography.Title level={3} style={{ marginTop: 20 }}>
-              <FormattedMessage id="app.shared.matchExecution.additionalMatchData" />
-            </Typography.Title>
-
-            <Table
-              columns={getDynamicTableChildren(
-                '',
-                props.matchExecution.additionalData,
-                record => record,
-                false,
-              )}
-              rowKey={record => record.id}
-              dataSource={[props.matchExecution.additionalData]}
-              bordered
-              size="middle"
-              pagination={false}
-            />
-          </div>
+        {props.isAdmin && (
+          <Descriptions.Item
+            label={
+              <FormattedMessage id="app.shared.matchExecution.executorResult" />
+            }
+          >
+            {entryPointResultEnum.helpers.idToText(
+              props.matchExecution.executorResult,
+            )}
+          </Descriptions.Item>
         )}
-      </div>
-    )}
-  </div>
-);
+
+        {props.isAdmin && (
+          <Descriptions.Item
+            label={<FormattedMessage id="app.shared.matchExecution.created" />}
+          >
+            {intlGlobal.formatDate(
+              props.matchExecution.created,
+              longDateFormat,
+            )}
+          </Descriptions.Item>
+        )}
+
+        {props.matchExecution.executorResult !==
+          entryPointResultEnum.NOT_EXECUTED && (
+          <Descriptions.Item
+            label={<FormattedMessage id="app.shared.matchExecution.executed" />}
+          >
+            {intlGlobal.formatDate(
+              props.matchExecution.executed,
+              longDateFormat,
+            )}
+          </Descriptions.Item>
+        )}
+
+        <Descriptions.Item
+          label={<FormattedMessage id="app.shared.matchExecution.players" />}
+        >
+          {props.match.submissions.map((x, index) => [
+            <span key={`sep_${x.author.id}`}>{index ? ', ' : ''}</span>,
+            <span key={x.author.id}>{x.author.username}</span>,
+          ])}
+        </Descriptions.Item>
+      </Descriptions>
+
+      {props.matchExecution.executorResult === entryPointResultEnum.SUCCESS && (
+        <div>
+          <Typography.Title level={3} style={{ marginTop: 20 }}>
+            <FormattedMessage id="app.shared.matchExecution.playersData" />
+          </Typography.Title>
+
+          <Table
+            columns={prepareColumns(props)}
+            rowKey={record => record.submission.author.id}
+            locale={{
+              emptyText: (
+                <EmptyTablePlaceholder
+                  text={
+                    <FormattedMessage id="app.shared.matchList.noMatches" />
+                  }
+                />
+              ),
+            }}
+            dataSource={props.matchExecution.botResults}
+            bordered
+            size="middle"
+            pagination={false}
+          />
+
+          {hasAdditionalData && (
+            <div>
+              <Typography.Title level={3} style={{ marginTop: 20 }}>
+                <FormattedMessage id="app.shared.matchExecution.additionalMatchData" />
+              </Typography.Title>
+
+              <Table
+                columns={getDynamicTableChildren(
+                  '',
+                  additionalData,
+                  record => record,
+                  false,
+                )}
+                rowKey={record => record.id}
+                dataSource={[additionalData]}
+                bordered
+                size="middle"
+                pagination={false}
+              />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 MatchExecution.propTypes = {
   matchExecution: PropTypes.object.isRequired,
