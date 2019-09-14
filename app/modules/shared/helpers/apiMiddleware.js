@@ -6,7 +6,7 @@ import {
 } from '../selectors/auth';
 import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 
-export const API_BASE = process.env.API_URL;
+export const API_BASE = 'http://prak.mff.cuni.cz/';
 export const CALL_API = 'app/CALL_API';
 export const createApiAction = (request, meta) => ({
   type: CALL_API,
@@ -30,7 +30,18 @@ function prepareAxiosParams({ method, endpoint, ...rest }) {
   };
 }
 
-export const callApi = request => axios.request(prepareAxiosParams(request));
+export function* callApi(request) {
+  const requestParams = prepareAxiosParams(request);
+
+  const isLoggedIn = yield select(isLoggedInSelector);
+
+  if (isLoggedIn) {
+    const accessToken = yield select(accessTokenSelector);
+    requestParams.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  return yield call(axios.request, requestParams);
+}
 
 function* handleApiCalls({ request, meta = {} }) {
   const { type } = request;
@@ -40,16 +51,8 @@ function* handleApiCalls({ request, meta = {} }) {
     payload: request,
   });
 
-  const requestParams = prepareAxiosParams(request);
-  const isLoggedIn = yield select(isLoggedInSelector);
-
-  if (isLoggedIn) {
-    const accessToken = yield select(accessTokenSelector);
-    requestParams.headers.Authorization = `Bearer ${accessToken}`;
-  }
-
   try {
-    const response = yield call(axios.request, requestParams);
+    const response = yield call(callApi, request);
     const { data, status } = response;
 
     if (status < 400) {
@@ -59,7 +62,7 @@ function* handleApiCalls({ request, meta = {} }) {
       });
 
       if (meta.successCallback) {
-        meta.successCallback();
+        meta.successCallback(data);
       }
     } else {
       yield put({

@@ -10,9 +10,21 @@ const Container = styled.div`
   padding: 0 !important;
 `;
 
-const Title = styled(Typography.Title)`
+const Header = styled.div`
   padding: 15px 25px;
+`;
+
+const Title = styled(Typography.Title)`
   font-size: 30px !important;
+  margin: 0 !important;
+  display: inline-block;
+`;
+
+const Buttons = styled.div`
+  margin-left: 15px;
+  display: inline-block;
+  position: relative;
+  top: -3px;
 `;
 
 const Content = styled.div`
@@ -25,7 +37,10 @@ const Content = styled.div`
 
 const PageContent = props => (
   <Container className="container">
-    <Title>{props.title}</Title>
+    <Header>
+      <Title>{props.title}</Title>
+      <Buttons>{props.buttons}</Buttons>
+    </Header>
     <Content withPadding={props.withPadding}>{props.children}</Content>
   </Container>
 );
@@ -34,6 +49,7 @@ PageContent.propTypes = {
   children: PropTypes.any,
   title: PropTypes.node.isRequired,
   withPadding: PropTypes.bool,
+  buttons: PropTypes.node,
 };
 
 PageContent.defaultProps = {

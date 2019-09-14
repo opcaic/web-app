@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
   getDetailActionProps,
+  getSearchProps,
   getThemedDetailActionProps,
 } from '@/modules/shared/helpers/table';
 import { Table } from 'antd';
@@ -15,6 +16,7 @@ import {
   tournamentRankingStrategyEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 import { longDateFormat } from '@/modules/shared/helpers/time';
+import PropTypes from 'prop-types';
 
 function prepareColumns({ tournament, isAdmin }) {
   const columns = [];
@@ -59,7 +61,7 @@ function prepareColumns({ tournament, isAdmin }) {
   // Players and scores
   columns.push({
     title: <FormattedMessage id="app.shared.matchList.players" />,
-    key: 'players',
+    key: 'username',
     render: (text, record) => {
       const isSinglePlayer =
         tournament.format === tournamentFormatEnum.SINGLE_PLAYER;
@@ -98,6 +100,7 @@ function prepareColumns({ tournament, isAdmin }) {
         </span>,
       ]);
     },
+    ...getSearchProps('username'),
   });
 
   // Score for single player
@@ -158,7 +161,13 @@ const MatchList = props => (
     locale={{
       emptyText: (
         <EmptyTablePlaceholder
-          text={<FormattedMessage id="app.shared.matchList.noMatches" />}
+          text={
+            props.emptyText ? (
+              props.emptyText
+            ) : (
+              <FormattedMessage id="app.shared.matchList.noMatches" />
+            )
+          }
         />
       ),
     }}
@@ -166,6 +175,8 @@ const MatchList = props => (
   />
 );
 
-MatchList.propTypes = {};
+MatchList.propTypes = {
+  emptyText: PropTypes.node,
+};
 
 export default withAjax(MatchList);

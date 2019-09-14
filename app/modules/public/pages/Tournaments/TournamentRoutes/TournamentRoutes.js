@@ -5,8 +5,9 @@ import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import TournamentLeaderboard from '@/modules/public/containers/Tournament/TournamentLeaderboard';
 import TournamentOverview from '@/modules/public/containers/Tournament/TournamentOverview';
 import TournamentMatches from '@/modules/public/containers/Tournament/TournamentMatchList';
-import TournamentSubmissions from '@/modules/public/containers/Tournament/TournamentSubmissions';
+import TournamentSubmissions from '@/modules/public/containers/Tournament/TournamentSubmissionList';
 import TournamentMatchDetail from '@/modules/public/containers/Tournament/TournamentMatchDetail';
+import TournamentSubmissionDetail from '@/modules/public/containers/Tournament/TournamentSubmissionDetail';
 
 const MenuSyncedTournamentOverview = withMenuSync(TournamentOverview, {
   tournamentMenu: ['overview'],
@@ -27,6 +28,13 @@ const MenuSyncedTournamentMatchDetail = withMenuSync(TournamentMatchDetail, {
 const MenuSyncedTournamentSubmissions = withMenuSync(TournamentSubmissions, {
   tournamentMenu: ['submissions'],
 });
+
+const MenuSyncedTournamentSubmissionDetail = withMenuSync(
+  TournamentSubmissionDetail,
+  {
+    tournamentMenu: ['submissions'],
+  },
+);
 
 const TournamentRoutes = ({ tournament }) => (
   <Switch>
@@ -61,6 +69,13 @@ const TournamentRoutes = ({ tournament }) => (
       path="/tournaments/:id/submissions"
       component={() => (
         <MenuSyncedTournamentSubmissions tournament={tournament} />
+      )}
+    />
+    <Route
+      exact
+      path="/tournaments/:id/submissions/:submissionId"
+      component={() => (
+        <MenuSyncedTournamentSubmissionDetail tournament={tournament} />
       )}
     />
   </Switch>

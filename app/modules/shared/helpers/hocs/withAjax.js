@@ -54,6 +54,8 @@ function withAjax(WrappedComponent, pageSize = 10) {
 
       if (this.props.totalItems) {
         pagination.total = this.props.totalItems;
+      } else {
+        pagination.total = 0;
       }
 
       return (
