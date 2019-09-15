@@ -9,6 +9,7 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { FormattedMessage } from 'react-intl';
 import PageContent from '../../../components/Tournament/PageContent';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import SubmissionList from '@/modules/shared/components/Tournament/SubmissionList';
@@ -20,7 +21,12 @@ import { pageTitles } from '@/modules/public/pageTitles';
 export class TournamentSubmissionList extends React.PureComponent {
   render() {
     return (
-      <PageContent title="Submissions" withPadding={false}>
+      <PageContent
+        title={
+          <FormattedMessage id="app.public.tournamentSubmissionList.title" />
+        }
+        withPadding={false}
+      >
         <TournamentPageTitle
           tournament={this.props.tournament}
           title={intlGlobal.formatMessage(

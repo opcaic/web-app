@@ -164,7 +164,7 @@ function* handleSubmissionUpload({
     });
 
     if (failureCallback) {
-      const errors = prepareFormErrors(data);
+      const errors = prepareFormErrors(data, null, true);
       failureCallback(errors);
     }
   }

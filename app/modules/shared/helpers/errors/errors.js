@@ -30,7 +30,11 @@ export const errorIntlMessages = defineMessages({
   resetPasswordFailure: { id: 'app.errors.resetPasswordFailure' },
 });
 
-export function prepareFormErrors(data, errorMessageProvider) {
+export function prepareFormErrors(
+  data,
+  errorMessageProvider,
+  ignoreFields = false,
+) {
   const errors = { withField: {}, withoutField: [] };
   let apiErrors;
 
@@ -46,7 +50,7 @@ export function prepareFormErrors(data, errorMessageProvider) {
     let error = null;
     let errorContainer = null;
 
-    if (x.field !== null) {
+    if (x.field !== null && ignoreFields === false) {
       if (!errors.withField[x.field]) {
         errors.withField[x.field] = [];
       }
