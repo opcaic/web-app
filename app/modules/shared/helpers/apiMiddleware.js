@@ -6,7 +6,7 @@ import {
 } from '../selectors/auth';
 import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 
-export const API_BASE = 'http://prak.mff.cuni.cz/';
+export const API_BASE = process.env.API_URL;
 export const CALL_API = 'app/CALL_API';
 export const createApiAction = (request, meta) => ({
   type: CALL_API,
