@@ -16,6 +16,7 @@ import injectReducer from '../../../utils/injectReducer';
 import { apiSaga } from '@/modules/shared/helpers/apiMiddleware';
 import registrationReducer from '../../public/ducks/registration';
 import authReducer, { saga as authSaga, loadAuth } from '../ducks/auth';
+import submissionReducer, { saga as submissionSaga } from '../ducks/submission';
 import uiReducer from '../ducks/ui';
 import localizationReducer from '../ducks/localization';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
@@ -65,6 +66,7 @@ App.propTypes = {
 const withSagas = [
   injectSaga({ key: 'api', saga: apiSaga }),
   injectSaga({ key: 'auth', saga: authSaga }),
+  injectSaga({ key: 'submissionUpload', saga: submissionSaga }),
 ];
 
 const withReducers = [
@@ -72,6 +74,7 @@ const withReducers = [
   injectReducer({ key: 'auth', reducer: authReducer }),
   injectReducer({ key: 'language', reducer: localizationReducer }),
   injectReducer({ key: 'ui', reducer: uiReducer }),
+  injectReducer({ key: 'submissionUpload', reducer: submissionReducer }),
 ];
 
 const mapStateToProps = createStructuredSelector({

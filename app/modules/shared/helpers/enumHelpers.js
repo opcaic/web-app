@@ -143,3 +143,20 @@ menuItemTypeEnum.helpers = createEnum(
     2: { id: 'app.enums.menuItemType.external' },
   }),
 );
+
+export const submissionValidationStateEnum = {
+  QUEUED: 0,
+  VALID: 1,
+  INVALID: 2,
+  ERROR: 3,
+};
+
+submissionValidationStateEnum.helpers = createEnum(
+  submissionValidationStateEnum,
+  defineMessages({
+    0: { id: 'app.enums.submissionValidationState.queued' },
+    1: { id: 'app.enums.submissionValidationState.valid' },
+    2: { id: 'app.enums.submissionValidationState.invalid' },
+    3: { id: 'app.enums.submissionValidationState.error' },
+  }),
+);

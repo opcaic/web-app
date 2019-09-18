@@ -5,6 +5,7 @@ export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   resourceName: 'tournaments',
 });
 
+// TODO: handle properly
 export const tournamentsMenu = [
   {
     key: 'overview',
@@ -23,7 +24,7 @@ export const tournamentsMenu = [
   },
   {
     key: 'submissions',
-    text: 'Submissions',
+    text: 'My Submissions',
     path: 'submissions',
   },
 ];
