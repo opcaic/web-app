@@ -207,7 +207,7 @@
   "app.shared.leaderboard.score": "Score",
   "app.shared.matchExecution.additionalData": "Additional data",
   "app.shared.matchExecution.additionalMatchData": "Additional match data",
-  "app.shared.matchExecution.basicInformation": "",
+  "app.shared.matchExecution.basicInformation": "Basic information",
   "app.shared.matchExecution.created": "Created date",
   "app.shared.matchExecution.executed": "Executed date",
   "app.shared.matchExecution.executorResult": "Executor result",
