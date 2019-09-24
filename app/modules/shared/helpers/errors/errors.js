@@ -63,7 +63,10 @@ export function prepareFormErrors(
     const camelCasedCode = toCamelCase(x.code);
 
     if (errorMessageProvider && errorMessageProvider(camelCasedCode, x)) {
-      error = errorMessageProvider(camelCasedCode, x);
+      error = intlGlobal.formatMessage(
+        errorMessageProvider(camelCasedCode, x),
+        x,
+      );
     } else if (errorIntlMessages[camelCasedCode]) {
       error = intlGlobal.formatMessage(errorIntlMessages[camelCasedCode], x);
     } else {

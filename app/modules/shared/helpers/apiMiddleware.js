@@ -1,13 +1,20 @@
+/* eslint-disable no-restricted-globals */
 import { put, takeEvery, all, call, select } from 'redux-saga/effects';
 import axios from 'axios';
+import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
+import { Button, notification } from 'antd';
+import React from 'react';
 import {
   isLoggedIn as isLoggedInSelector,
   accessTokenSelector,
 } from '../selectors/auth';
-import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
+import { defineMessages } from 'react-intl';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
-export const API_BASE = process.env.API_URL;
+export const API_BASE = 'http://prak.mff.cuni.cz/';
 export const CALL_API = 'app/CALL_API';
+const axiosInstance = axios.create();
+
 export const createApiAction = (request, meta) => ({
   type: CALL_API,
   request,
@@ -40,7 +47,7 @@ export function* callApi(request) {
     requestParams.headers.Authorization = `Bearer ${accessToken}`;
   }
 
-  return yield call(axios.request, requestParams);
+  return yield call(axiosInstance.request, requestParams);
 }
 
 function* handleApiCalls({ request, meta = {} }) {
@@ -51,35 +58,64 @@ function* handleApiCalls({ request, meta = {} }) {
     payload: request,
   });
 
-  try {
-    const response = yield call(callApi, request);
-    const { data, status } = response;
+  const response = yield call(callApi, request);
+  const { data, status } = response;
 
-    if (status < 400) {
-      yield put({
-        type: `${type}_SUCCESS`,
-        payload: data,
-      });
+  if (status < 400) {
+    yield put({
+      type: `${type}_SUCCESS`,
+      payload: data,
+    });
 
-      if (meta.successCallback) {
-        meta.successCallback(data);
-      }
-    } else {
-      yield put({
-        type: `${type}_FAILURE`,
-      });
-
-      const errors = prepareFormErrors(data);
-
-      if (meta.failureCallback) {
-        meta.failureCallback(errors);
-      }
+    if (meta.successCallback) {
+      meta.successCallback(data);
     }
-  } catch (e) {
-    console.log(e);
+  } else {
+    yield put({
+      type: `${type}_FAILURE`,
+    });
+
+    const errors = prepareFormErrors(data);
+
+    if (meta.failureCallback) {
+      meta.failureCallback(errors);
+    }
   }
 }
 
+const notAuthenticatedNotificationMessages = defineMessages({
+  reload: { id: 'app.shared.notAuthenticatedNotification.reload' },
+  title: { id: 'app.shared.notAuthenticatedNotification.title' },
+  description: { id: 'app.shared.notAuthenticatedNotification.description' },
+});
+
+function* handle401Interceptor() {
+  axiosInstance.interceptors.response.use(response => {
+    if (response.status === 401) {
+      const key = `notAuthenticatedNotification`;
+      const btn = (
+        <Button type="primary" onClick={() => location.reload()}>
+          {intlGlobal.formatMessage(
+            notAuthenticatedNotificationMessages.reload,
+          )}
+        </Button>
+      );
+      notification.error({
+        message: intlGlobal.formatMessage(
+          notAuthenticatedNotificationMessages.title,
+        ),
+        description: intlGlobal.formatMessage(
+          notAuthenticatedNotificationMessages.description,
+        ),
+        btn,
+        key,
+      });
+    }
+
+    return response;
+  });
+}
+
 export function* apiSaga() {
-  yield all([takeEvery(CALL_API, handleApiCalls)]);
+  yield all([call(handle401Interceptor), takeEvery(CALL_API, handleApiCalls)]);
 }

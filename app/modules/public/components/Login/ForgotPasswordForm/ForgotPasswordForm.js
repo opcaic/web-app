@@ -12,6 +12,7 @@ import {
   accountIntlMessages,
 } from '@/modules/public/helpers/accountHelpers';
 import { isRequired } from '@/modules/shared/helpers/errors/formValidations';
+import { compose } from 'redux';
 
 class ForgotPasswordForm extends React.PureComponent {
   state = {
@@ -94,6 +95,9 @@ ForgotPasswordForm.propTypes = {
   errors: PropTypes.array,
 };
 
-export default Form.create({
-  name: 'forgot_password',
-})(withEnhancedForm(ForgotPasswordForm));
+export default compose(
+  Form.create({
+    name: 'forgot_password',
+  }),
+  withEnhancedForm(),
+)(ForgotPasswordForm);

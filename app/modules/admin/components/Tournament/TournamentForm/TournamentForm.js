@@ -11,6 +11,7 @@ import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import * as Showdown from 'showdown';
 import ReactMde from 'react-mde';
 import TournamentMenuEditor from '@/modules/admin/components/Tournament/TournamentMenuEditor';
+import { compose } from 'redux';
 const { Option } = Select;
 
 const converter = new Showdown.Converter({
@@ -245,6 +246,9 @@ class TournamentForm extends React.PureComponent {
   }
 }
 
-export default Form.create({
-  name: 'user_form',
-})(withEnhancedForm(TournamentForm));
+export default compose(
+  Form.create({
+    name: 'tournament_form',
+  }),
+  withEnhancedForm(),
+)(TournamentForm);

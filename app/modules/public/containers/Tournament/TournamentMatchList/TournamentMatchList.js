@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { matchPropType, tournamentPropType } from '@/modules/public/propTypes';
+import {
+  matchPropType,
+  tournamentPropType,
+} from '@/modules/public/utils/propTypes';
 import MatchList from '@/modules/shared/components/Tournament/MatchList';
 import {
   actions as matchActions,
@@ -10,12 +13,12 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import PageContent from '../../../components/Tournament/PageContent';
+import PageContent from '../../../components/layout/PageContent';
 import { addLastExecutions } from '@/modules/shared/helpers/matches';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentMatchList extends React.PureComponent {

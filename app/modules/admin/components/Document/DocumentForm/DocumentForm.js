@@ -6,6 +6,7 @@ import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import ReactMde from 'react-mde';
 import * as Showdown from 'showdown';
 import 'react-mde/lib/styles/css/react-mde-all.css';
+import { compose } from 'redux';
 
 const converter = new Showdown.Converter({
   tables: true,
@@ -105,6 +106,9 @@ class DocumentForm extends React.PureComponent {
   }
 }
 
-export default Form.create({
-  name: 'user_form',
-})(withEnhancedForm(DocumentForm));
+export default compose(
+  Form.create({
+    name: 'user_form',
+  }),
+  withEnhancedForm(),
+)(DocumentForm);

@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { matchPropType, tournamentPropType } from '@/modules/public/propTypes';
+import {
+  matchPropType,
+  tournamentPropType,
+} from '@/modules/public/utils/propTypes';
 import {
   actions as submissionActions,
   selectors as submissionSelectors,
@@ -10,12 +13,12 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
-import PageContent from '../../../components/Tournament/PageContent';
+import PageContent from '../../../components/layout/PageContent';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import SubmissionList from '@/modules/shared/components/Tournament/SubmissionList';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentSubmissionList extends React.PureComponent {

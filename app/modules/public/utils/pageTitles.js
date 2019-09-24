@@ -49,4 +49,10 @@ export const pageTitles = defineMessages({
   gameListPage: {
     id: 'app.public.pageTitles.gameListPage',
   },
+  profilePage: {
+    id: 'app.public.pageTitles.profilePage',
+  },
+  changePasswordPage: {
+    id: 'app.public.pageTitles.changePasswordPage',
+  },
 });

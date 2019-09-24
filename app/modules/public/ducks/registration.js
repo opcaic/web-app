@@ -62,40 +62,36 @@ function* handleRegister({
     type: actionTypes.REGISTER_REQUEST,
   });
 
-  try {
-    const { data, status } = yield call(callApi, {
-      endpoint: 'api/users',
-      method: 'POST',
-      data: {
-        username,
-        email,
-        password,
-        localizationLanguage: 'en',
-      },
+  const { data, status } = yield call(callApi, {
+    endpoint: 'api/users',
+    method: 'POST',
+    data: {
+      username,
+      email,
+      password,
+      localizationLanguage: 'en',
+    },
+  });
+
+  if (status >= 200 && status < 300) {
+    yield put({
+      type: actionTypes.REGISTER_SUCCESS,
     });
 
-    if (status >= 200 && status < 300) {
-      yield put({
-        type: actionTypes.REGISTER_SUCCESS,
-      });
-
-      if (successCallback) {
-        successCallback();
-      }
-
-      yield put(push(`/registration-successful?email=${email}`));
-    } else {
-      yield put({
-        type: actionTypes.REGISTER_FAILURE,
-      });
-
-      if (failureCallback) {
-        const errors = prepareFormErrors(data);
-        failureCallback(errors);
-      }
+    if (successCallback) {
+      successCallback();
     }
-  } catch (e) {
-    console.log(e);
+
+    yield put(push(`/registration-successful?email=${email}`));
+  } else {
+    yield put({
+      type: actionTypes.REGISTER_FAILURE,
+    });
+
+    if (failureCallback) {
+      const errors = prepareFormErrors(data);
+      failureCallback(errors);
+    }
   }
 }
 
@@ -106,36 +102,33 @@ function* handleConfirmEmail({
     type: actionTypes.CONFIRM_EMAIL_REQUEST,
   });
 
-  try {
-    const { data, status } = yield call(callApi, {
-      endpoint: 'api/users/emailVerification',
-      method: 'POST',
-      data: {
-        email,
-        token,
-      },
+  const { data, status } = yield call(callApi, {
+    endpoint: 'api/users/emailVerification',
+    method: 'POST',
+    data: {
+      email,
+      token,
+    },
+  });
+
+  if (status >= 200 && status < 300) {
+    yield put({
+      type: actionTypes.CONFIRM_EMAIL_SUCCESS,
     });
 
-    if (status >= 200 && status < 300) {
-      yield put({
-        type: actionTypes.CONFIRM_EMAIL_SUCCESS,
-      });
-
-      if (successCallback) {
-        successCallback();
-      }
-    } else {
-      yield put({
-        type: actionTypes.CONFIRM_EMAIL_FAILURE,
-      });
-
-      if (failureCallback) {
-        const errors = prepareFormErrors(data);
-        failureCallback(errors);
-      }
+    if (successCallback) {
+      successCallback();
     }
-    // eslint-disable-next-line no-empty
-  } catch (e) {}
+  } else {
+    yield put({
+      type: actionTypes.CONFIRM_EMAIL_FAILURE,
+    });
+
+    if (failureCallback) {
+      const errors = prepareFormErrors(data);
+      failureCallback(errors);
+    }
+  }
 }
 
 export function* saga() {

@@ -13,10 +13,10 @@ import { FormattedMessage } from 'react-intl';
 import Spin from '@/modules/shared/components/Spin';
 import MatchExecution from '@/modules/shared/components/Tournament/MatchExecution';
 import { addLastExecution } from '@/modules/shared/helpers/matches';
-import PageContent from '@/modules/public/components/Tournament/PageContent';
+import PageContent from '@/modules/public/components/layout/PageContent';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentMatchDetail extends React.PureComponent {

@@ -9,7 +9,7 @@ import ForgotPasswordForm from '@/modules/public/components/Login/ForgotPassword
 import { forgotPassword } from '@/modules/public/ducks/accounts';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ForgotPasswordPage extends React.PureComponent {

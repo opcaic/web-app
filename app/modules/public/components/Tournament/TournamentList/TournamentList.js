@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'antd';
 import TournamentCard from '@/modules/public/components/Tournament/TournamentCard';
-import { tournamentListItemPropType } from '@/modules/public/propTypes';
+import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 
 const TournamentList = props => (
   <List

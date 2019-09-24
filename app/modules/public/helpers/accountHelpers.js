@@ -19,6 +19,15 @@ export const accountErrorIntlMessages = defineMessages({
   fieldRequiredConfirmPassword: {
     id: 'app.public.accountErrors.confirmPasswordRequired',
   },
+  fieldRequiredOldPassword: {
+    id: 'app.public.accountErrors.oldPasswordRequired',
+  },
+  fieldRequiredNewPassword: {
+    id: 'app.public.accountErrors.newPasswordRequired',
+  },
+  fieldRequiredConfirmNewPassword: {
+    id: 'app.public.accountErrors.confirmNewPasswordRequired',
+  },
 });
 
 export function accountErrorMessageProvider(code, values) {

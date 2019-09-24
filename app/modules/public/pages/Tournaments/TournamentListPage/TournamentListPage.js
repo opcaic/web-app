@@ -9,11 +9,11 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { tournamentListItemPropType } from '@/modules/public/propTypes';
+import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { getTournamentsListItems } from '@/modules/public/selectors/tournaments';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 import PageTitle from '@/modules/shared/components/PageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
