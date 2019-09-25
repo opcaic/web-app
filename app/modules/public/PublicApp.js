@@ -27,9 +27,14 @@ import ResetPasswordPage from '@/modules/public/pages/User/ResetPasswordPage';
 import ConfirmEmailPage from '@/modules/public/pages/User/ConfirmEmailPage';
 import { saga as accountsSaga } from './ducks/accounts';
 import { saga as registrationSaga } from '@/modules/public/ducks/registration';
+import { handleCookieConsent } from '@/modules/shared/helpers/utils';
 
 /* eslint-disable react/prefer-stateless-function */
 export class PublicApp extends React.Component {
+  componentDidMount() {
+    handleCookieConsent();
+  }
+
   render() {
     return (
       <Switch>
