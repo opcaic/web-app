@@ -21,6 +21,7 @@ import uiReducer from '../ducks/ui';
 import localizationReducer from '../ducks/localization';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
 import { initialLoadCompleted } from '@/modules/shared/selectors/auth';
+import { handleCookieConsent } from '@/modules/shared/helpers/utils';
 
 const SpinnerContainer = styled.div`
   text-align: center;
@@ -29,8 +30,9 @@ const SpinnerContainer = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class App extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadAuth();
+    handleCookieConsent();
   }
 
   render() {
