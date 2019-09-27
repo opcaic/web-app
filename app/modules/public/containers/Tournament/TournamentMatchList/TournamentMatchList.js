@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { matchPropType, tournamentPropType } from '@/modules/public/propTypes';
+import {
+  matchPropType,
+  tournamentPropType,
+} from '@/modules/public/utils/propTypes';
 import MatchList from '@/modules/shared/components/Tournament/MatchList';
 import {
   actions as matchActions,
@@ -10,18 +13,22 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import PageContent from '../../../components/Tournament/PageContent';
 import { addLastExecutions } from '@/modules/shared/helpers/matches';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
+import PageContent from '@/modules/public/components/layout/PageContent';
+import { FormattedMessage } from 'react-intl';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentMatchList extends React.PureComponent {
   render() {
     return (
-      <PageContent title="Matches" withPadding={false}>
+      <PageContent
+        title={<FormattedMessage id="app.public.tournamentMatchList.title" />}
+        withPadding={false}
+      >
         <TournamentPageTitle
           tournament={this.props.tournament}
           title={intlGlobal.formatMessage(

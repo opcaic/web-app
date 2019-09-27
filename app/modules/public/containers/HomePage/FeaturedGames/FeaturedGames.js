@@ -8,7 +8,7 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { gamePropType } from '@/modules/public/propTypes';
+import { gamePropType } from '@/modules/public/utils/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { Typography } from 'antd';
 import StyledButton from '@/modules/shared/components/StyledButton';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ListCard from '@/modules/public/components/ListCard';
-import { gamePropType } from '@/modules/public/propTypes';
+import { gamePropType } from '@/modules/public/utils/propTypes';
 
 const GameCard = props => (
   <ListCard

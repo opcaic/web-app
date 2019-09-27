@@ -14,6 +14,8 @@ import {
   accountErrorMessageProvider,
   accountIntlMessages,
 } from '@/modules/public/helpers/accountHelpers';
+import { compose } from 'redux';
+import withPasswordConfirmation from '@/modules/shared/helpers/hocs/withPasswordConfirmation';
 
 class ResetPasswordForm extends React.PureComponent {
   state = {
@@ -31,23 +33,6 @@ class ResetPasswordForm extends React.PureComponent {
 
   successCallback = () => {
     this.setState({ hasResult: true });
-  };
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  };
-
-  validateToNextPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirmPassword'], { force: true });
-    }
-    callback();
   };
 
   render() {
@@ -94,7 +79,7 @@ class ResetPasswordForm extends React.PureComponent {
                 isRequired('password', accountErrorMessageProvider),
                 isMinLength(8, 'password'),
                 {
-                  validator: this.validateToNextPassword,
+                  validator: this.props.compareToSecondPassword,
                 },
               ],
             })(
@@ -111,12 +96,12 @@ class ResetPasswordForm extends React.PureComponent {
               rules: [
                 isRequired('confirmPassword', accountErrorMessageProvider),
                 {
-                  validator: this.compareToFirstPassword,
+                  validator: this.props.compareToFirstPassword,
                 },
               ],
             })(
               <Input.Password
-                onBlur={this.handleConfirmBlur}
+                onBlur={this.props.handleConfirmPasswordBlur}
                 placeholder={intlGlobal.formatMessage(
                   accountIntlMessages.confirmPassword,
                 )}
@@ -139,8 +124,15 @@ ResetPasswordForm.propTypes = {
   onSubmit: PropTypes.func,
   form: PropTypes.object,
   errors: PropTypes.array,
+  compareToFirstPassword: PropTypes.func.isRequired,
+  compareToSecondPassword: PropTypes.func.isRequired,
+  handleConfirmPasswordBlur: PropTypes.func.isRequired,
 };
 
-export default Form.create({
-  name: 'reset_password',
-})(withEnhancedForm(ResetPasswordForm));
+export default compose(
+  Form.create({
+    name: 'reset_password',
+  }),
+  withEnhancedForm(),
+  withPasswordConfirmation(),
+)(ResetPasswordForm);

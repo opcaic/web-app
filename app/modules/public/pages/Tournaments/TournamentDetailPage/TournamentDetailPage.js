@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
-import { tournamentPropType } from '@/modules/public/propTypes';
+import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import Spin from '@/modules/shared/components/Spin';
 import SubmissionUpload from '@/modules/shared/containers/Tournament/SubmissionUpload';
 import { showSubmissionModal } from '@/modules/shared/ducks/submission';

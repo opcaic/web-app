@@ -27,6 +27,9 @@ import ResetPasswordPage from '@/modules/public/pages/User/ResetPasswordPage';
 import ConfirmEmailPage from '@/modules/public/pages/User/ConfirmEmailPage';
 import { saga as accountsSaga } from './ducks/accounts';
 import { saga as registrationSaga } from '@/modules/public/ducks/registration';
+import usersReducers, { saga as usersSaga } from '@/modules/public/ducks/users';
+import SettingsPage from '@/modules/public/pages/Settings/SettingsPage';
+import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
 import { handleCookieConsent } from '@/modules/shared/helpers/utils';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -42,6 +45,7 @@ export class PublicApp extends React.Component {
         <Route exact path="/tournaments" component={TournamentListPage} />
         <Route path="/tournaments/:id" component={TournamentDetailPage} />
         <Route exact path="/games" component={GameListPage} />
+
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />
@@ -51,6 +55,9 @@ export class PublicApp extends React.Component {
           path="/registration-successful"
           component={RegistrationSuccessfulPage}
         />
+
+        <PrivateRoute path="/settings" component={SettingsPage} />
+
         <Route path="/" component={NotFoundPage} />
       </Switch>
     );
@@ -60,6 +67,7 @@ export class PublicApp extends React.Component {
 const withSagas = [
   injectSaga({ key: 'accounts', saga: accountsSaga }),
   injectSaga({ key: 'registration', saga: registrationSaga }),
+  injectSaga({ key: 'users', saga: usersSaga }),
 ];
 
 const withReducers = [
@@ -75,6 +83,7 @@ const withReducers = [
   injectReducer({ key: 'documents', reducer: documentsReducers }),
   injectReducer({ key: 'leaderboards', reducer: leaderboardsReducers }),
   injectReducer({ key: 'validations', reducer: validationsReducers }),
+  injectReducer({ key: 'users', reducer: usersReducers }),
 ];
 
 export default compose(

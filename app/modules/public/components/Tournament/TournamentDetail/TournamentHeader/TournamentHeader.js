@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import TournamentMenu from '@/modules/public/components/Tournament/TournamentDetail/TournamentMenu';
 import { tournamentsMenu } from '@/modules/public/ducks/tournaments';
 import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
-import { tournamentPropType } from '@/modules/public/propTypes';
+import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import { tournamentAvailabilityEnum } from '@/modules/shared/helpers/enumHelpers';
 
 const SyncedTournamentMenu = withSyncedActiveItems(

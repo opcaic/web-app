@@ -1,10 +1,7 @@
 import React from 'react';
 import Leaderboard from '@/modules/shared/components/Tournament/Leaderboard';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
-import { tournamentPropType } from '@/modules/public/propTypes';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
-import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {
@@ -13,8 +10,11 @@ import {
 } from '@/modules/public/ducks/leaderboards';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
-import PageContent from '../../../components/Tournament/PageContent';
+import PageContent from '../../../components/layout/PageContent';
 import { addSharedPlaces } from '@/modules/shared/helpers/leaderboards';
+import PropTypes from 'prop-types';
+import { tournamentPropType } from '@/modules/public/utils/propTypes';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentLeaderboard extends React.PureComponent {
@@ -25,7 +25,7 @@ export class TournamentLeaderboard extends React.PureComponent {
   render() {
     return (
       <PageContent
-        title={<FormattedMessage id="app.public.tourmamentLeaderboard.title" />}
+        title={<FormattedMessage id="app.public.tournamentLeaderboard.title" />}
         withPadding={false}
       >
         <TournamentPageTitle

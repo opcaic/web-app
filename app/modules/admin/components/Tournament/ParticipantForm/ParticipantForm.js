@@ -4,6 +4,7 @@ import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import { FormattedMessage } from 'react-intl';
 import EmailValidator from 'email-validator';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { compose } from 'redux';
 import { intlMessages } from './localization';
 
 class ParticipantForm extends React.PureComponent {
@@ -90,6 +91,9 @@ class ParticipantForm extends React.PureComponent {
   }
 }
 
-export default Form.create({
-  name: 'participant_form',
-})(withEnhancedForm(ParticipantForm));
+export default compose(
+  Form.create({
+    name: 'participant_form',
+  }),
+  withEnhancedForm(),
+)(ParticipantForm);

@@ -19,10 +19,10 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Spin from '@/modules/shared/components/Spin';
-import PageContent from '@/modules/public/components/Tournament/PageContent';
+import PageContent from '@/modules/public/components/layout/PageContent';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 import Submission from '@/modules/shared/components/Tournament/Submission';
 import { addLastExecutions } from '@/modules/shared/helpers/matches';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';

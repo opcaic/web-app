@@ -71,8 +71,13 @@ const LanguageMenu = styled(AntMenu)`
 
 const userMenu = (logout) => (
   <UserMenu>
+    <AntMenu.Item key="account">
+      <Link to="/settings/profile">
+        <FormattedMessage id="app.public.topMenu.settings" />
+      </Link>
+    </AntMenu.Item>
     <AntMenu.Item key="logout" onClick={() => logout()}>
-      <FormattedMessage id="app.topMenu.logout" />
+      <FormattedMessage id="app.public.topMenu.logout" />
     </AntMenu.Item>
   </UserMenu>
 );
@@ -80,10 +85,10 @@ const userMenu = (logout) => (
 const languageMenu = (changeLocale) => (
   <LanguageMenu>
     <AntMenu.Item key="english" onClick={() => changeLocale('en')}>
-      <FormattedMessage id="app.topMenu.english" />
+      <FormattedMessage id="app.public.topMenu.english" />
     </AntMenu.Item>
     <AntMenu.Item key="czech" onClick={() => changeLocale('cs')}>
-      <FormattedMessage id="app.topMenu.czech" />
+      <FormattedMessage id="app.public.topMenu.czech" />
     </AntMenu.Item>
   </LanguageMenu>
 );
@@ -94,17 +99,17 @@ const TopMenu = ({ changeLocale, isLoggedIn, logout }) => (
       <Menu>
         <MenuItem key="home">
           <StyledLink to="/">
-            <FormattedMessage id="app.topMenu.home" />
+            <FormattedMessage id="app.public.topMenu.home" />
           </StyledLink>
         </MenuItem>
         <MenuItem key="tournaments">
           <StyledLink to="/tournaments">
-            <FormattedMessage id="app.topMenu.tournaments" />
+            <FormattedMessage id="app.public.topMenu.tournaments" />
           </StyledLink>
         </MenuItem>
         <MenuItem key="games">
           <StyledLink to="/games">
-            <FormattedMessage id="app.topMenu.games" />
+            <FormattedMessage id="app.public.topMenu.games" />
           </StyledLink>
         </MenuItem>
 
@@ -112,7 +117,7 @@ const TopMenu = ({ changeLocale, isLoggedIn, logout }) => (
           && [
             <MenuItem key="administration">
               <StyledLink to="/admin">
-                <FormattedMessage id="app.topMenu.administration" />
+                <FormattedMessage id="app.public.topMenu.administration" />
               </StyledLink>
             </MenuItem>,
           ]}
@@ -122,7 +127,7 @@ const TopMenu = ({ changeLocale, isLoggedIn, logout }) => (
         <LanguageButton overlay={languageMenu(changeLocale)} trigger={['click']}>
           <div>
             <span style={{marginRight: 5}}>
-              <FormattedMessage id="app.topMenu.language" />
+              <FormattedMessage id="app.public.topMenu.language" />
             </span>
             <Icon type="caret-down" />
           </div>
@@ -140,13 +145,13 @@ const TopMenu = ({ changeLocale, isLoggedIn, logout }) => (
           : [
             <AuthMenuItem key="login">
               <StyledLink to="/login">
-                <FormattedMessage id="app.topMenu.login"/>
+                <FormattedMessage id="app.public.topMenu.login"/>
               </StyledLink>
             </AuthMenuItem>,
             <span key="slash">/</span>,
             <AuthMenuItem key="register">
               <StyledLink to="/register">
-                <FormattedMessage id="app.topMenu.register"/>
+                <FormattedMessage id="app.public.topMenu.register"/>
               </StyledLink>
             </AuthMenuItem>,
           ]

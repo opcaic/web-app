@@ -16,12 +16,10 @@ import {
   accountIntlMessages,
 } from '@/modules/public/helpers/accountHelpers';
 import FormErrors from '@/modules/shared/components/FormErrors';
+import { compose } from 'redux';
+import withPasswordConfirmation from '@/modules/shared/helpers/hocs/withPasswordConfirmation';
 
 class RegisterForm extends React.PureComponent {
-  state = {
-    confirmDirty: false,
-  };
-
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -29,30 +27,6 @@ class RegisterForm extends React.PureComponent {
         this.props.onSubmit(values);
       }
     });
-  };
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  };
-
-  validateToNextPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirmPassword'], { force: true });
-    }
-    callback();
-  };
-
-  handleConfirmBlur = e => {
-    const { value } = e.target;
-    this.setState(prevState => ({
-      confirmDirty: prevState.confirmDirty || !!value,
-    }));
   };
 
   render() {
@@ -97,7 +71,7 @@ class RegisterForm extends React.PureComponent {
                 isRequired('password', accountErrorMessageProvider),
                 isMinLength(8, 'password'),
                 {
-                  validator: this.validateToNextPassword,
+                  validator: this.props.compareToSecondPassword,
                 },
               ],
             })(
@@ -114,12 +88,12 @@ class RegisterForm extends React.PureComponent {
               rules: [
                 isRequired('confirmPassword', accountErrorMessageProvider),
                 {
-                  validator: this.compareToFirstPassword,
+                  validator: this.props.compareToFirstPassword,
                 },
               ],
             })(
               <Input.Password
-                onBlur={this.handleConfirmBlur}
+                onBlur={this.props.handleConfirmPasswordBlur}
                 placeholder={intlGlobal.formatMessage(
                   accountIntlMessages.confirmPassword,
                 )}
@@ -160,8 +134,15 @@ RegisterForm.propTypes = {
   onSubmit: PropTypes.func,
   form: PropTypes.object,
   errors: PropTypes.array,
+  compareToFirstPassword: PropTypes.func.isRequired,
+  compareToSecondPassword: PropTypes.func.isRequired,
+  handleConfirmPasswordBlur: PropTypes.func.isRequired,
 };
 
-export default Form.create({
-  name: 'register',
-})(withEnhancedForm(RegisterForm));
+export default compose(
+  Form.create({
+    name: 'register',
+  }),
+  withEnhancedForm(),
+  withPasswordConfirmation(),
+)(RegisterForm);
