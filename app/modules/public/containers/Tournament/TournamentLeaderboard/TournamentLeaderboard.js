@@ -25,7 +25,7 @@ export class TournamentLeaderboard extends React.PureComponent {
   render() {
     return (
       <PageContent
-        title={<FormattedMessage id="app.public.tourmamentLeaderboard.title" />}
+        title={<FormattedMessage id="app.public.tournamentLeaderboard.title" />}
         withPadding={false}
       >
         <TournamentPageTitle
