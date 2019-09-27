@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import PageContent from '@/modules/public/components/layout/PageContent';
+import Container from '@/modules/public/components/layout/Container';
 
-const Container = styled.div`
+const StyledContainer = styled(Container)`
   background: white;
-  min-height: 280px;
   margin-top: 15px;
   padding: 0 !important;
 `;
@@ -20,13 +20,12 @@ const Content = styled.div`
 `;
 
 const InnerMenuPageContent = props => (
-  <Container className="container" style={{ marginTop: 30 }}>
-    {/* TODO: change to Container component */}
+  <StyledContainer>
     <PageContent title={props.title}>
       {props.menu}
       <Content>{props.children}</Content>
     </PageContent>
-  </Container>
+  </StyledContainer>
 );
 
 InnerMenuPageContent.propTypes = {

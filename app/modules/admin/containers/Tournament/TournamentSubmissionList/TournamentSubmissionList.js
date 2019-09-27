@@ -20,7 +20,7 @@ export class TournamentSubmissionList extends React.PureComponent {
           loading={this.props.isFetching}
           fetch={this.props.fetchItems(this.props.tournament.id)}
           totalItems={this.props.totalItems}
-          isAdmin
+          view="admin"
         />
       </div>
     );

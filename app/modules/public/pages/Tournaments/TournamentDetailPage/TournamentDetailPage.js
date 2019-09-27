@@ -15,6 +15,7 @@ import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import Spin from '@/modules/shared/components/Spin';
 import SubmissionUpload from '@/modules/shared/containers/Tournament/SubmissionUpload';
 import { showSubmissionModal } from '@/modules/shared/ducks/submission';
+import Container from '@/modules/public/components/layout/Container';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentDetailPage extends React.PureComponent {
@@ -25,7 +26,7 @@ export class TournamentDetailPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
-        <div className="container" style={{ marginTop: 30 }}>
+        <Container>
           <Spin
             spinning={this.props.resource === null || this.props.isFetching}
           >
@@ -38,7 +39,7 @@ export class TournamentDetailPage extends React.PureComponent {
             <TournamentRoutes tournament={this.props.resource} />
             <SubmissionUpload />
           </Spin>
-        </div>
+        </Container>
       </PageLayout>
     );
   }

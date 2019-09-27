@@ -1,5 +1,5 @@
 import React from 'react';
-import TournamentList from '@/modules/public/components/Tournament/TournamentList';
+import TournamentCardList from '@/modules/public/components/Tournament/TournamentCardList';
 import PropTypes from 'prop-types';
 import {
   actions as tournamentActions,
@@ -13,6 +13,7 @@ import { transformTournamentForList } from '@/modules/public/helpers/tournaments
 import { Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import StyledButton from '@/modules/shared/components/StyledButton';
+import Container from '@/modules/public/components/layout/Container';
 
 /* eslint-disable react/prefer-stateless-function */
 export class FeaturedTournaments extends React.PureComponent {
@@ -22,12 +23,12 @@ export class FeaturedTournaments extends React.PureComponent {
 
   render() {
     return (
-      <div className="container" style={{ marginTop: 40 }}>
+      <Container>
         <Typography.Title level={1} style={{ marginBottom: 30 }}>
           Featured tournaments
         </Typography.Title>
 
-        <TournamentList
+        <TournamentCardList
           dataSource={this.props.items.map(transformTournamentForList)}
           loading={this.props.isFetching}
           fetch={this.props.fetchItems}
@@ -39,7 +40,7 @@ export class FeaturedTournaments extends React.PureComponent {
             <Link to="/tournaments">Browse all tournaments</Link>
           </StyledButton>
         </div>
-      </div>
+      </Container>
     );
   }
 }

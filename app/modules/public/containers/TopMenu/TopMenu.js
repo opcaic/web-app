@@ -8,12 +8,15 @@ import TopMenuComponent from '@/modules/public/components/layout/TopMenu';
 import { changeLocale } from '@/modules/shared/ducks/localization';
 import { isLoggedIn } from '@/modules/shared/selectors/auth';
 import { logout } from '@/modules/shared/ducks/auth';
+import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
+
+const SyncedTopMenu = withSyncedActiveItems(TopMenuComponent, 'topMenu');
 
 /* eslint-disable react/prefer-stateless-function */
 export class TopMenu extends React.PureComponent {
   render() {
     return (
-      <TopMenuComponent
+      <SyncedTopMenu
         changeLocale={this.props.changeLocale}
         isLoggedIn={this.props.isLoggedIn}
         logout={this.props.logout}

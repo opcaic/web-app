@@ -4,7 +4,7 @@ import { List } from 'antd';
 import TournamentCard from '@/modules/public/components/Tournament/TournamentCard';
 import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 
-const TournamentList = props => (
+const TournamentCardList = props => (
   <List
     dataSource={props.dataSource}
     grid={{
@@ -19,8 +19,8 @@ const TournamentList = props => (
   />
 );
 
-TournamentList.propTypes = {
+TournamentCardList.propTypes = {
   dataSource: PropTypes.arrayOf(PropTypes.shape(tournamentListItemPropType)),
 };
 
-export default TournamentList;
+export default TournamentCardList;

@@ -24,7 +24,7 @@ import TournamentPageTitle from '@/modules/public/components/Tournament/Tourname
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import Submission from '@/modules/shared/components/Tournament/Submission';
-import { addLastExecutions } from '@/modules/shared/helpers/matches';
+import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import { downloadSubmission } from '@/modules/shared/ducks/submission';

@@ -14,6 +14,7 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import PageTitle from '@/modules/shared/components/PageTitle';
+import Container from '@/modules/public/components/layout/Container';
 
 /* eslint-disable react/prefer-stateless-function */
 export class GameListPage extends React.PureComponent {
@@ -26,13 +27,13 @@ export class GameListPage extends React.PureComponent {
       <PageLayout>
         <PageTitle title={intlGlobal.formatMessage(pageTitles.gameListPage)} />
 
-        <div className="container" style={{ marginTop: 30 }}>
+        <Container>
           <GameList
             dataSource={this.props.items}
             loading={this.props.isFetching}
             fetch={this.props.fetchItems}
           />
-        </div>
+        </Container>
       </PageLayout>
     );
   }

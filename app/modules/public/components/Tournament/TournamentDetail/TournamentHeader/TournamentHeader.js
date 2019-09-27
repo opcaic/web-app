@@ -89,7 +89,6 @@ const TournamentHeader = props => (
     <SyncedTournamentMenu
       id={props.tournament.id}
       items={tournamentsMenu}
-      activeItems={[tournamentsMenu[0].key]}
       themeColor={props.tournament.themeColor}
     />
     <SubmitButton

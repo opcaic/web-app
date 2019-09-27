@@ -1,10 +1,26 @@
 import React from 'react';
 
-function withAjax(WrappedComponent, pageSize = 10) {
+function withAjax(WrappedComponent) {
   return class extends React.Component {
-    state = {
-      pagination: { pageSize },
+    static defaultProps = {
+      pageSize: 10,
     };
+
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        pagination: { pageSize: props.pageSize },
+      };
+    }
+
+    static getDerivedStateFromProps(props, state) {
+      return {
+        pagination: Object.assign({}, state.pagination, {
+          pageSize: props.pageSize,
+        }),
+      };
+    }
 
     handleTableChange = (pagination, filters, sorter) => {
       const pager = { ...this.state.pagination };
@@ -45,7 +61,7 @@ function withAjax(WrappedComponent, pageSize = 10) {
       this.props.fetch(requestParams);
     };
 
-    componentWillMount() {
+    componentDidMount() {
       this.props.fetch({ count: this.state.pagination.pageSize });
     }
 

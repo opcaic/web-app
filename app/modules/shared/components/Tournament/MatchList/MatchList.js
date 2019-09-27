@@ -7,16 +7,15 @@ import {
 } from '@/modules/shared/helpers/table';
 import { Table } from 'antd';
 import styled from 'styled-components';
-import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 import {
   matchStateEnum,
   tournamentFormatEnum,
-  tournamentRankingStrategyEnum,
 } from '@/modules/shared/helpers/enumHelpers';
-import { longDateFormat } from '@/modules/shared/helpers/time';
 import PropTypes from 'prop-types';
+import { getBestScore } from '@/modules/shared/helpers/resources/matches';
+import TimeAgo from '@/modules/shared/components/TimeAgo/TimeAgo';
 
 function prepareColumns({ tournament, isAdmin }) {
   const columns = [];
@@ -28,11 +27,7 @@ function prepareColumns({ tournament, isAdmin }) {
       key: 'queued',
       width: 200,
       align: 'center',
-      render: (text, record) =>
-        intlGlobal.formatDate(
-          new Date(record.lastExecution.created),
-          longDateFormat,
-        ),
+      render: (text, record) => <TimeAgo date={record.lastExecution.created} />,
     });
   }
 
@@ -51,10 +46,7 @@ function prepareColumns({ tournament, isAdmin }) {
         return null;
       }
 
-      return intlGlobal.formatDate(
-        new Date(record.lastExecution.executed),
-        longDateFormat,
-      );
+      return <TimeAgo date={record.lastExecution.executed} />;
     },
   });
 
@@ -65,19 +57,10 @@ function prepareColumns({ tournament, isAdmin }) {
     render: (text, record) => {
       const isSinglePlayer =
         tournament.format === tournamentFormatEnum.SINGLE_PLAYER;
-      let bestScore;
-
-      if (
-        tournament.rankingStrategy === tournamentRankingStrategyEnum.MAXIMUM
-      ) {
-        bestScore = Math.max(
-          ...record.lastExecution.botResults.map(x => x.score),
-        );
-      } else {
-        bestScore = Math.min(
-          ...record.lastExecution.botResults.map(x => x.score),
-        );
-      }
+      const bestScore = getBestScore(
+        record.lastExecution.botResults,
+        tournament.rankingStrategy,
+      );
 
       if (record.state === matchStateEnum.QUEUED) {
         return record.submissions.map((x, index) => [

@@ -45,7 +45,7 @@ export class TournamentSubmissionList extends React.PureComponent {
             this.props.currentUser.id,
           )}
           totalItems={this.props.totalItems}
-          isAdmin={false}
+          view="public"
         />
       </PageContent>
     );
