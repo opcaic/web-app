@@ -92,7 +92,10 @@ const TournamentHeader = props => (
       activeItems={[tournamentsMenu[0].key]}
       themeColor={props.tournament.themeColor}
     />
-    <SubmitButton themeColor={props.tournament.themeColor}>
+    <SubmitButton
+      themeColor={props.tournament.themeColor}
+      onClick={() => props.showSubmissionModal()}
+    >
       Submit solution
     </SubmitButton>
   </Container>
@@ -100,6 +103,7 @@ const TournamentHeader = props => (
 
 TournamentHeader.propTypes = {
   tournament: PropTypes.shape(tournamentPropType),
+  showSubmissionModal: PropTypes.func.isRequired,
 };
 
 export default TournamentHeader;

@@ -9,18 +9,24 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { FormattedMessage } from 'react-intl';
 import PageContent from '../../../components/Tournament/PageContent';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
-import SubmissionList from '@/modules/public/components/Tournament/SubmissionList';
+import SubmissionList from '@/modules/shared/components/Tournament/SubmissionList';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
-export class TournamentSubmissions extends React.PureComponent {
+export class TournamentSubmissionList extends React.PureComponent {
   render() {
     return (
-      <PageContent title="Submissions" withPadding={false}>
+      <PageContent
+        title={
+          <FormattedMessage id="app.public.tournamentSubmissionList.title" />
+        }
+        withPadding={false}
+      >
         <TournamentPageTitle
           tournament={this.props.tournament}
           title={intlGlobal.formatMessage(
@@ -36,13 +42,14 @@ export class TournamentSubmissions extends React.PureComponent {
             this.props.currentUser.id,
           )}
           totalItems={this.props.totalItems}
+          isAdmin={false}
         />
       </PageContent>
     );
   }
 }
 
-TournamentSubmissions.propTypes = {
+TournamentSubmissionList.propTypes = {
   tournament: PropTypes.shape(tournamentPropType),
   items: PropTypes.arrayOf(PropTypes.shape(matchPropType)),
   isFetching: PropTypes.bool.isRequired,
@@ -56,8 +63,7 @@ export function mapDispatchToProps(dispatch) {
     fetchItems: (tournamentId, authorId) => params =>
       dispatch(
         submissionActions.fetchMany(
-          // TODO: how to sort this?
-          prepareFilterParams(params, 'date', false, {
+          prepareFilterParams(params, 'created', false, {
             tournamentId,
             authorId,
           }),
@@ -78,4 +84,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(TournamentSubmissions);
+export default compose(withConnect)(TournamentSubmissionList);

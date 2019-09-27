@@ -26,6 +26,16 @@ const TournamentMenu = ({ activeItems, id }) => (
         <FormattedMessage id="app.admin.tournamentMenu.matches" />
       </Link>
     </Menu.Item>
+    <Menu.Item key="submissions">
+      <Link to={`/admin/tournaments/${id}/submissions`}>
+        <FormattedMessage id="app.admin.tournamentMenu.submissions" />
+      </Link>
+    </Menu.Item>
+    <Menu.Item key="leaderboard">
+      <Link to={`/admin/tournaments/${id}/leaderboard`}>
+        <FormattedMessage id="app.admin.tournamentMenu.leaderboard" />
+      </Link>
+    </Menu.Item>
   </Menu>
 );
 

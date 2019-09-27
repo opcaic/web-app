@@ -33,6 +33,13 @@ class TournamentMatchDetail extends React.PureComponent {
     return (
       <PageContent
         title={<FormattedMessage id="app.public.tournamentMatchDetail.title" />}
+        buttons={
+          <Button type="default" size="small">
+            <Link to={`/tournaments/${this.props.tournament.id}/matches/`}>
+              <FormattedMessage id="app.generic.backToList" />
+            </Link>
+          </Button>
+        }
       >
         <TournamentPageTitle
           tournament={this.props.tournament}
@@ -40,12 +47,6 @@ class TournamentMatchDetail extends React.PureComponent {
         />
 
         <Spin spinning={this.props.isFetching || this.props.resource === null}>
-          <Button type="default" style={{ marginBottom: 20 }}>
-            <Link to={`/tournaments/${this.props.tournament.id}/matches/`}>
-              <FormattedMessage id="app.generic.backToList" />
-            </Link>
-          </Button>
-
           <MatchExecution
             matchExecution={match && match.lastExecution}
             match={match}

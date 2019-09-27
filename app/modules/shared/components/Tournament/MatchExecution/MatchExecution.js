@@ -74,7 +74,11 @@ const MatchExecution = props => {
   return (
     <div>
       <Descriptions
-        title={<Typography.Title level={3}>Basic information</Typography.Title>}
+        title={
+          <Typography.Title level={3}>
+            <FormattedMessage id="app.shared.matchExecution.basicInformation" />
+          </Typography.Title>
+        }
         column={1}
         size="small"
         bordered

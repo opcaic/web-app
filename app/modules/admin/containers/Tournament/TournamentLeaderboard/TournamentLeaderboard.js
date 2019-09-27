@@ -1,19 +1,13 @@
 import React from 'react';
 import Leaderboard from '@/modules/shared/components/Tournament/Leaderboard';
-import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
-import { tournamentPropType } from '@/modules/public/propTypes';
-import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {
   actions as leaderboardActions,
   selectors as leaderboardSelectors,
-} from '@/modules/public/ducks/leaderboards';
+} from '@/modules/admin/ducks/leaderboards';
 import { createStructuredSelector } from 'reselect';
-import { FormattedMessage } from 'react-intl';
-import PageContent from '../../../components/Tournament/PageContent';
 import { addSharedPlaces } from '@/modules/shared/helpers/leaderboards';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -24,17 +18,7 @@ export class TournamentLeaderboard extends React.PureComponent {
 
   render() {
     return (
-      <PageContent
-        title={<FormattedMessage id="app.public.tourmamentLeaderboard.title" />}
-        withPadding={false}
-      >
-        <TournamentPageTitle
-          tournament={this.props.tournament}
-          title={intlGlobal.formatMessage(
-            pageTitles.tournamentDetailLeaderboardPage,
-          )}
-        />
-
+      <div>
         <Leaderboard
           leaderboard={this.props.resource}
           dataSource={addSharedPlaces(
@@ -42,13 +26,13 @@ export class TournamentLeaderboard extends React.PureComponent {
           )}
           loading={this.props.isFetching}
         />
-      </PageContent>
+      </div>
     );
   }
 }
 
 TournamentLeaderboard.propTypes = {
-  tournament: PropTypes.shape(tournamentPropType),
+  tournament: PropTypes.object,
   resource: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,

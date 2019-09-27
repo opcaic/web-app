@@ -16,6 +16,8 @@ import gamesFeaturedReducers from './ducks/gamesFeatured';
 import matchesReducers from './ducks/matches';
 import submissionsReducers from './ducks/submissions';
 import documentsReducers from './ducks/documents';
+import leaderboardsReducers from './ducks/leaderboards';
+import validationsReducers from './ducks/validations';
 import RegistrationSuccessfulPage from '@/modules/public/pages/User/RegistrationSuccessfulPage';
 import TournamentListPage from '@/modules/public/pages/Tournaments/TournamentListPage';
 import GameListPage from '@/modules/public/pages/Games/GameListPage/GameListPage';
@@ -25,9 +27,14 @@ import ResetPasswordPage from '@/modules/public/pages/User/ResetPasswordPage';
 import ConfirmEmailPage from '@/modules/public/pages/User/ConfirmEmailPage';
 import { saga as accountsSaga } from './ducks/accounts';
 import { saga as registrationSaga } from '@/modules/public/ducks/registration';
+import { handleCookieConsent } from '@/modules/shared/helpers/utils';
 
 /* eslint-disable react/prefer-stateless-function */
 export class PublicApp extends React.Component {
+  componentDidMount() {
+    handleCookieConsent();
+  }
+
   render() {
     return (
       <Switch>
@@ -66,6 +73,8 @@ const withReducers = [
   injectReducer({ key: 'matches', reducer: matchesReducers }),
   injectReducer({ key: 'submissions', reducer: submissionsReducers }),
   injectReducer({ key: 'documents', reducer: documentsReducers }),
+  injectReducer({ key: 'leaderboards', reducer: leaderboardsReducers }),
+  injectReducer({ key: 'validations', reducer: validationsReducers }),
 ];
 
 export default compose(

@@ -13,6 +13,8 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { tournamentPropType } from '@/modules/public/propTypes';
 import Spin from '@/modules/shared/components/Spin';
+import SubmissionUpload from '@/modules/shared/containers/Tournament/SubmissionUpload';
+import { showSubmissionModal } from '@/modules/shared/ducks/submission';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentDetailPage extends React.PureComponent {
@@ -27,8 +29,14 @@ export class TournamentDetailPage extends React.PureComponent {
           <Spin
             spinning={this.props.resource === null || this.props.isFetching}
           >
-            <TournamentHeader tournament={this.props.resource} />
+            <TournamentHeader
+              tournament={this.props.resource}
+              showSubmissionModal={() =>
+                this.props.showSubmissionModal(this.props.resource)
+              }
+            />
             <TournamentRoutes tournament={this.props.resource} />
+            <SubmissionUpload />
           </Spin>
         </div>
       </PageLayout>
@@ -41,11 +49,14 @@ TournamentDetailPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.shape(tournamentPropType),
   match: PropTypes.object.isRequired,
+  showSubmissionModal: PropTypes.func.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: id => dispatch(tournamentsActions.fetchResource(id)),
+    showSubmissionModal: tournament =>
+      dispatch(showSubmissionModal(tournament)),
   };
 }
 
