@@ -81,15 +81,15 @@ function prepareColumns({ tournament, isAdmin }) {
 
       if (record.state === matchStateEnum.QUEUED) {
         return record.submissions.map((x, index) => [
-          // eslint-disable-next-line react/no-array-index-key
-          <span key={`sep_${index}`}>{index ? ' vs ' : ''}</span>,
+          <span key={`sep_${x.author.id}`}>{index ? ' vs ' : ''}</span>,
           <span key={x.author.id}>{x.author.username} </span>,
         ]);
       }
 
       return record.lastExecution.botResults.map((x, index) => [
-        // eslint-disable-next-line react/no-array-index-key
-        <span key={`sep_${index}`}>{index ? ' vs ' : ''}</span>,
+        <span key={`sep_${x.submission.author.id}`}>
+          {index ? ' vs ' : ''}
+        </span>,
         <span
           key={x.submission.author.id}
           style={{
