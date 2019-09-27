@@ -29,7 +29,7 @@ const SpinnerContainer = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class App extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadAuth();
   }
 
