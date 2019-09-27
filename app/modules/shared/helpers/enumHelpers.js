@@ -210,15 +210,28 @@ matchResultEnum.helpers = createEnum(
   }),
 );
 
-export const tournamentSortEnum = {
+export const tournamentRunningSortEnum = {
   DEADLINE_SOON_FIRST: 0,
-  DEADLINE_LATE_FIRST: 1,
+  DEADLINE_SOON_LAST: 1,
 };
 
-tournamentSortEnum.helpers = createEnum(
-  tournamentSortEnum,
+tournamentRunningSortEnum.helpers = createEnum(
+  tournamentRunningSortEnum,
   defineMessages({
-    0: { id: 'app.enums.tournamentSort.deadlineSoonFirst' },
-    1: { id: 'app.enums.tournamentSort.deadlineLateFirst' },
+    0: { id: 'app.enums.tournamentRunningSort.deadlineSoonFirst' },
+    1: { id: 'app.enums.tournamentRunningSort.deadlineSoonLast' },
+  }),
+);
+
+export const tournamentFinishedSortEnum = {
+  FINISHED_RECENTLY_FIRST: 0,
+  FINISHED_RECENTLY_LAST: 1,
+};
+
+tournamentFinishedSortEnum.helpers = createEnum(
+  tournamentFinishedSortEnum,
+  defineMessages({
+    0: { id: 'app.enums.tournamentFinishedSort.finishedRecentlyFirst' },
+    1: { id: 'app.enums.tournamentFinishedSort.finishedRecentlyLast' },
   }),
 );

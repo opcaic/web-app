@@ -6,7 +6,8 @@ import {
   tournamentFormatEnum,
   tournamentScopeEnum,
   tournamentSimplifiedStateEnum,
-  tournamentSortEnum,
+  tournamentRunningSortEnum,
+  tournamentFinishedSortEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 import FilterItem from '@/modules/public/components/Tournament/TournamentFilter/FilterItem';
 
@@ -99,15 +100,44 @@ class TournamentFilter extends Component {
         />
 
         <FilterItem
-          field="sortBy"
+          field="sortByRunning"
           label={<FormattedMessage id="app.public.tournamentFilter.sort" />}
           placeholder={
             <FormattedMessage id="app.public.tournamentFilter.sortPlaceholder" />
           }
           handleChange={this.handleChange}
           selectedValues={this.state.selectedValues}
-          options={tournamentSortEnum.helpers.getFilterOptions()}
-          style={{ float: 'right', marginRight: 0 }}
+          options={tournamentRunningSortEnum.helpers.getFilterOptions()}
+          style={{
+            float: 'right',
+            marginRight: 0,
+            display:
+              this.state.selectedValues.state ===
+              tournamentSimplifiedStateEnum.RUNNING
+                ? 'block'
+                : 'none',
+          }}
+          width={200}
+        />
+
+        <FilterItem
+          field="sortByFinished"
+          label={<FormattedMessage id="app.public.tournamentFilter.sort" />}
+          placeholder={
+            <FormattedMessage id="app.public.tournamentFilter.sortPlaceholder" />
+          }
+          handleChange={this.handleChange}
+          selectedValues={this.state.selectedValues}
+          options={tournamentFinishedSortEnum.helpers.getFilterOptions()}
+          style={{
+            float: 'right',
+            marginRight: 0,
+            display:
+              this.state.selectedValues.state ===
+              tournamentSimplifiedStateEnum.FINISHED
+                ? 'block'
+                : 'none',
+          }}
           width={200}
         />
       </StyledFilter>

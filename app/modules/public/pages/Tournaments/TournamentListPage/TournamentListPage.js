@@ -23,7 +23,8 @@ import Container from '@/modules/public/components/layout/Container';
 import TournamentFilter from '@/modules/public/components/Tournament/TournamentFilter';
 import {
   tournamentSimplifiedStateEnum,
-  tournamentSortEnum,
+  tournamentRunningSortEnum,
+  tournamentFinishedSortEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 import { getFilterParams } from '@/modules/shared/helpers/resources/tournaments';
 
@@ -31,10 +32,11 @@ import { getFilterParams } from '@/modules/shared/helpers/resources/tournaments'
 export class TournamentListPage extends React.PureComponent {
   defaultFilterValues = {
     state: tournamentSimplifiedStateEnum.RUNNING,
-    sortBy: tournamentSortEnum.DEADLINE_SOON_FIRST,
+    sortByRunning: tournamentRunningSortEnum.DEADLINE_SOON_FIRST,
+    sortByFinished: tournamentFinishedSortEnum.FINISHED_RECENTLY_FIRST,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchItems(getFilterParams(this.defaultFilterValues));
     this.props.fetchGames();
   }
@@ -88,8 +90,7 @@ export function mapDispatchToProps(dispatch) {
     fetchItems: params =>
       dispatch(
         tournamentActions.fetchMany(
-          // TODO: how to sort this?
-          // TODO: count 100 should not be here? pagination maybe?
+          // TODO: count 100 should not be here - pagination maybe?
           prepareFilterParams(params, 'name', true, { count: 100 }),
         ),
       ),
