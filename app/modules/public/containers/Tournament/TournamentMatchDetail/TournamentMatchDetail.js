@@ -82,7 +82,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   isFetching: matchesSelectors.isFetchingItem,
   resource: matchesSelectors.getItem,
-  error: matchesSelectors.getError,
+  error: matchesSelectors.getFetchItemError,
 });
 
 const withConnect = connect(

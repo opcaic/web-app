@@ -139,7 +139,7 @@ const mapStateToProps = createStructuredSelector({
   matchesTotalItems: matchSelectors.getTotalItems,
   isFetchingValidations: validationsSelectors.isFetching,
   validations: validationsSelectors.getItem,
-  error: submissionsSelectors.getError,
+  error: submissionsSelectors.getFetchItemError,
 });
 
 const withConnect = connect(

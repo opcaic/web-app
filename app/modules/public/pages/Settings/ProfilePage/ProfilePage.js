@@ -74,7 +74,7 @@ const mapStateToProps = createStructuredSelector({
   isFetching: usersSelectors.isFetchingItem,
   resource: usersSelectors.getItem,
   currentUser: currentUserSelector,
-  error: usersSelectors.getError,
+  error: usersSelectors.getFetchItemError,
 });
 
 const withConnect = connect(

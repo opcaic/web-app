@@ -65,7 +65,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   isFetching: tournamentsSelectors.isFetchingItem,
   resource: tournamentsSelectors.getItem,
-  error: tournamentsSelectors.getError,
+  error: tournamentsSelectors.getFetchItemError,
 });
 
 const withConnect = connect(
