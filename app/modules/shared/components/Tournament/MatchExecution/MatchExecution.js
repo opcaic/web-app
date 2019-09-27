@@ -14,6 +14,10 @@ import {
 import PropTypes from 'prop-types';
 import { longDateFormat } from '@/modules/shared/helpers/time';
 
+function hasEntries(object) {
+  return object && Object.entries(object).length !== 0;
+}
+
 function prepareColumns({ tournament, matchExecution }) {
   const columns = [];
 
@@ -49,7 +53,7 @@ function prepareColumns({ tournament, matchExecution }) {
   // eslint-disable-next-line prefer-destructuring
   const additionalData = matchExecution.botResults[0].additionalData;
 
-  if (additionalData && Object.entries(additionalData).length !== 0) {
+  if (hasEntries(additionalData)) {
     columns.push(
       getDynamicTableColumns(
         <FormattedMessage id="app.shared.matchExecution.additionalData" />,
@@ -66,8 +70,6 @@ function prepareColumns({ tournament, matchExecution }) {
 const MatchExecution = props => {
   // eslint-disable-next-line prefer-destructuring
   const additionalData = props.matchExecution.additionalData;
-  const hasAdditionalData =
-    additionalData && Object.entries(additionalData).length !== 0;
 
   return (
     <div>
@@ -146,7 +148,7 @@ const MatchExecution = props => {
             pagination={false}
           />
 
-          {hasAdditionalData && (
+          {hasEntries(additionalData) && (
             <div>
               <Typography.Title level={3} style={{ marginTop: 20 }}>
                 <FormattedMessage id="app.shared.matchExecution.additionalMatchData" />
