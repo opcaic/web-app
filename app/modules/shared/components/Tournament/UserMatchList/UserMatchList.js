@@ -165,6 +165,7 @@ const UserMatchList = props => (
 
 UserMatchList.propTypes = {
   emptyText: PropTypes.node,
+  user: PropTypes.object.isRequired,
 };
 
 export default withAjax(UserMatchList);

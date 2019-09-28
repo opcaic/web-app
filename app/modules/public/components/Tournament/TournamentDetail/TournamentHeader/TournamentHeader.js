@@ -88,7 +88,9 @@ const TournamentHeader = props => (
     </Content>
     <SyncedTournamentMenu
       id={props.tournament.id}
-      items={tournamentsMenu}
+      items={tournamentsMenu.filter(
+        x => props.isLoggedIn || x.private === false,
+      )}
       themeColor={props.tournament.themeColor}
     />
     <SubmitButton
@@ -103,6 +105,7 @@ const TournamentHeader = props => (
 TournamentHeader.propTypes = {
   tournament: PropTypes.shape(tournamentPropType),
   showSubmissionModal: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 
 export default TournamentHeader;

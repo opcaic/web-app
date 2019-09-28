@@ -5,7 +5,6 @@ import styled, { css } from 'styled-components';
 
 const Container = styled.div`
   background: white;
-  min-height: 280px;
   margin-top: 15px;
   padding: 0 !important;
 `;

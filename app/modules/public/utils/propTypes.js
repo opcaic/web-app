@@ -18,6 +18,7 @@ export const tournamentPropType = {
   imageUrl: PropTypes.string.isRequired,
   imageOverlay: PropTypes.number.isRequired,
   themeColor: PropTypes.string.isRequired,
+  privateMatchlog: PropTypes.bool.isRequired,
 };
 
 export const tournamentListItemPropType = {
