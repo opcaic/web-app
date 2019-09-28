@@ -1,11 +1,7 @@
 import React from 'react';
 import PageLayout from '@/modules/public/components/layout/PageLayout';
-import TournamentCardList from '@/modules/public/components/Tournament/TournamentCardList';
 import PropTypes from 'prop-types';
-import {
-  actions as tournamentActions,
-  selectors as tournamentSelectors,
-} from '@/modules/public/ducks/tournaments';
+import { actions as tournamentActions } from '@/modules/public/ducks/tournaments';
 import {
   actions as gameActions,
   selectors as gameSelectors,
@@ -13,9 +9,7 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
-import { getTournamentsListItems } from '@/modules/public/selectors/tournaments';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import PageTitle from '@/modules/shared/components/PageTitle';
@@ -27,24 +21,51 @@ import {
   tournamentFinishedSortEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 import { getFilterParams } from '@/modules/shared/helpers/resources/tournaments';
+import TournamentCardListLoadMore from '@/modules/public/components/Tournament/TournamentCardListLoadMore';
+import { transformTournamentForList } from '@/modules/public/helpers/tournaments';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentListPage extends React.PureComponent {
-  defaultFilterValues = {
-    state: tournamentSimplifiedStateEnum.RUNNING,
-    sortByRunning: tournamentRunningSortEnum.DEADLINE_SOON_FIRST,
-    sortByFinished: tournamentFinishedSortEnum.FINISHED_RECENTLY_FIRST,
+  state = {
+    selectedFilterValues: {
+      state: tournamentSimplifiedStateEnum.RUNNING,
+      sortByRunning: tournamentRunningSortEnum.DEADLINE_SOON_FIRST,
+      sortByFinished: tournamentFinishedSortEnum.FINISHED_RECENTLY_FIRST,
+    },
+    // When the filter changes, we want to reset the state of the tournament list and
+    // this is most easily done by remounting the list component by setting a different key
+    filterStateNumber: 0,
   };
 
   componentDidMount() {
-    this.props.fetchItems(getFilterParams(this.defaultFilterValues));
     this.props.fetchGames();
   }
 
   onFilterChange = selectedValues => {
-    const params = getFilterParams(selectedValues);
+    this.setState(state => ({
+      selectedFilterValues: selectedValues,
+      filterStateNumber: state.filterStateNumber + 1,
+    }));
+  };
 
-    this.props.fetchItems(params);
+  fetchData = (additionalParams, successCallback, failureCallback) => {
+    this.props.fetchItems(
+      getFilterParams(this.state.selectedFilterValues),
+      additionalParams,
+      this.fetchDataSuccessCallback(successCallback),
+      failureCallback,
+    );
+  };
+
+  fetchDataSuccessCallback = originalSuccessCallback => (data, ...rest) => {
+    const transformedData = {
+      total: data.total,
+      list: data.list.map(x => transformTournamentForList(x)),
+    };
+
+    if (originalSuccessCallback) {
+      originalSuccessCallback(transformedData, ...rest);
+    }
   };
 
   render() {
@@ -59,15 +80,15 @@ export class TournamentListPage extends React.PureComponent {
         <Container>
           <TournamentFilter
             onChange={this.onFilterChange}
-            initialValues={this.defaultFilterValues}
+            initialValues={this.state.selectedFilterValues}
             games={this.props.games || []}
             isFetchingGames={this.props.isFetchingGames}
           />
-          <TournamentCardList
-            dataSource={this.props.items}
-            loading={this.props.isFetching}
-            fetch={this.props.fetchItems}
-            totalItems={this.props.totalItems}
+
+          <TournamentCardListLoadMore
+            key={this.state.filterStateNumber}
+            pageSize={12}
+            fetchData={this.fetchData}
           />
         </Container>
       </PageLayout>
@@ -76,10 +97,7 @@ export class TournamentListPage extends React.PureComponent {
 }
 
 TournamentListPage.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape(tournamentListItemPropType)),
-  isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,
-  totalItems: PropTypes.number.isRequired,
   fetchGames: PropTypes.func.isRequired,
   games: PropTypes.array,
   isFetchingGames: PropTypes.bool.isRequired,
@@ -87,11 +105,16 @@ TournamentListPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchItems: params =>
+    fetchItems: (
+      filterParams,
+      additionalParams,
+      successCallback,
+      failureCallback,
+    ) =>
       dispatch(
         tournamentActions.fetchMany(
-          // TODO: count 100 should not be here - pagination maybe?
-          prepareFilterParams(params, 'name', true, { count: 100 }),
+          prepareFilterParams(filterParams, 'name', true, additionalParams),
+          { meta: { successCallback, failureCallback } },
         ),
       ),
     fetchGames: () =>
@@ -104,9 +127,6 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  items: getTournamentsListItems,
-  isFetching: tournamentSelectors.isFetching,
-  totalItems: tournamentSelectors.getTotalItems,
   games: gameSelectors.getItems,
   isFetchingGames: gameSelectors.isFetching,
 });
