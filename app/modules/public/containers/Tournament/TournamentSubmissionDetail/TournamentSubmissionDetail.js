@@ -18,7 +18,6 @@ import {
 } from '@/modules/public/ducks/validations';
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import Spin from '@/modules/shared/components/Spin';
 import PageContent from '@/modules/public/components/layout/PageContent';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
@@ -28,6 +27,7 @@ import { addLastExecutions } from '@/modules/shared/helpers/matches';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import { downloadSubmission } from '@/modules/shared/ducks/submission';
+import ApiResult from '@/modules/shared/components/ApiResult';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentSubmissionDetail extends React.PureComponent {
@@ -65,12 +65,13 @@ class TournamentSubmissionDetail extends React.PureComponent {
           )}
         />
 
-        <Spin
-          spinning={
+        <ApiResult
+          loading={
             this.props.isFetching ||
             this.props.resource === null ||
             this.props.isFetchingValidations
           }
+          error={this.props.error}
         >
           <Submission
             submission={this.props.resource}
@@ -87,7 +88,7 @@ class TournamentSubmissionDetail extends React.PureComponent {
             downloadSubmission={this.props.downloadSubmission}
             isAdmin={false}
           />
-        </Spin>
+        </ApiResult>
       </PageContent>
     );
   }
@@ -107,6 +108,7 @@ TournamentSubmissionDetail.propTypes = {
   isFetchingValidations: PropTypes.bool.isRequired,
   validations: PropTypes.object,
   downloadSubmission: PropTypes.func.isRequired,
+  error: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -137,6 +139,7 @@ const mapStateToProps = createStructuredSelector({
   matchesTotalItems: matchSelectors.getTotalItems,
   isFetchingValidations: validationsSelectors.isFetching,
   validations: validationsSelectors.getItem,
+  error: submissionsSelectors.getFetchItemError,
 });
 
 const withConnect = connect(

@@ -73,6 +73,9 @@ function* handleApiCalls({ request, meta = {} }) {
   } else {
     yield put({
       type: `${type}_FAILURE`,
+      payload: {
+        status,
+      },
     });
 
     const errors = prepareFormErrors(data);
