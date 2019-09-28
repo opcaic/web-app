@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import TournamentLeaderboard from '@/modules/public/containers/Tournament/TournamentLeaderboard';
 import TournamentOverview from '@/modules/public/containers/Tournament/TournamentOverview';
-import TournamentMatches from '@/modules/public/containers/Tournament/TournamentMatchList';
+import TournamentMatchList from '@/modules/public/containers/Tournament/TournamentMatchList';
 import TournamentSubmissions from '@/modules/public/containers/Tournament/TournamentSubmissionList';
 import TournamentMatchDetail from '@/modules/public/containers/Tournament/TournamentMatchDetail';
 import TournamentSubmissionDetail from '@/modules/public/containers/Tournament/TournamentSubmissionDetail';
+import TournamentMatchListMy from '@/modules/public/containers/Tournament/TournamentMatchListMy';
+import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
 
 const MenuSyncedTournamentOverview = withMenuSync(TournamentOverview, {
   tournamentMenu: ['overview'],
@@ -17,7 +19,7 @@ const MenuSyncedTournamentLeaderboard = withMenuSync(TournamentLeaderboard, {
   tournamentMenu: ['leaderboard'],
 });
 
-const MenuSyncedTournamentMatches = withMenuSync(TournamentMatches, {
+const MenuSyncedTournamentMatches = withMenuSync(TournamentMatchList, {
   tournamentMenu: ['matches'],
 });
 
@@ -26,15 +28,23 @@ const MenuSyncedTournamentMatchDetail = withMenuSync(TournamentMatchDetail, {
 });
 
 const MenuSyncedTournamentSubmissions = withMenuSync(TournamentSubmissions, {
-  tournamentMenu: ['submissions'],
+  tournamentMenu: ['mySubmissions'],
 });
 
 const MenuSyncedTournamentSubmissionDetail = withMenuSync(
   TournamentSubmissionDetail,
   {
-    tournamentMenu: ['submissions'],
+    tournamentMenu: ['mySubmissions'],
   },
 );
+
+const MenuSyncedTournamentMyMatches = withMenuSync(TournamentMatchListMy, {
+  tournamentMenu: ['myMatches'],
+});
+
+const MenuSyncedTournamentMyMatchDetail = withMenuSync(TournamentMatchDetail, {
+  tournamentMenu: ['myMatches'],
+});
 
 const TournamentRoutes = ({ tournament }) => (
   <Switch>
@@ -64,18 +74,33 @@ const TournamentRoutes = ({ tournament }) => (
       )}
     />
 
-    <Route
+    <PrivateRoute
       exact
       path="/tournaments/:id/submissions"
       component={() => (
         <MenuSyncedTournamentSubmissions tournament={tournament} />
       )}
     />
-    <Route
+    <PrivateRoute
       exact
       path="/tournaments/:id/submissions/:submissionId"
       component={() => (
         <MenuSyncedTournamentSubmissionDetail tournament={tournament} />
+      )}
+    />
+
+    <PrivateRoute
+      exact
+      path="/tournaments/:id/my-matches"
+      component={() => (
+        <MenuSyncedTournamentMyMatches tournament={tournament} />
+      )}
+    />
+    <PrivateRoute
+      exact
+      path="/tournaments/:id/my-matches/:matchId"
+      component={() => (
+        <MenuSyncedTournamentMyMatchDetail tournament={tournament} />
       )}
     />
   </Switch>

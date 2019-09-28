@@ -29,6 +29,10 @@ const StyledLink = styled(({ themeColor, ...rest }) => <Link {...rest} />)`
   }
 `;
 
+const PrivateText = styled.span`
+  font-weight: 600;
+`;
+
 function getLink(id, item) {
   return `/tournaments/${id}/${item.path}`;
 }
@@ -38,7 +42,7 @@ const TournamentMenu = ({ id, items, activeItems, themeColor }) => (
     {items.map(item => (
       <StyledMenuItem key={item.key} themeColor={themeColor}>
         <StyledLink to={getLink(id, item)} themeColor={themeColor}>
-          {item.text}
+          {item.private ? <PrivateText>{item.text}</PrivateText> : item.text}
         </StyledLink>
       </StyledMenuItem>
     ))}

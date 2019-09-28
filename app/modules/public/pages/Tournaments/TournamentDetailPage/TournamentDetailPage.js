@@ -16,6 +16,7 @@ import Spin from '@/modules/shared/components/Spin';
 import SubmissionUpload from '@/modules/shared/containers/Tournament/SubmissionUpload';
 import { showSubmissionModal } from '@/modules/shared/ducks/submission';
 import Container from '@/modules/public/components/layout/Container';
+import { isLoggedIn } from '@/modules/shared/selectors/auth';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentDetailPage extends React.PureComponent {
@@ -35,6 +36,7 @@ export class TournamentDetailPage extends React.PureComponent {
               showSubmissionModal={() =>
                 this.props.showSubmissionModal(this.props.resource)
               }
+              isLoggedIn={this.props.isLoggedIn}
             />
             <TournamentRoutes tournament={this.props.resource} />
             <SubmissionUpload />
@@ -51,6 +53,7 @@ TournamentDetailPage.propTypes = {
   resource: PropTypes.shape(tournamentPropType),
   match: PropTypes.object.isRequired,
   showSubmissionModal: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -64,6 +67,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   isFetching: tournamentsSelectors.isFetchingItem,
   resource: tournamentsSelectors.getItem,
+  isLoggedIn,
 });
 
 const withConnect = connect(
