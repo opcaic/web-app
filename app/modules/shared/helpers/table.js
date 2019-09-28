@@ -83,14 +83,14 @@ export function getDetailActionProps(linkGenerator) {
   };
 }
 
-export function getThemedDetailActionProps(linkGenerator, color) {
+export function getThemedDetailActionProps(linkGenerator, options = {}) {
   return {
     title: <FormattedMessage id="app.generic.action" />,
     key: 'action',
-    width: 150,
-    align: 'center',
+    width: typeof options.width === 'undefined' ? 150 : options.width,
+    align: typeof options.align === 'undefined' ? 'center' : options.align,
     render: (text, record) => (
-      <StyledButton color={color} type="primary">
+      <StyledButton color={options.color} type="primary" {...options.props}>
         <Link to={linkGenerator(record)}>
           <FormattedMessage id="app.generic.detail" />
         </Link>

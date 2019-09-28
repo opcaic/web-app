@@ -4,6 +4,9 @@ export const pageTitles = defineMessages({
   homePage: {
     id: 'app.public.pageTitles.homePage',
   },
+  userDashboardPage: {
+    id: 'app.public.pageTitles.userDashboardPage',
+  },
   notFoundPage: {
     id: 'app.public.pageTitles.notFoundPage',
   },

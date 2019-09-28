@@ -4,7 +4,6 @@ import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 
-import HomePage from '@/modules/public/pages/HomePage';
 import NotFoundPage from '@/modules/public/pages/NotFoundPage';
 import LoginPage from '@/modules/public/pages/User/LoginPage';
 import RegisterPage from '@/modules/public/pages/User/RegisterPage';
@@ -31,6 +30,24 @@ import usersReducers, { saga as usersSaga } from '@/modules/public/ducks/users';
 import SettingsPage from '@/modules/public/pages/Settings/SettingsPage';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
 import { handleCookieConsent } from '@/modules/shared/helpers/utils';
+import HomePageSwitch from '@/modules/public/pages/Home/HomePageSwitch/HomePageSwitch';
+import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
+
+const MenuSyncedHomePageSwitch = withMenuSync(HomePageSwitch, {
+  topMenu: ['home'],
+});
+
+const MenuSyncedTournamentListPage = withMenuSync(TournamentListPage, {
+  topMenu: ['tournaments'],
+});
+
+const MenuSyncedTournamentDetailPage = withMenuSync(TournamentDetailPage, {
+  topMenu: ['tournaments'],
+});
+
+const MenuSyncedGameListPage = withMenuSync(GameListPage, {
+  topMenu: ['games'],
+});
 
 /* eslint-disable react/prefer-stateless-function */
 export class PublicApp extends React.Component {
@@ -41,11 +58,17 @@ export class PublicApp extends React.Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/tournaments" component={TournamentListPage} />
-        <Route path="/tournaments/:id" component={TournamentDetailPage} />
-        <Route exact path="/games" component={GameListPage} />
-
+        <Route exact path="/" component={MenuSyncedHomePageSwitch} />
+        <Route
+          exact
+          path="/tournaments"
+          component={MenuSyncedTournamentListPage}
+        />
+        <Route
+          path="/tournaments/:id"
+          component={MenuSyncedTournamentDetailPage}
+        />
+        <Route exact path="/games" component={MenuSyncedGameListPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />

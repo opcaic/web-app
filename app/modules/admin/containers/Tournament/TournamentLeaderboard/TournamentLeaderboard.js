@@ -8,7 +8,7 @@ import {
   selectors as leaderboardSelectors,
 } from '@/modules/admin/ducks/leaderboards';
 import { createStructuredSelector } from 'reselect';
-import { addSharedPlaces } from '@/modules/shared/helpers/leaderboards';
+import { addSharedPlaces } from '@/modules/shared/helpers/resources/leaderboards';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentLeaderboard extends React.PureComponent {

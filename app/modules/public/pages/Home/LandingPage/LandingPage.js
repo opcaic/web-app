@@ -6,23 +6,24 @@ import FeaturedGames from '@/modules/public/containers/HomePage/FeaturedGames';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import Container from '@/modules/public/components/layout/Container';
 const { Title } = Typography;
 
 /* eslint-disable react/prefer-stateless-function */
-export class HomePage extends React.PureComponent {
+export class LandingPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
         <PageTitle title={intlGlobal.formatMessage(pageTitles.homePage)} />
 
-        <div className="container" style={{ marginTop: 30 }}>
+        <Container>
           <Title
             level={1}
             style={{ textAlign: 'center', margin: 60, fontSize: 60 }}
           >
             Imagine a cool title here
           </Title>
-        </div>
+        </Container>
 
         <FeaturedTournaments />
         <FeaturedGames />
@@ -31,6 +32,6 @@ export class HomePage extends React.PureComponent {
   }
 }
 
-HomePage.propTypes = {};
+LandingPage.propTypes = {};
 
-export default HomePage;
+export default LandingPage;

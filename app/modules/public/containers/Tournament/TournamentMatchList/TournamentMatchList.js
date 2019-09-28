@@ -13,7 +13,7 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { addLastExecutions } from '@/modules/shared/helpers/matches';
+import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';

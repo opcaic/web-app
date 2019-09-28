@@ -14,6 +14,7 @@ import { withRouter } from 'react-router-dom';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import SubmissionUpload from '@/modules/shared/containers/Tournament/SubmissionUpload';
 import { showSubmissionModal } from '@/modules/shared/ducks/submission';
+import Container from '@/modules/public/components/layout/Container';
 import ApiResult from '@/modules/shared/components/ApiResult';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -25,7 +26,7 @@ export class TournamentDetailPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
-        <div className="container" style={{ marginTop: 30 }}>
+        <Container>
           <ApiResult
             loading={this.props.resource === null || this.props.isFetching}
             error={this.props.error}
@@ -39,7 +40,7 @@ export class TournamentDetailPage extends React.PureComponent {
             <TournamentRoutes tournament={this.props.resource} />
             <SubmissionUpload />
           </ApiResult>
-        </div>
+        </Container>
       </PageLayout>
     );
   }

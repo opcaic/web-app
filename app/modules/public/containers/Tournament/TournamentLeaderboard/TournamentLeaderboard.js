@@ -10,8 +10,8 @@ import {
 } from '@/modules/public/ducks/leaderboards';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
-import PageContent from '../../../components/layout/PageContent';
-import { addSharedPlaces } from '@/modules/shared/helpers/leaderboards';
+import PageContent from '@/modules/public/components/layout/PageContent';
+import { addSharedPlaces } from '@/modules/shared/helpers/resources/leaderboards';
 import PropTypes from 'prop-types';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import { pageTitles } from '@/modules/public/utils/pageTitles';

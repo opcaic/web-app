@@ -12,7 +12,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Spin from '@/modules/shared/components/Spin';
 import MatchExecution from '@/modules/shared/components/Tournament/MatchExecution';
-import { addLastExecution } from '@/modules/shared/helpers/matches';
+import { addLastExecution } from '@/modules/shared/helpers/resources/matches';
 import { entryPointResultEnum } from '@/modules/shared/helpers/enumHelpers';
 
 /* eslint-disable react/prefer-stateless-function */
