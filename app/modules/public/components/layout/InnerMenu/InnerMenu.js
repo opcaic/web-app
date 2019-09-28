@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Menu } from 'antd';
-import { theme } from '@/modules/public/utils/utils';
+import { theme } from '@/modules/shared/helpers/utils';
 
 const StyledMenu = styled(({ themeColor, ...rest }) => <Menu {...rest} />)`
   border-bottom: 0;
@@ -88,7 +88,7 @@ InnerMenu.propTypes = {
 };
 
 InnerMenu.defaultProps = {
-  themeColor: theme.primaryColor,
+  themeColor: theme.PRIMARY_COLOR,
 };
 
 export default InnerMenu;

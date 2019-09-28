@@ -30,9 +30,14 @@ import { saga as registrationSaga } from '@/modules/public/ducks/registration';
 import usersReducers, { saga as usersSaga } from '@/modules/public/ducks/users';
 import SettingsPage from '@/modules/public/pages/Settings/SettingsPage';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
+import { handleCookieConsent } from '@/modules/shared/helpers/utils';
 
 /* eslint-disable react/prefer-stateless-function */
 export class PublicApp extends React.Component {
+  componentDidMount() {
+    handleCookieConsent();
+  }
+
   render() {
     return (
       <Switch>

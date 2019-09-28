@@ -11,7 +11,7 @@ import {
 import { defineMessages } from 'react-intl';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
-export const API_BASE = process.env.API_URL;
+export const API_BASE = 'http://prak.mff.cuni.cz/';
 export const CALL_API = 'app/CALL_API';
 const axiosInstance = axios.create();
 
