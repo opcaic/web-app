@@ -8,6 +8,7 @@ import TournamentMatches from '@/modules/public/containers/Tournament/Tournament
 import TournamentSubmissions from '@/modules/public/containers/Tournament/TournamentSubmissionList';
 import TournamentMatchDetail from '@/modules/public/containers/Tournament/TournamentMatchDetail';
 import TournamentSubmissionDetail from '@/modules/public/containers/Tournament/TournamentSubmissionDetail';
+import TournamentContentNotFound from '@/modules/public/components/Tournament/TournamentDetail/TournamentContentNotFound';
 
 const MenuSyncedTournamentOverview = withMenuSync(TournamentOverview, {
   tournamentMenu: ['overview'],
@@ -77,6 +78,11 @@ const TournamentRoutes = ({ tournament }) => (
       component={() => (
         <MenuSyncedTournamentSubmissionDetail tournament={tournament} />
       )}
+    />
+
+    <Route
+      path="/"
+      component={() => <TournamentContentNotFound tournament={tournament} />}
     />
   </Switch>
 );
