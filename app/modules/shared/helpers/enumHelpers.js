@@ -166,15 +166,15 @@ entryPointResultEnum.helpers = createEnum(
 );
 
 export const menuItemTypeEnum = {
-  DOCUMENT: 1,
-  EXTERNAL: 2,
+  DOCUMENT: 0,
+  EXTERNAL: 1,
 };
 
 menuItemTypeEnum.helpers = createEnum(
   menuItemTypeEnum,
   defineMessages({
-    1: { id: 'app.enums.menuItemType.document' },
-    2: { id: 'app.enums.menuItemType.external' },
+    0: { id: 'app.enums.menuItemType.document' },
+    1: { id: 'app.enums.menuItemType.external' },
   }),
 );
 

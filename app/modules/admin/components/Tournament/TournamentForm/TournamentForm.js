@@ -31,8 +31,8 @@ class TournamentForm extends React.PureComponent {
     };
 
     if (props.resource.id) {
-      this.state.menuData = this.menuDataPreprocess(
-        JSON.parse(props.resource.menuData) || [],
+      this.state.menuItems = this.menuItemsPreprocess(
+        props.resource.menuItems || [],
       );
     }
   }
@@ -45,9 +45,7 @@ class TournamentForm extends React.PureComponent {
           Object.assign(
             {
               description: this.state.description,
-              menuData: JSON.stringify(
-                this.menuDataPostprocess(this.state.menuData),
-              ),
+              menuItems: this.menuItemsPostprocess(this.state.menuItems),
             },
             values,
           ),
@@ -56,10 +54,10 @@ class TournamentForm extends React.PureComponent {
     });
   };
 
-  menuDataPreprocess = menuData =>
-    menuData.map((x, index) => Object.assign({}, x, { key: index }));
+  menuItemsPreprocess = menuItems =>
+    menuItems.map((x, index) => Object.assign({}, x, { key: index }));
 
-  menuDataPostprocess = menuData => menuData.map(({ key, ...rest }) => rest);
+  menuItemsPostprocess = menuItems => menuItems.map(({ key, ...rest }) => rest);
 
   setEditorSelectedTab = selectedTab => {
     this.setState({ selectedTab });
@@ -69,8 +67,8 @@ class TournamentForm extends React.PureComponent {
     this.setState({ description: value });
   };
 
-  setMenuDataValue = value => {
-    this.setState({ menuData: value });
+  setMenuItemsValue = value => {
+    this.setState({ menuItems: value });
   };
 
   render() {
@@ -205,8 +203,8 @@ class TournamentForm extends React.PureComponent {
             wrapperCol={{ span: 21 }}
           >
             <TournamentMenuEditor
-              onChange={this.setMenuDataValue}
-              dataSource={this.state.menuData}
+              onChange={this.setMenuItemsValue}
+              dataSource={this.state.menuItems}
               documents={this.props.documents}
             />
           </Form.Item>

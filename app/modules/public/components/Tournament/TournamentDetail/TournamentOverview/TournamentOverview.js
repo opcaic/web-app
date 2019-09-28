@@ -44,7 +44,7 @@ function getTabs(tournament, documents) {
     content: <BasicInformation tournament={tournament} />,
   });
 
-  const menuData = JSON.parse(tournament.menuData) || [];
+  const menuData = tournament.menuItems || [];
 
   menuData.forEach((x, index) => {
     if (x.type === menuItemTypeEnum.DOCUMENT) {
