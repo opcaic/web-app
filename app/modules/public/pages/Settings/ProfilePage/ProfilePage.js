@@ -9,12 +9,12 @@ import {
   selectors as usersSelectors,
 } from '@/modules/public/ducks/users';
 import { withRouter } from 'react-router-dom';
-import Spin from '@/modules/shared/components/Spin';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import ProfileForm from '@/modules/public/components/Account/ProfileForm';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
+import ApiResult from '@/modules/shared/components/ApiResult';
 
 /* eslint-disable react/prefer-stateless-function */
 class ProfilePage extends React.PureComponent {
@@ -38,12 +38,12 @@ class ProfilePage extends React.PureComponent {
         </Typography.Title>
         <PageTitle title={intlGlobal.formatMessage(pageTitles.profilePage)} />
 
-        <Spin spinning={this.props.isFetching}>
+        <ApiResult loading={this.props.isFetching} error={this.props.error}>
           <ProfileForm
             resource={this.props.resource || {}}
             onSubmit={this.onSubmit}
           />
-        </Spin>
+        </ApiResult>
       </div>
     );
   }
@@ -55,6 +55,7 @@ ProfilePage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.object,
   currentUser: PropTypes.object.isRequired,
+  error: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -73,6 +74,7 @@ const mapStateToProps = createStructuredSelector({
   isFetching: usersSelectors.isFetchingItem,
   resource: usersSelectors.getItem,
   currentUser: currentUserSelector,
+  error: usersSelectors.getFetchItemError,
 });
 
 const withConnect = connect(

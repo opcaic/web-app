@@ -12,6 +12,7 @@ const initialState = fromJS({
   isFetchingItem: false,
   lastUpdatedItem: 0,
   didInvalidateItem: true,
+  fetchItemError: null,
   // CREATE props
   isCreating: false,
   // UPDATE props
@@ -29,6 +30,7 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
       return state.merge({
         isFetchingItem: true,
         item: null,
+        error: null,
       });
     case actionTypes.FETCH_SUCCESS:
       return state.merge({
@@ -38,12 +40,14 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
     case actionTypes.FETCH_FAILURE:
       return state.merge({
         isFetchingItem: false,
+        fetchItemError: action.payload,
       });
 
     // FETCH MANY
     case actionTypes.FETCH_MANY_REQUEST:
       return state.merge({
         isFetching: true,
+        error: null,
       });
     case actionTypes.FETCH_MANY_SUCCESS:
       return state.merge({
@@ -60,6 +64,7 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
     case actionTypes.UDPATE_REQUEST:
       return state.merge({
         isUpdating: true,
+        error: null,
       });
     case actionTypes.UDPATE_SUCCESS:
       return state.merge({
@@ -74,6 +79,7 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
     case actionTypes.CREATE_REQUEST:
       return state.merge({
         isCreating: true,
+        error: null,
       });
     case actionTypes.CREATE_SUCCESS:
       return state.merge({
@@ -88,6 +94,7 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
     case actionTypes.DELETE_REQUEST:
       return state.merge({
         isDeleting: true,
+        error: null,
       });
     case actionTypes.DELETE_SUCCESS:
       return state.merge({

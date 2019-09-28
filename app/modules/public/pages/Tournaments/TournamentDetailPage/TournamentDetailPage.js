@@ -12,10 +12,10 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
-import Spin from '@/modules/shared/components/Spin';
 import SubmissionUpload from '@/modules/shared/containers/Tournament/SubmissionUpload';
 import { showSubmissionModal } from '@/modules/shared/ducks/submission';
 import Container from '@/modules/public/components/layout/Container';
+import ApiResult from '@/modules/shared/components/ApiResult';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentDetailPage extends React.PureComponent {
@@ -27,8 +27,9 @@ export class TournamentDetailPage extends React.PureComponent {
     return (
       <PageLayout>
         <Container>
-          <Spin
-            spinning={this.props.resource === null || this.props.isFetching}
+          <ApiResult
+            loading={this.props.resource === null || this.props.isFetching}
+            error={this.props.error}
           >
             <TournamentHeader
               tournament={this.props.resource}
@@ -38,7 +39,7 @@ export class TournamentDetailPage extends React.PureComponent {
             />
             <TournamentRoutes tournament={this.props.resource} />
             <SubmissionUpload />
-          </Spin>
+          </ApiResult>
         </Container>
       </PageLayout>
     );
@@ -51,6 +52,7 @@ TournamentDetailPage.propTypes = {
   resource: PropTypes.shape(tournamentPropType),
   match: PropTypes.object.isRequired,
   showSubmissionModal: PropTypes.func.isRequired,
+  error: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -64,6 +66,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   isFetching: tournamentsSelectors.isFetchingItem,
   resource: tournamentsSelectors.getItem,
+  error: tournamentsSelectors.getFetchItemError,
 });
 
 const withConnect = connect(

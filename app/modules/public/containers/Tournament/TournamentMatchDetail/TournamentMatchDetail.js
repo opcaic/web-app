@@ -10,13 +10,13 @@ import {
 } from '@/modules/public/ducks/matches';
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import Spin from '@/modules/shared/components/Spin';
 import MatchExecution from '@/modules/shared/components/Tournament/MatchExecution';
 import { addLastExecution } from '@/modules/shared/helpers/resources/matches';
 import PageContent from '@/modules/public/components/layout/PageContent';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
+import ApiResult from '@/modules/shared/components/ApiResult';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentMatchDetail extends React.PureComponent {
@@ -46,14 +46,19 @@ class TournamentMatchDetail extends React.PureComponent {
           title={intlGlobal.formatMessage(pageTitles.tournamentDetailMatchPage)}
         />
 
-        <Spin spinning={this.props.isFetching || this.props.resource === null}>
-          <MatchExecution
-            matchExecution={match && match.lastExecution}
-            match={match}
-            tournament={this.props.tournament}
-            isAdmin={false}
-          />
-        </Spin>
+        <ApiResult
+          loading={this.props.isFetching || this.props.resource === null}
+          error={this.props.error}
+        >
+          {match && (
+            <MatchExecution
+              matchExecution={match.lastExecution}
+              match={match}
+              tournament={this.props.tournament}
+              isAdmin={false}
+            />
+          )}
+        </ApiResult>
       </PageContent>
     );
   }
@@ -65,6 +70,7 @@ TournamentMatchDetail.propTypes = {
   resource: PropTypes.object,
   match: PropTypes.object.isRequired,
   tournament: PropTypes.object.isRequired,
+  error: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -76,6 +82,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   isFetching: matchesSelectors.isFetchingItem,
   resource: matchesSelectors.getItem,
+  error: matchesSelectors.getFetchItemError,
 });
 
 const withConnect = connect(
