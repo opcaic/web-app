@@ -82,6 +82,11 @@ tournamentScopeEnum.helpers = createEnum(
   }),
 );
 
+export const isFormatForScope = (scope, format) =>
+  format === tournamentFormatEnum.ELO
+    ? scope === tournamentScopeEnum.ONGOING
+    : scope === tournamentScopeEnum.DEADLINE;
+
 export const tournamentAvailabilityEnum = {
   PUBLIC: 1,
   PRIVATE: 2,
@@ -141,5 +146,26 @@ menuItemTypeEnum.helpers = createEnum(
   defineMessages({
     1: { id: 'app.enums.menuItemType.document' },
     2: { id: 'app.enums.menuItemType.external' },
+  }),
+);
+
+export const tournamentStateEnum = {
+  CREATED: 1,
+  PUBLISHED: 2,
+  RUNNING: 3,
+  STOPPED: 4,
+  WAITING_FOR_FINISH: 5,
+  FINISHED: 6,
+};
+
+tournamentStateEnum.helpers = createEnum(
+  tournamentStateEnum,
+  defineMessages({
+    1: { id: 'app.enums.tournamentState.created' },
+    2: { id: 'app.enums.tournamentState.published' },
+    3: { id: 'app.enums.tournamentState.running' },
+    4: { id: 'app.enums.tournamentState.stopped' },
+    5: { id: 'app.enums.tournamentState.waitingForFinish' },
+    6: { id: 'app.enums.tournamentState.finished' },
   }),
 );

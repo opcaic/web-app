@@ -36,8 +36,10 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
       options.meta,
     );
 
-  const createResource = (data, options = {}) =>
-    createApiAction(
+  const createResource = (data, options = {}) => {
+    console.log(data);
+    console.log(options);
+    return createApiAction(
       {
         type: actionTypes.CREATE,
         endpoint: apiEndpointFactory(undefined, options.endpointParams),
@@ -48,6 +50,7 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
       },
       options.meta,
     );
+  };
 
   const deleteResource = (id, options = {}) =>
     createApiAction(

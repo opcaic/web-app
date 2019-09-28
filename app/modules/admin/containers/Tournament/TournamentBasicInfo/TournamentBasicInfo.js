@@ -16,6 +16,8 @@ import {
 import { actions as tournamentsActions } from '@/modules/admin/ducks/tournaments';
 import Spin from '@/modules/shared/components/Spin';
 import { withRouter } from 'react-router-dom';
+import TournamentStats from '@/modules/admin/components/Tournament/TournamentStats';
+import TournamentActionButtons from '@/modules/admin/containers/Tournament/TournamentActionButtons';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentBasicInfo extends React.PureComponent {
@@ -32,6 +34,17 @@ class TournamentBasicInfo extends React.PureComponent {
       <Spin
         spinning={this.props.isFetchingGames || this.props.isFetchingDocuments}
       >
+        <Row>
+          <Col span={16}>
+            <TournamentStats resource={this.props.tournament} />
+          </Col>
+          <Col span={8}>
+            <TournamentActionButtons
+              resource={this.props.tournament}
+              handleClick={this.props.changeState}
+            />
+          </Col>
+        </Row>
         <Row>
           <Col span={24}>
             <TournamentForm
@@ -62,6 +75,7 @@ TournamentBasicInfo.propTypes = {
   documents: PropTypes.arrayOf(PropTypes.object),
   isFetchingDocuments: PropTypes.bool.isRequired,
   fetchDocuments: PropTypes.func.isRequired,
+  changeState: PropTypes.func.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -92,6 +106,7 @@ export function mapDispatchToProps(dispatch) {
           tournamentId,
         }),
       ),
+    changeState: action => dispatch(action),
   };
 }
 

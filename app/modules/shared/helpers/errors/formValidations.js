@@ -34,3 +34,15 @@ export function isMinLength(length, field = 'input', overriddenErrorMessages) {
     }),
   };
 }
+
+export function isMaxLength(length, field = 'input', overriddenErrorMessages) {
+  return {
+    max: length,
+    message: getErrorMessage('fieldMaxLength', overriddenErrorMessages, {
+      length,
+      field,
+    }),
+  };
+}
+
+export const normalizeEmptyString = val => (val !== '' ? val : undefined);
