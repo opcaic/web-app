@@ -28,6 +28,9 @@ export const pageTitles = defineMessages({
   tournamentDetailSubmissionPage: {
     id: 'app.public.pageTitles.tournamentDetailSubmissionPage',
   },
+  tournamentContentNotFoundPage: {
+    id: 'app.public.pageTitles.tournamentContentNotFoundPage',
+  },
   tournamentListPage: {
     id: 'app.public.pageTitles.tournamentListPage',
   },

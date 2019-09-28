@@ -10,6 +10,7 @@ import TournamentMatchDetail from '@/modules/public/containers/Tournament/Tourna
 import TournamentSubmissionDetail from '@/modules/public/containers/Tournament/TournamentSubmissionDetail';
 import TournamentMatchListMy from '@/modules/public/containers/Tournament/TournamentMatchListMy';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
+import TournamentContentNotFound from '@/modules/public/components/Tournament/TournamentDetail/TournamentContentNotFound';
 
 const MenuSyncedTournamentOverview = withMenuSync(TournamentOverview, {
   tournamentMenu: ['overview'],
@@ -102,6 +103,11 @@ const TournamentRoutes = ({ tournament }) => (
       component={() => (
         <MenuSyncedTournamentMyMatchDetail tournament={tournament} />
       )}
+    />
+
+    <Route
+      path="/"
+      component={() => <TournamentContentNotFound tournament={tournament} />}
     />
   </Switch>
 );
