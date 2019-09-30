@@ -35,6 +35,7 @@ export class DashboardMatches extends React.PureComponent {
             size="small"
             totalItems={Math.min(this.props.totalItems, 5 * 7)}
             pageSize={7}
+            view="dashboard"
           />
         </CardTable>
       </Card>

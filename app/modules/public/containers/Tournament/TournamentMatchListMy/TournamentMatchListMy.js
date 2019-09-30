@@ -48,6 +48,7 @@ export class TournamentMatchListMy extends React.PureComponent {
           tournament={this.props.tournament}
           isAdmin={false}
           user={this.props.currentUser}
+          view="public"
         />
       </PageContent>
     );

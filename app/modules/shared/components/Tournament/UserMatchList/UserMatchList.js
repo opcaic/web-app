@@ -18,6 +18,11 @@ import { Link } from 'react-router-dom';
 import TimeAgo from '@/modules/shared/components/TimeAgo';
 import { theme } from '@/modules/shared/helpers/utils';
 
+const viewType = {
+  PUBLIC: 'public',
+  DASHBOARD: 'dashboard',
+};
+
 function getResultIcon(result) {
   let icon = null;
 
@@ -51,7 +56,7 @@ function getResultIcon(result) {
   );
 }
 
-function prepareColumns({ user }) {
+function prepareColumns({ user, view }) {
   const columns = [];
 
   // Executed
@@ -59,18 +64,21 @@ function prepareColumns({ user }) {
     title: <FormattedMessage id="app.shared.userMatchList.date" />,
     key: 'executed',
     width: 200,
+    align: view === viewType.PUBLIC ? 'center' : 'left',
     render: (text, record) => <TimeAgo date={record.lastExecution.executed} />,
   });
 
-  // Tournament
-  columns.push({
-    title: <FormattedMessage id="app.shared.userMatchList.tournament" />,
-    dataIndex: 'tournament.name',
-    key: 'tournament',
-    render: (text, record) => (
-      <Link to={`/tournaments/${record.tournament.id}`}>{text}</Link>
-    ),
-  });
+  if (view === viewType.DASHBOARD) {
+    // Tournament
+    columns.push({
+      title: <FormattedMessage id="app.shared.userMatchList.tournament" />,
+      dataIndex: 'tournament.name',
+      key: 'tournament',
+      render: (text, record) => (
+        <Link to={`/tournaments/${record.tournament.id}`}>{text}</Link>
+      ),
+    });
+  }
 
   // Players and scores
   columns.push({
@@ -166,6 +174,7 @@ const UserMatchList = props => (
 UserMatchList.propTypes = {
   emptyText: PropTypes.node,
   user: PropTypes.object.isRequired,
+  view: PropTypes.oneOf(['public', 'dashboard']),
 };
 
 export default withAjax(UserMatchList);
