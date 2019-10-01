@@ -53,7 +53,7 @@ class TournamentForm extends React.PureComponent {
       useGameDesign: props.resource.id === undefined,
     };
 
-    if (props.resource.id) {
+    if (props.resource.menuData) {
       this.state.menuData = this.menuDataPreprocess(
         JSON.parse(props.resource.menuData) || [],
       );

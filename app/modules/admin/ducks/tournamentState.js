@@ -29,6 +29,8 @@ export const actionTypes = {
   },
 };
 
+export const reducer = state => state;
+
 export function publishTournament(
   tournamentId,
   successCallback,
@@ -137,6 +139,7 @@ function createHandler(actionName) {
 }
 
 export function* saga() {
+  console.log('saging');
   yield all([takeEvery(actionTypes.publish.REQUEST, createHandler('publish'))]);
   yield all([takeEvery(actionTypes.start.REQUEST, createHandler('start'))]);
   yield all([takeEvery(actionTypes.pause.REQUEST, createHandler('pause'))]);

@@ -5,6 +5,7 @@ import injectReducer from '../../utils/injectReducer';
 import usersReducers from './ducks/users';
 import gamesReducer, { saga as gamesSaga } from './ducks/games';
 import documentsReducer, { saga as documentsSaga } from './ducks/documents';
+import { saga as tournamentStateSaga } from './ducks/tournamentState';
 import matchesReducer from './ducks/matches';
 import leaderboardsReducer from './ducks/leaderboards';
 import tournamentsReducer, {
@@ -81,6 +82,7 @@ const withSagas = [
     saga: tournamentParticipantsSaga,
   }),
   injectSaga({ key: 'documents', saga: documentsSaga }),
+  injectSaga({ key: 'tournamentState', saga: tournamentStateSaga }),
 ];
 const withReducers = [
   injectReducer({ key: 'users', reducer: usersReducers }),
