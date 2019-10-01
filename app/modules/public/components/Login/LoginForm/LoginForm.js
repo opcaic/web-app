@@ -12,6 +12,7 @@ import {
   accountIntlMessages,
 } from '@/modules/public/helpers/accountHelpers';
 import FormErrors from '@/modules/shared/components/FormErrors';
+import { compose } from 'redux';
 
 class LoginForm extends React.PureComponent {
   handleSubmit = e => {
@@ -95,6 +96,9 @@ LoginForm.propTypes = {
   errors: PropTypes.array,
 };
 
-export default Form.create({
-  name: 'login',
-})(withEnhancedForm(LoginForm));
+export default compose(
+  Form.create({
+    name: 'login',
+  }),
+  withEnhancedForm(),
+)(LoginForm);

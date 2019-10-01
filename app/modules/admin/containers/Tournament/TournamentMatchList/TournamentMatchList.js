@@ -9,7 +9,7 @@ import {
   selectors as matchSelectors,
 } from '@/modules/admin/ducks/matches';
 import MatchList from '@/modules/shared/components/Tournament/MatchList/MatchList';
-import { addLastExecutions } from '@/modules/shared/helpers/matches';
+import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentMatchList extends React.PureComponent {

@@ -100,6 +100,40 @@ tournamentAvailabilityEnum.helpers = createEnum(
   }),
 );
 
+export const tournamentStateEnum = {
+  CREATED: 0,
+  PUBLISHED: 1,
+  RUNNING: 2,
+  STOPPED: 3,
+  WAITING_FOR_FINISH: 4,
+  FINISHED: 5,
+};
+
+tournamentStateEnum.helpers = createEnum(
+  tournamentStateEnum,
+  defineMessages({
+    0: { id: 'app.enums.tournamentState.created' },
+    1: { id: 'app.enums.tournamentState.published' },
+    2: { id: 'app.enums.tournamentState.running' },
+    3: { id: 'app.enums.tournamentState.stopped' },
+    4: { id: 'app.enums.tournamentState.waitingForFinish' },
+    5: { id: 'app.enums.tournamentState.finished' },
+  }),
+);
+
+export const tournamentSimplifiedStateEnum = {
+  RUNNING: 0,
+  FINISHED: 1,
+};
+
+tournamentSimplifiedStateEnum.helpers = createEnum(
+  tournamentSimplifiedStateEnum,
+  defineMessages({
+    0: { id: 'app.enums.tournamentSimplifiedState.running' },
+    1: { id: 'app.enums.tournamentSimplifiedState.finished' },
+  }),
+);
+
 export const matchStateEnum = {
   QUEUED: 0,
   EXECUTED: 1,
@@ -137,35 +171,72 @@ entryPointResultEnum.helpers = createEnum(
 );
 
 export const menuItemTypeEnum = {
-  DOCUMENT: 1,
-  EXTERNAL: 2,
+  DOCUMENT: 0,
+  EXTERNAL: 1,
 };
 
 menuItemTypeEnum.helpers = createEnum(
   menuItemTypeEnum,
   defineMessages({
-    1: { id: 'app.enums.menuItemType.document' },
-    2: { id: 'app.enums.menuItemType.external' },
+    0: { id: 'app.enums.menuItemType.document' },
+    1: { id: 'app.enums.menuItemType.external' },
   }),
 );
 
-export const tournamentStateEnum = {
-  CREATED: 1,
-  PUBLISHED: 2,
-  RUNNING: 3,
-  STOPPED: 4,
-  WAITING_FOR_FINISH: 5,
-  FINISHED: 6,
+export const submissionValidationStateEnum = {
+  QUEUED: 0,
+  VALID: 1,
+  INVALID: 2,
+  ERROR: 3,
 };
 
-tournamentStateEnum.helpers = createEnum(
-  tournamentStateEnum,
+submissionValidationStateEnum.helpers = createEnum(
+  submissionValidationStateEnum,
   defineMessages({
-    1: { id: 'app.enums.tournamentState.created' },
-    2: { id: 'app.enums.tournamentState.published' },
-    3: { id: 'app.enums.tournamentState.running' },
-    4: { id: 'app.enums.tournamentState.stopped' },
-    5: { id: 'app.enums.tournamentState.waitingForFinish' },
-    6: { id: 'app.enums.tournamentState.finished' },
+    0: { id: 'app.enums.submissionValidationState.queued' },
+    1: { id: 'app.enums.submissionValidationState.valid' },
+    2: { id: 'app.enums.submissionValidationState.invalid' },
+    3: { id: 'app.enums.submissionValidationState.error' },
+  }),
+);
+
+export const matchResultEnum = {
+  WINNER: 0,
+  TIE: 1,
+  LOSER: 2,
+};
+
+matchResultEnum.helpers = createEnum(
+  matchResultEnum,
+  defineMessages({
+    0: { id: 'app.enums.matchResult.winner' },
+    1: { id: 'app.enums.matchResult.tie' },
+    2: { id: 'app.enums.matchResult.loser' },
+  }),
+);
+
+export const tournamentRunningSortEnum = {
+  DEADLINE_SOON_FIRST: 0,
+  DEADLINE_SOON_LAST: 1,
+};
+
+tournamentRunningSortEnum.helpers = createEnum(
+  tournamentRunningSortEnum,
+  defineMessages({
+    0: { id: 'app.enums.tournamentRunningSort.deadlineSoonFirst' },
+    1: { id: 'app.enums.tournamentRunningSort.deadlineSoonLast' },
+  }),
+);
+
+export const tournamentFinishedSortEnum = {
+  FINISHED_RECENTLY_FIRST: 0,
+  FINISHED_RECENTLY_LAST: 1,
+};
+
+tournamentFinishedSortEnum.helpers = createEnum(
+  tournamentFinishedSortEnum,
+  defineMessages({
+    0: { id: 'app.enums.tournamentFinishedSort.finishedRecentlyFirst' },
+    1: { id: 'app.enums.tournamentFinishedSort.finishedRecentlyLast' },
   }),
 );

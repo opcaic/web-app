@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { matchPropType, tournamentPropType } from '@/modules/public/propTypes';
+import {
+  matchPropType,
+  tournamentPropType,
+} from '@/modules/public/utils/propTypes';
 import MatchList from '@/modules/shared/components/Tournament/MatchList';
 import {
   actions as matchActions,
@@ -10,18 +13,22 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import PageContent from '../../../components/Tournament/PageContent';
-import { addLastExecutions } from '@/modules/shared/helpers/matches';
+import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
+import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
+import PageContent from '@/modules/public/components/layout/PageContent';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentMatchList extends React.PureComponent {
   render() {
     return (
-      <PageContent title="Matches" withPadding={false}>
+      <PageContent
+        title={<FormattedMessage id="app.public.tournamentMatchList.title" />}
+        withPadding={this.props.tournament.privateMatchlog}
+      >
         <TournamentPageTitle
           tournament={this.props.tournament}
           title={intlGlobal.formatMessage(
@@ -29,14 +36,20 @@ export class TournamentMatchList extends React.PureComponent {
           )}
         />
 
-        <MatchList
-          dataSource={addLastExecutions(this.props.items)}
-          loading={this.props.isFetching}
-          fetch={this.props.fetchItems(this.props.tournament.id)}
-          totalItems={this.props.totalItems}
-          tournament={this.props.tournament}
-          isAdmin={false}
-        />
+        {this.props.tournament.privateMatchlog ? (
+          <div>
+            <FormattedHTMLMessage id="app.public.tournamentMatchList.privateMatchlog" />
+          </div>
+        ) : (
+          <MatchList
+            dataSource={addLastExecutions(this.props.items)}
+            loading={this.props.isFetching}
+            fetch={this.props.fetchItems(this.props.tournament.id)}
+            totalItems={this.props.totalItems}
+            tournament={this.props.tournament}
+            isAdmin={false}
+          />
+        )}
       </PageContent>
     );
   }

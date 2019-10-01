@@ -3,6 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { isRequired } from '@/modules/shared/helpers/errors/formValidations';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
+import { compose } from 'redux';
 
 class GameForm extends React.PureComponent {
   handleSubmit = e => {
@@ -73,6 +74,9 @@ class GameForm extends React.PureComponent {
   }
 }
 
-export default Form.create({
-  name: 'game_form',
-})(withEnhancedForm(GameForm));
+export default compose(
+  Form.create({
+    name: 'game_form',
+  }),
+  withEnhancedForm(),
+)(GameForm);

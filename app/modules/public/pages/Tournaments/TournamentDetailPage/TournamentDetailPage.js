@@ -11,8 +11,12 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
-import { tournamentPropType } from '@/modules/public/propTypes';
-import Spin from '@/modules/shared/components/Spin';
+import { tournamentPropType } from '@/modules/public/utils/propTypes';
+import SubmissionUpload from '@/modules/shared/containers/Tournament/SubmissionUpload';
+import { showSubmissionModal } from '@/modules/shared/ducks/submission';
+import Container from '@/modules/public/components/layout/Container';
+import { isLoggedIn } from '@/modules/shared/selectors/auth';
+import ApiResult from '@/modules/shared/components/ApiResult';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentDetailPage extends React.PureComponent {
@@ -23,14 +27,22 @@ export class TournamentDetailPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
-        <div className="container" style={{ marginTop: 30 }}>
-          <Spin
-            spinning={this.props.resource === null || this.props.isFetching}
+        <Container>
+          <ApiResult
+            loading={this.props.resource === null || this.props.isFetching}
+            error={this.props.error}
           >
-            <TournamentHeader tournament={this.props.resource} />
+            <TournamentHeader
+              tournament={this.props.resource}
+              showSubmissionModal={() =>
+                this.props.showSubmissionModal(this.props.resource)
+              }
+              isLoggedIn={this.props.isLoggedIn}
+            />
             <TournamentRoutes tournament={this.props.resource} />
-          </Spin>
-        </div>
+            <SubmissionUpload />
+          </ApiResult>
+        </Container>
       </PageLayout>
     );
   }
@@ -41,17 +53,24 @@ TournamentDetailPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.shape(tournamentPropType),
   match: PropTypes.object.isRequired,
+  showSubmissionModal: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  error: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: id => dispatch(tournamentsActions.fetchResource(id)),
+    showSubmissionModal: tournament =>
+      dispatch(showSubmissionModal(tournament)),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   isFetching: tournamentsSelectors.isFetchingItem,
   resource: tournamentsSelectors.getItem,
+  isLoggedIn,
+  error: tournamentsSelectors.getFetchItemError,
 });
 
 const withConnect = connect(

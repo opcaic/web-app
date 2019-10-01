@@ -8,6 +8,7 @@ import {
   fork,
   put,
   select,
+  spawn,
   take,
   takeEvery,
 } from 'redux-saga/effects';
@@ -15,11 +16,8 @@ import { push } from 'connected-react-router';
 import jwtDecode from 'jwt-decode';
 import { callApi } from '../helpers/apiMiddleware';
 import { routerStateSelector } from '@/modules/shared/selectors/router';
-import {
-  currentUserSelector,
-  refreshTokenSelector,
-} from '@/modules/shared/selectors/auth';
 import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
+import { resetState, resetStateActionType } from '@/reducers';
 
 /*
  * Action types
@@ -35,27 +33,23 @@ export const actionTypes = {
   LOAD_AUTH_REQUEST: 'app/shared/auth/LOAD_AUTH_REQUEST',
   LOAD_AUTH_SUCCESS: 'app/shared/auth/LOAD_AUTH_SUCCESS',
   LOAD_AUTH_FAILURE: 'app/shared/auth/LOAD_AUTH_FAILURE',
+  AUTH_SUCCESS: 'app/shared/auth/AUTH_SUCCESS',
+  AUTH_FAILURE: 'app/shared/auth/AUTH_FAILURE',
 };
 
 /*
  * Action creators
  */
-export function loadAuth() {
-  return {
-    type: actionTypes.LOAD_AUTH_REQUEST,
-  };
-}
-
-export function loadAuthSuccess(user) {
+export function loadAuthSuccess() {
   return {
     type: actionTypes.LOAD_AUTH_SUCCESS,
-    payload: user,
   };
 }
 
-export function loadAuthFailure() {
+export function loadAuthFailure(error) {
   return {
     type: actionTypes.LOAD_AUTH_FAILURE,
+    payload: error,
   };
 }
 
@@ -75,6 +69,24 @@ export function login(
       successCallback,
       failureCallback,
     },
+  };
+}
+
+export function loginRequest() {
+  return {
+    type: actionTypes.LOGIN_REQUEST,
+  };
+}
+
+export function loginSuccess() {
+  return {
+    type: actionTypes.LOGIN_SUCCESS,
+  };
+}
+
+export function loginFailure() {
+  return {
+    type: actionTypes.LOGIN_FAILURE,
   };
 }
 
@@ -100,6 +112,26 @@ export function updateTokens(accessToken, refreshToken) {
   };
 }
 
+export function authSuccess(id, role, rememberMe, refreshToken, accessToken) {
+  return {
+    type: actionTypes.AUTH_SUCCESS,
+    payload: {
+      id,
+      role,
+      rememberMe,
+      refreshToken,
+      accessToken,
+    },
+  };
+}
+
+export function authFailure(error) {
+  return {
+    type: actionTypes.AUTH_FAILURE,
+    payload: error,
+  };
+}
+
 /*
  * Sagas
  */
@@ -108,46 +140,60 @@ export function updateTokens(accessToken, refreshToken) {
  * Implementation of the main login flow.
  */
 function* loginFlow() {
+  yield spawn(handleLoadAuth);
+
   while (true) {
-    let action = yield take([actionTypes.LOGIN, actionTypes.LOAD_AUTH_SUCCESS]);
+    try {
+      let action = yield take([
+        actionTypes.LOGIN,
+        actionTypes.LOAD_AUTH_SUCCESS,
+      ]);
 
-    let task;
-
-    if (action.type === actionTypes.LOGIN) {
-      const {
-        payload: {
+      if (action.type === actionTypes.LOGIN) {
+        const {
+          payload: {
+            email,
+            password,
+            rememberMe,
+            successCallback,
+            failureCallback,
+          },
+        } = action;
+        yield call(
+          authenticate,
           email,
           password,
           rememberMe,
           successCallback,
           failureCallback,
-        },
-      } = action;
-      task = yield fork(
-        authenticate,
-        email,
-        password,
-        rememberMe,
-        successCallback,
-        failureCallback,
-      );
-    }
+        );
+      }
 
-    const refreshTask = yield fork(handleRefreshToken, action);
+      Cookies.set('loggedOut', false);
+      const loggedOutCookieTask = yield fork(watchLoggedOutCookie, action);
+      const refreshTask = yield fork(handleRefreshToken, action);
 
-    action = yield take([
-      actionTypes.LOGOUT_REQUEST,
-      actionTypes.LOGIN_FAILURE,
-      actionTypes.LOAD_AUTH_FAILURE,
-    ]);
+      action = yield take([
+        actionTypes.LOGOUT_REQUEST,
+        actionTypes.LOGIN_FAILURE,
+        actionTypes.LOAD_AUTH_FAILURE,
+      ]);
 
-    clearStorages();
+      clearStorage();
 
-    if (refreshTask) yield cancel(refreshTask);
-    if (action.type === actionTypes.LOGOUT_REQUEST) {
-      if (task) yield cancel(task);
-      yield put(logoutSuccess());
-      yield put(push('/'));
+      if (refreshTask) yield cancel(refreshTask);
+      if (loggedOutCookieTask) yield cancel(loggedOutCookieTask);
+      if (action.type === actionTypes.LOGOUT_REQUEST) {
+        yield put(logoutSuccess());
+        yield put(push('/'));
+        Cookies.set('loggedOut', true);
+      }
+
+      yield put(resetState());
+    } catch (e) {
+      yield put(authFailure(e));
+      clearStorage();
+      yield put(resetState());
     }
   }
 }
@@ -162,52 +208,47 @@ function* authenticate(
   successCallback,
   failureCallback,
 ) {
-  yield put({
-    type: actionTypes.LOGIN_REQUEST,
+  yield put(loginRequest());
+
+  const { data, status } = yield call(callApi, {
+    endpoint: 'api/users/login',
+    method: 'POST',
+    data: {
+      email,
+      password,
+    },
   });
 
-  try {
-    const { data, status } = yield call(callApi, {
-      endpoint: 'api/users/login',
-      method: 'POST',
-      data: {
-        email,
-        password,
-      },
-    });
-
-    if (status >= 200 && status < 300) {
-      // Dispatch success action
-      yield put({
-        type: actionTypes.LOGIN_SUCCESS,
-        payload: Object.assign({ useLocalStorage: rememberMe }, data),
-      });
-
-      if (successCallback) {
-        successCallback();
-      }
-
-      // Save data to local storage
-      setAuthData(data, rememberMe);
-
-      // Redirect to previous location if possible
-      const routerState = yield select(routerStateSelector);
-      const { from } = routerState || {
-        from: { pathname: '/' },
-      };
-      yield put(push(from));
-    } else {
-      yield put({
-        type: actionTypes.LOGIN_FAILURE,
-      });
-
-      if (failureCallback) {
-        const errors = prepareFormErrors(data);
-        failureCallback(errors);
-      }
+  if (status >= 200 && status < 300) {
+    if (successCallback) {
+      successCallback();
     }
-  } catch (e) {
-    console.log(e);
+
+    // Dispatch success action
+    yield put(loginSuccess());
+    yield put(
+      authSuccess(
+        data.id,
+        data.role,
+        rememberMe,
+        data.refreshToken,
+        data.accessToken,
+      ),
+    );
+
+    // Redirect to previous location if possible
+    const routerState = yield select(routerStateSelector);
+    const { from } = routerState || {
+      from: { pathname: '/' },
+    };
+    yield put(push(from));
+  } else {
+    yield put(loginFailure());
+
+    if (failureCallback) {
+      const errors = prepareFormErrors(data);
+      failureCallback(errors);
+    }
   }
 }
 
@@ -215,62 +256,56 @@ function* authenticate(
  * Periodically tries to refresh access and refresh tokens
  */
 function* handleRefreshToken() {
-  const currentUser = yield select(currentUserSelector);
-
-  while (yield call(delay, 45 * 1000)) {
-    const refreshToken = yield select(refreshTokenSelector);
+  while (
     yield call(
-      refreshTokenSaga,
-      currentUser.id,
-      refreshToken,
-      currentUser.useLocalStorage,
-    );
+      delay,
+      1000 * parseInt(process.env.AUTH_REFRESH_PERIOD_SECONDS, 10),
+    )
+  ) {
+    yield call(refreshTokenSaga);
   }
 }
 
-function* refreshTokenSaga(userId, refreshToken, useLocalStorage) {
+function* refreshTokenSaga() {
+  const authData = getAuthData();
+
   const { data, status } = yield call(callApi, {
-    endpoint: `api/users/${userId}/refresh`,
+    endpoint: `api/users/${authData.id}/refresh`,
     method: 'POST',
     data: {
-      token: refreshToken,
+      token: authData.refreshToken,
     },
   });
 
   if (status !== 200) {
-    return null;
+    throw new Error('Could not refresh tokens');
   }
 
   yield put(updateTokens(data.accessToken, data.refreshToken));
 
-  const oldUser = getAuthData(useLocalStorage);
-  const user = Object.assign({}, oldUser, data);
-
-  setAuthData(user, useLocalStorage);
+  setAuthData(
+    authData.id,
+    authData.role,
+    authData.rememberMe,
+    data.refreshToken,
+  );
 
   return { accessToken: data.accessToken, refreshToken: data.refreshToken };
 }
 
+/*
+ * Tries to load auth data from the cookie storage
+ */
 function* handleLoadAuth() {
   try {
-    // Try to load auth information from local storage
-    let authString = localStorage.getItem('auth');
-    let useLocalStorage = true;
+    const authData = getAuthData();
 
-    // If nothing found in local storage, try cookies
-    if (authString === 'null') {
-      authString = Cookies.get('auth');
-      useLocalStorage = false;
-    }
-
-    const auth = authString && JSON.parse(authString);
-
-    if (!auth) {
-      yield put(loadAuthFailure(new Error('Auth could not be loaded')));
+    if (!authData) {
+      yield put(loadAuthFailure(new Error('Auth data could not be loaded')));
       return;
     }
 
-    const decodedToken = jwtDecode(auth.refreshToken);
+    const decodedToken = jwtDecode(authData.refreshToken);
 
     // Subtract 5 seconds from the token to account for network lag
     if (decodedToken.exp * 1000 - 5000 < new Date().getTime()) {
@@ -278,38 +313,70 @@ function* handleLoadAuth() {
       return;
     }
 
-    const refreshedTokens = yield call(
-      refreshTokenSaga,
-      auth.id,
-      auth.refreshToken,
-      useLocalStorage,
-    );
+    const refreshedTokens = yield call(refreshTokenSaga);
 
     if (refreshedTokens !== null) {
+      yield put(loadAuthSuccess());
       yield put(
-        loadAuthSuccess(
-          Object.assign({ useLocalStorage }, auth, refreshedTokens),
+        authSuccess(
+          authData.id,
+          authData.role,
+          authData.rememberMe,
+          refreshedTokens.refreshToken,
+          refreshedTokens.accessToken,
         ),
       );
     } else {
       yield put(loadAuthFailure());
     }
   } catch (e) {
-    console.log(e);
+    yield put(loadAuthFailure(e));
+  }
+}
+
+/*
+ * Saves auth data to cookie storage on auth success
+ */
+function* handleAuthSuccess(action) {
+  const {
+    payload: { id, role, rememberMe, refreshToken },
+  } = action;
+
+  setAuthData(id, role, rememberMe, refreshToken);
+}
+
+/*
+ * Saves auth data to cookie storage on tokens updated
+ */
+function* handleTokensUpdated({ payload: { refreshToken } }) {
+  const { id, role, rememberMe } = getAuthData();
+
+  setAuthData(id, role, rememberMe, refreshToken);
+}
+
+/*
+ * Deletes auth data from cookie storage on auth failure
+ */
+function* handleAuthFailure() {
+  clearStorage();
+}
+
+/*
+ * Periodically checks if the logged out cookie is set
+ */
+function* watchLoggedOutCookie() {
+  while (yield call(delay, 1000)) {
+    if (Cookies.get('loggedOut') === 'true') {
+      yield put(logout());
+    }
   }
 }
 
 /*
  * Helper functions
  */
-function getAuthData(useLocalStorage) {
-  let dataString = null;
-
-  if (useLocalStorage) {
-    dataString = localStorage.getItem('auth');
-  } else {
-    dataString = Cookies.get('auth');
-  }
+function getAuthData() {
+  const dataString = Cookies.get('auth');
 
   if (dataString) {
     return JSON.parse(dataString);
@@ -318,25 +385,38 @@ function getAuthData(useLocalStorage) {
   return null;
 }
 
-function setAuthData(data, useLocalStorage) {
-  if (useLocalStorage) {
-    localStorage.setItem('auth', JSON.stringify(data));
-    console.log('Set local storage');
-  } else {
-    Cookies.set('auth', JSON.stringify(data));
-    console.log('Set cookies');
+function setAuthData(id, role, rememberMe, refreshToken) {
+  const options = {};
+
+  if (rememberMe) {
+    options.expires = parseInt(process.env.AUTH_REMEMBER_ME_DAYS, 10);
   }
+
+  Cookies.set(
+    'auth',
+    JSON.stringify({
+      id,
+      role,
+      rememberMe,
+      refreshToken,
+    }),
+    options,
+  );
 }
 
-function clearStorages() {
-  localStorage.setItem('auth', null);
+function clearStorage() {
   Cookies.set('auth', null);
 }
 
 export function* saga() {
   yield all([
     call(loginFlow),
-    takeEvery(actionTypes.LOAD_AUTH_REQUEST, handleLoadAuth),
+    takeEvery(actionTypes.AUTH_SUCCESS, handleAuthSuccess),
+    takeEvery(actionTypes.TOKENS_UPDATED, handleTokensUpdated),
+    takeEvery(
+      [actionTypes.AUTH_FAILURE, actionTypes.LOAD_AUTH_FAILURE],
+      handleAuthFailure,
+    ),
   ]);
 }
 
@@ -348,24 +428,24 @@ const initialState = fromJS({
   accessToken: null,
   refreshToken: null,
   role: null,
+  rememberMe: false,
   initialLoadCompleted: false,
-  useLocalStorage: false,
 });
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.LOAD_AUTH_SUCCESS:
-    case actionTypes.LOGIN_SUCCESS:
+    case actionTypes.AUTH_SUCCESS:
       return state
         .set('id', action.payload.id)
         .set('accessToken', action.payload.accessToken)
         .set('refreshToken', action.payload.refreshToken)
         .set('role', action.payload.role)
-        .set('initialLoadCompleted', true)
-        .set('useLocalStorage', action.payload.useLocalStorage);
+        .set('rememberMe', action.payload.rememberMe)
+        .set('initialLoadCompleted', true);
     case actionTypes.LOAD_AUTH_FAILURE:
-      return state.set('initialLoadCompleted', true);
     case actionTypes.LOGOUT_SUCCESS:
+    case actionTypes.AUTH_FAILURE:
+    case resetStateActionType:
       return initialState.set('initialLoadCompleted', true);
     case actionTypes.TOKENS_UPDATED:
       return state

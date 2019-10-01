@@ -2,19 +2,20 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
   getDetailActionProps,
+  getSearchProps,
   getThemedDetailActionProps,
 } from '@/modules/shared/helpers/table';
 import { Table } from 'antd';
 import styled from 'styled-components';
-import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 import {
   matchStateEnum,
   tournamentFormatEnum,
-  tournamentRankingStrategyEnum,
 } from '@/modules/shared/helpers/enumHelpers';
-import { longDateFormat } from '@/modules/shared/helpers/time';
+import PropTypes from 'prop-types';
+import { getBestScore } from '@/modules/shared/helpers/resources/matches';
+import TimeAgo from '@/modules/shared/components/TimeAgo/TimeAgo';
 
 function prepareColumns({ tournament, isAdmin }) {
   const columns = [];
@@ -26,11 +27,7 @@ function prepareColumns({ tournament, isAdmin }) {
       key: 'queued',
       width: 200,
       align: 'center',
-      render: (text, record) =>
-        intlGlobal.formatDate(
-          new Date(record.lastExecution.created),
-          longDateFormat,
-        ),
+      render: (text, record) => <TimeAgo date={record.lastExecution.created} />,
     });
   }
 
@@ -49,45 +46,33 @@ function prepareColumns({ tournament, isAdmin }) {
         return null;
       }
 
-      return intlGlobal.formatDate(
-        new Date(record.lastExecution.executed),
-        longDateFormat,
-      );
+      return <TimeAgo date={record.lastExecution.executed} />;
     },
   });
 
   // Players and scores
   columns.push({
     title: <FormattedMessage id="app.shared.matchList.players" />,
-    key: 'players',
+    key: 'username',
     render: (text, record) => {
       const isSinglePlayer =
         tournament.format === tournamentFormatEnum.SINGLE_PLAYER;
-      let bestScore;
-
-      if (
-        tournament.rankingStrategy === tournamentRankingStrategyEnum.MAXIMUM
-      ) {
-        bestScore = Math.max(
-          ...record.lastExecution.botResults.map(x => x.score),
-        );
-      } else {
-        bestScore = Math.min(
-          ...record.lastExecution.botResults.map(x => x.score),
-        );
-      }
+      const bestScore = getBestScore(
+        record.lastExecution.botResults,
+        tournament.rankingStrategy,
+      );
 
       if (record.state === matchStateEnum.QUEUED) {
         return record.submissions.map((x, index) => [
-          // eslint-disable-next-line react/no-array-index-key
-          <span key={`sep_${index}`}>{index ? ' vs ' : ''}</span>,
+          <span key={`sep_${x.author.id}`}>{index ? ' vs ' : ''}</span>,
           <span key={x.author.id}>{x.author.username} </span>,
         ]);
       }
 
       return record.lastExecution.botResults.map((x, index) => [
-        // eslint-disable-next-line react/no-array-index-key
-        <span key={`sep_${index}`}>{index ? ' vs ' : ''}</span>,
+        <span key={`sep_${x.submission.author.id}`}>
+          {index ? ' vs ' : ''}
+        </span>,
         <span
           key={x.submission.author.id}
           style={{
@@ -106,6 +91,7 @@ function prepareColumns({ tournament, isAdmin }) {
         </span>,
       ]);
     },
+    ...getSearchProps('username'),
   });
 
   // Score for single player
@@ -166,7 +152,13 @@ const MatchList = props => (
     locale={{
       emptyText: (
         <EmptyTablePlaceholder
-          text={<FormattedMessage id="app.shared.matchList.noMatches" />}
+          text={
+            props.emptyText ? (
+              props.emptyText
+            ) : (
+              <FormattedMessage id="app.shared.matchList.noMatches" />
+            )
+          }
         />
       ),
     }}
@@ -174,6 +166,8 @@ const MatchList = props => (
   />
 );
 
-MatchList.propTypes = {};
+MatchList.propTypes = {
+  emptyText: PropTypes.node,
+};
 
 export default withAjax(MatchList);

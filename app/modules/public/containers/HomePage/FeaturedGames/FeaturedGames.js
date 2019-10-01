@@ -8,11 +8,12 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { gamePropType } from '@/modules/public/propTypes';
+import { gamePropType } from '@/modules/public/utils/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { Typography } from 'antd';
 import StyledButton from '@/modules/shared/components/StyledButton';
 import { Link } from 'react-router-dom';
+import Container from '@/modules/public/components/layout/Container';
 
 /* eslint-disable react/prefer-stateless-function */
 export class FeaturedGames extends React.PureComponent {
@@ -22,7 +23,7 @@ export class FeaturedGames extends React.PureComponent {
 
   render() {
     return (
-      <div className="container" style={{ marginTop: 40 }}>
+      <Container>
         <Typography.Title level={1} style={{ marginBottom: 30 }}>
           Featured games
         </Typography.Title>
@@ -38,7 +39,7 @@ export class FeaturedGames extends React.PureComponent {
             <Link to="/games">Browse all games</Link>
           </StyledButton>
         </div>
-      </div>
+      </Container>
     );
   }
 }

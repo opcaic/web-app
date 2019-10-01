@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -9,23 +8,29 @@ const StyledMenu = styled(Menu)`
   border-bottom: 0;
 `;
 
-const StyledMenuItem = styled(({ themeColor, ...rest }) => <Menu.Item {...rest} />)`
-  &.ant-menu-item-selected, &:hover {
+const StyledMenuItem = styled(({ themeColor, ...rest }) => (
+  <Menu.Item {...rest} />
+))`
+  &.ant-menu-item-selected,
+  &:hover {
     border-bottom-color: ${props => props.themeColor} !important;
   }
-  
+
   &.ant-menu-item-selected a {
     color: ${props => props.themeColor} !important;
   }
 `;
 
-
 const StyledLink = styled(({ themeColor, ...rest }) => <Link {...rest} />)`
   border-bottom: 0;
-  
+
   &:hover {
     color: ${props => props.themeColor} !important;
   }
+`;
+
+const PrivateText = styled.span`
+  font-weight: 600;
 `;
 
 function getLink(id, item) {
@@ -37,7 +42,7 @@ const TournamentMenu = ({ id, items, activeItems, themeColor }) => (
     {items.map(item => (
       <StyledMenuItem key={item.key} themeColor={themeColor}>
         <StyledLink to={getLink(id, item)} themeColor={themeColor}>
-          {item.text}
+          {item.private ? <PrivateText>{item.text}</PrivateText> : item.text}
         </StyledLink>
       </StyledMenuItem>
     ))}

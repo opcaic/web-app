@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import TournamentMenu from '@/modules/public/components/Tournament/TournamentDetail/TournamentMenu';
 import { tournamentsMenu } from '@/modules/public/ducks/tournaments';
 import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
-import { tournamentPropType } from '@/modules/public/propTypes';
+import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import { tournamentAvailabilityEnum } from '@/modules/shared/helpers/enumHelpers';
 
 const SyncedTournamentMenu = withSyncedActiveItems(
@@ -88,11 +88,15 @@ const TournamentHeader = props => (
     </Content>
     <SyncedTournamentMenu
       id={props.tournament.id}
-      items={tournamentsMenu}
-      activeItems={[tournamentsMenu[0].key]}
+      items={tournamentsMenu.filter(
+        x => props.isLoggedIn || x.private === false,
+      )}
       themeColor={props.tournament.themeColor}
     />
-    <SubmitButton themeColor={props.tournament.themeColor}>
+    <SubmitButton
+      themeColor={props.tournament.themeColor}
+      onClick={() => props.showSubmissionModal()}
+    >
       Submit solution
     </SubmitButton>
   </Container>
@@ -100,6 +104,8 @@ const TournamentHeader = props => (
 
 TournamentHeader.propTypes = {
   tournament: PropTypes.shape(tournamentPropType),
+  showSubmissionModal: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 
 export default TournamentHeader;

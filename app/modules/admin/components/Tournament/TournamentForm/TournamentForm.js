@@ -28,6 +28,7 @@ import ReactMde from 'react-mde';
 import TournamentMenuEditor from '@/modules/admin/components/Tournament/TournamentMenuEditor';
 import moment from 'moment';
 import { ChromePicker } from 'react-color';
+import { compose } from 'redux';
 
 const { Option } = Select;
 
@@ -53,9 +54,9 @@ class TournamentForm extends React.PureComponent {
       useGameDesign: props.resource.id === undefined,
     };
 
-    if (props.resource.menuData) {
-      this.state.menuData = this.menuDataPreprocess(
-        JSON.parse(props.resource.menuData) || [],
+    if (props.resource.id) {
+      this.state.menuItems = this.menuItemsPreprocess(
+        props.resource.menuItems || [],
       );
     }
   }
@@ -71,9 +72,7 @@ class TournamentForm extends React.PureComponent {
         const sanitatedValues = Object.assign(
           {
             description: this.state.description,
-            menuData: JSON.stringify(
-              this.menuDataPostprocess(this.state.menuData || []),
-            ),
+            menuItems: this.menuDataPostprocess(this.state.menuItems || []),
             format: this.state.format,
             scope: this.state.scope,
           },
@@ -91,10 +90,10 @@ class TournamentForm extends React.PureComponent {
     });
   };
 
-  menuDataPreprocess = menuData =>
-    menuData.map((x, index) => Object.assign({}, x, { key: index }));
+  menuItemsPreprocess = menuItems =>
+    menuItems.map((x, index) => Object.assign({}, x, { key: index }));
 
-  menuDataPostprocess = menuData => menuData.map(({ key, ...rest }) => rest);
+  menuItemsPostprocess = menuItems => menuItems.map(({ key, ...rest }) => rest);
 
   setEditorSelectedTab = selectedTab => {
     this.setState({ selectedTab });
@@ -104,8 +103,8 @@ class TournamentForm extends React.PureComponent {
     this.setState({ description: value });
   };
 
-  setMenuDataValue = value => {
-    this.setState({ menuData: value });
+  setMenuItemsValue = value => {
+    this.setState({ menuItems: value });
   };
 
   setScopeValue = value => {
@@ -385,8 +384,8 @@ class TournamentForm extends React.PureComponent {
             wrapperCol={{ span: 21 }}
           >
             <TournamentMenuEditor
-              onChange={this.setMenuDataValue}
-              dataSource={this.state.menuData}
+              onChange={this.setMenuItemsValue}
+              dataSource={this.state.menuItems}
               documents={this.props.documents}
             />
           </Form.Item>
@@ -412,6 +411,9 @@ class TournamentForm extends React.PureComponent {
   }
 }
 
-export default Form.create({
-  name: 'user_form',
-})(withEnhancedForm(TournamentForm));
+export default compose(
+  Form.create({
+    name: 'tournament_form',
+  }),
+  withEnhancedForm(),
+)(TournamentForm);

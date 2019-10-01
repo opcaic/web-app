@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button as ButtonAntd } from 'antd';
 import { lighten } from 'polished';
+import { theme } from '@/modules/shared/helpers/utils';
 
 const Button = styled(({ color, ...rest }) => <ButtonAntd {...rest} />)`
   border-color: ${props => props.color};
@@ -27,7 +28,7 @@ StyledButton.propTypes = {
 };
 
 StyledButton.defaultProps = {
-  color: '#1a213a',
+  color: theme.PRIMARY_COLOR,
 };
 
 export default StyledButton;

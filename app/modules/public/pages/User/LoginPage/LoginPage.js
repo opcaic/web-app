@@ -9,7 +9,7 @@ import { login } from '../../../../shared/ducks/auth';
 import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayout';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/pageTitles';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class LoginPage extends React.PureComponent {

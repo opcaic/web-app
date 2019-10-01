@@ -1,3 +1,5 @@
+import { FormattedMessage } from 'react-intl';
+import React from 'react';
 import resourceFactory from '../../shared/helpers/resourceManager';
 
 export const { actions, actionTypes, reducers, selectors } = resourceFactory({
@@ -5,26 +7,37 @@ export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   resourceName: 'tournaments',
 });
 
+// TODO: handle properly
 export const tournamentsMenu = [
   {
     key: 'overview',
-    text: 'Overview',
+    text: <FormattedMessage id="app.public.tournamentsMenu.overview" />,
     path: '',
+    private: false,
   },
   {
     key: 'leaderboard',
-    text: 'Leaderboard',
+    text: <FormattedMessage id="app.public.tournamentsMenu.leaderboard" />,
     path: 'leaderboard',
+    private: false,
   },
   {
     key: 'matches',
-    text: 'Matches',
+    text: <FormattedMessage id="app.public.tournamentsMenu.matches" />,
     path: 'matches',
+    private: false,
   },
   {
-    key: 'submissions',
-    text: 'Submissions',
+    key: 'mySubmissions',
+    text: <FormattedMessage id="app.public.tournamentsMenu.mySubmissions" />,
     path: 'submissions',
+    private: true,
+  },
+  {
+    key: 'myMatches',
+    text: <FormattedMessage id="app.public.tournamentsMenu.myMatches" />,
+    path: 'my-matches',
+    private: true,
   },
 ];
 

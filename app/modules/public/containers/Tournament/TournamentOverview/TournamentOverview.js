@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { tournamentPropType } from '@/modules/public/propTypes';
+import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import TournamentOverviewComponent from '@/modules/public/components/Tournament/TournamentDetail/TournamentOverview';
 import {
   actions as documentActions,

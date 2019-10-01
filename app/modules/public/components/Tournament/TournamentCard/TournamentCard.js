@@ -4,7 +4,7 @@ import { Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ListCard from '@/modules/public/components/ListCard';
-import { tournamentListItemPropType } from '@/modules/public/propTypes';
+import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 import { dateDiffInDays } from '@/modules/shared/helpers/time';
 import { FormattedMessage } from 'react-intl';
 import { tournamentScopeEnum } from '@/modules/shared/helpers/enumHelpers';

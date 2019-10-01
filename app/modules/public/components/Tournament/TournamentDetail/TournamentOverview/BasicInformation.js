@@ -12,7 +12,7 @@ import ReactMarkdown from 'react-markdown';
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { tournamentPropType } from '@/modules/public/propTypes';
+import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import CodeBlock from '@/modules/shared/components/CodeBlock';
 
 const WithTooltip = styled.span`

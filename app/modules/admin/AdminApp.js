@@ -8,6 +8,8 @@ import documentsReducer, { saga as documentsSaga } from './ducks/documents';
 import { saga as tournamentStateSaga } from './ducks/tournamentState';
 import matchesReducer from './ducks/matches';
 import leaderboardsReducer from './ducks/leaderboards';
+import submissionsReducer from './ducks/submissions';
+import validationsReducer from './ducks/validations';
 import tournamentsReducer, {
   saga as tournamentsSaga,
 } from './ducks/tournaments';
@@ -95,6 +97,8 @@ const withReducers = [
   injectReducer({ key: 'documents', reducer: documentsReducer }),
   injectReducer({ key: 'matches', reducer: matchesReducer }),
   injectReducer({ key: 'leaderboards', reducer: leaderboardsReducer }),
+  injectReducer({ key: 'submissions', reducer: submissionsReducer }),
+  injectReducer({ key: 'validations', reducer: validationsReducer }),
 ];
 
 export default compose(

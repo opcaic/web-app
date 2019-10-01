@@ -11,6 +11,8 @@ import TournamentParticipantNew from '@/modules/admin/containers/Tournament/Tour
 import TournamentMatchList from '@/modules/admin/containers/Tournament/TournamentMatchList';
 import TournamentMatchDetail from '@/modules/admin/containers/Tournament/TournamentMatchDetail';
 import TournamentLeaderboard from '@/modules/admin/containers/Tournament/TournamentLeaderboard';
+import TournamentSubmissionList from '@/modules/admin/containers/Tournament/TournamentSubmissionList';
+import TournamentSubmissionDetail from '@/modules/admin/containers/Tournament/TournamentSubmissionDetail';
 
 const MenuSyncedBasicInfo = withMenuSync(TournamentBasicInfo, {
   tournamentMenu: ['basic_info'],
@@ -46,6 +48,14 @@ const MenuSyncedMatchDetail = withMenuSync(TournamentMatchDetail, {
 
 const MenuSyncedLeaderboard = withMenuSync(TournamentLeaderboard, {
   tournamentMenu: ['leaderboard'],
+});
+
+const MenuSyncedSubmissionList = withMenuSync(TournamentSubmissionList, {
+  tournamentMenu: ['submissions'],
+});
+
+const MenuSyncedSubmissionDetail = withMenuSync(TournamentSubmissionDetail, {
+  tournamentMenu: ['submissions'],
 });
 
 const TournamentDetailRoutes = ({ tournament }) => (
@@ -94,6 +104,16 @@ const TournamentDetailRoutes = ({ tournament }) => (
       exact
       path="/admin/tournaments/:id/leaderboard"
       render={() => <MenuSyncedLeaderboard tournament={tournament} />}
+    />
+    <Route
+      exact
+      path="/admin/tournaments/:id/submissions"
+      render={() => <MenuSyncedSubmissionList tournament={tournament} />}
+    />
+    <Route
+      exact
+      path="/admin/tournaments/:id/submissions/:submissionId"
+      render={() => <MenuSyncedSubmissionDetail tournament={tournament} />}
     />
   </Switch>
 );
