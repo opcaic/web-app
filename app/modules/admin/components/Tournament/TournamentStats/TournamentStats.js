@@ -5,12 +5,7 @@ import PropTypes from 'prop-types';
 import { tournamentStateEnum } from '@/modules/shared/helpers/enumHelpers';
 
 const TournamentStats = props => (
-  <Descriptions layout="vertical" bordered column={4}>
-    <Descriptions.Item
-      label={<FormattedMessage id="app.admin.tournamentStats.state" />}
-    >
-      {tournamentStateEnum.helpers.idToText(props.resource.state)}
-    </Descriptions.Item>
+  <Descriptions layout="vertical" bordered column={4} size="small">
     <Descriptions.Item
       span={1}
       label={<FormattedMessage id="app.admin.tournamentStats.playersCount" />}
@@ -31,6 +26,11 @@ const TournamentStats = props => (
       }
     >
       {props.resource.activeSubmissionsCount}
+    </Descriptions.Item>
+    <Descriptions.Item
+      label={<FormattedMessage id="app.admin.tournamentStats.state" />}
+    >
+      {tournamentStateEnum.helpers.idToText(props.resource.state)}
     </Descriptions.Item>
   </Descriptions>
 );

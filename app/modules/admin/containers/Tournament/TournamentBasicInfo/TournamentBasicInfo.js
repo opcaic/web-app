@@ -21,6 +21,14 @@ import TournamentActionButtons from '@/modules/admin/containers/Tournament/Tourn
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentBasicInfo extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      resource: this.props.tournament,
+    };
+  }
+
   componentDidMount() {
     this.props.fetchGames();
 
@@ -29,6 +37,16 @@ class TournamentBasicInfo extends React.PureComponent {
     }
   }
 
+  changeState = (newState, stateAction) => {
+    const newStateObject = { state: newState };
+
+    this.setState(state => ({
+      resource: Object.assign({}, state.resource, newStateObject),
+    }));
+
+    this.props.changeState(stateAction);
+  };
+
   render() {
     return (
       <Spin
@@ -36,24 +54,24 @@ class TournamentBasicInfo extends React.PureComponent {
       >
         <Row>
           <Col span={16}>
-            <TournamentStats resource={this.props.tournament} />
+            <TournamentStats resource={this.state.resource} />
           </Col>
-          <Col span={8}>
+          <Col offset={4} span={4}>
             <TournamentActionButtons
-              resource={this.props.tournament}
-              handleClick={this.props.changeState}
+              resource={this.state.resource}
+              handleClick={this.changeState}
             />
           </Col>
         </Row>
         <Row>
           <Col span={24}>
             <TournamentForm
-              resource={this.props.tournament || {}}
+              resource={this.state.resource || {}}
               games={this.props.games}
               documents={this.props.documents}
               onSubmit={(values, successCallback, failureCallback) =>
                 this.props.updateResource(
-                  Object.assign({}, this.props.tournament, values),
+                  Object.assign({}, this.state.resource, values),
                   successCallback,
                   failureCallback,
                 )
