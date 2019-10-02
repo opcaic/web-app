@@ -38,7 +38,7 @@ export function mapDispatchToProps(dispatch) {
           prepareFilterParams(
             {},
             'activeTournamentsCount',
-            true,
+            false,
             additionalParams,
           ),
           { meta: { successCallback, failureCallback } },
