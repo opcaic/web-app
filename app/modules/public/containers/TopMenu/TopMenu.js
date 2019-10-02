@@ -33,7 +33,7 @@ TopMenu.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    changeLocale: locale => dispatch(changeLocale(locale)),
+    changeLocale: locale => dispatch(changeLocale(locale, true)),
     logout: () => dispatch(logout()),
   };
 }

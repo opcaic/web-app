@@ -18,6 +18,7 @@ import { callApi } from '../helpers/apiMiddleware';
 import { routerStateSelector } from '@/modules/shared/selectors/router';
 import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 import { resetState, resetStateActionType } from '@/reducers';
+import { changeLocale } from '@/modules/shared/ducks/localization';
 
 /*
  * Action types
@@ -241,7 +242,9 @@ function* authenticate(
     const { from } = routerState || {
       from: { pathname: '/' },
     };
+
     yield put(push(from));
+    yield put(changeLocale(data.localizationLanguage));
   } else {
     yield put(loginFailure());
 

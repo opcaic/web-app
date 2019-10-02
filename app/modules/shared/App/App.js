@@ -18,7 +18,9 @@ import registrationReducer from '../../public/ducks/registration';
 import authReducer, { saga as authSaga } from '../ducks/auth';
 import submissionReducer, { saga as submissionSaga } from '../ducks/submission';
 import uiReducer from '../ducks/ui';
-import localizationReducer from '../ducks/localization';
+import localizationReducer, {
+  saga as localizationSaga,
+} from '../ducks/localization';
 import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute';
 import { initialLoadCompleted } from '@/modules/shared/selectors/auth';
 
@@ -62,6 +64,7 @@ const withSagas = [
   injectSaga({ key: 'api', saga: apiSaga }),
   injectSaga({ key: 'auth', saga: authSaga }),
   injectSaga({ key: 'submissionUpload', saga: submissionSaga }),
+  injectSaga({ key: 'localization', saga: localizationSaga }),
 ];
 
 const withReducers = [
