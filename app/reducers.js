@@ -20,6 +20,7 @@ export function resetState() {
  */
 export default function createReducer(injectedReducers = {}) {
   const appReducer = combineReducers({
+    dummyReducer: (state = {}) => state,
     ...injectedReducers,
   });
 
