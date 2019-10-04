@@ -2,18 +2,20 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Col, Row } from 'antd';
 import PropTypes from 'prop-types';
 import {
   actions as gamesActions,
   selectors as gamesSelectors,
 } from '@/modules/admin/ducks/games';
-import GameForm from '@/modules/admin/components/Game/GameForm';
+import GameMenu from '@/modules/admin/components/Game/GameMenu';
+import GameDetailRoutes from '@/modules/admin/pages/Games/GameDetailRoutes';
+import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import Spin from '@/modules/shared/components/Spin';
 
-/* eslint-disable react/prefer-stateless-function */
-class GameDetailPage extends React.PureComponent {
+const SyncedMenu = withSyncedActiveItems(GameMenu, 'gameMenu');
+
+class GameDetailPage extends React.Component {
   componentDidMount() {
     this.props.fetchResource(this.props.match.params.id);
   }
@@ -21,21 +23,11 @@ class GameDetailPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
-        <Spin spinning={this.props.isFetching || this.props.resource === null}>
-          <Row>
-            <Col span={12}>
-              <GameForm
-                resource={this.props.resource || {}}
-                onSubmit={(values, successCallback, failureCallback) =>
-                  this.props.updateResource(
-                    Object.assign({}, this.props.resource, values),
-                    successCallback,
-                    failureCallback,
-                  )
-                }
-              />
-            </Col>
-          </Row>
+        <SyncedMenu id={this.props.match.params.id} />
+        <div style={{ height: 40 }} />
+
+        <Spin spinning={this.props.resource === null || this.props.isFetching}>
+          <GameDetailRoutes resource={this.props.resource} />
         </Spin>
       </PageLayout>
     );
@@ -44,7 +36,6 @@ class GameDetailPage extends React.PureComponent {
 
 GameDetailPage.propTypes = {
   fetchResource: PropTypes.func.isRequired,
-  updateResource: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.object,
   match: PropTypes.object.isRequired,
@@ -53,15 +44,6 @@ GameDetailPage.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: id => dispatch(gamesActions.fetchResource(id)),
-    updateResource: (resource, successCallback, failureCallback) =>
-      dispatch(
-        gamesActions.updateResource(resource.id, resource, {
-          meta: {
-            successCallback,
-            failureCallback,
-          },
-        }),
-      ),
   };
 }
 
