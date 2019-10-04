@@ -5,6 +5,7 @@ import TopMenu from '@/modules/public/containers/TopMenu';
 import Container from '@/modules/public/components/layout/Container';
 import styled from 'styled-components';
 import { theme } from '@/modules/shared/helpers/utils';
+import Footer from '@/modules/public/components/layout/Footer';
 
 const Title = styled(Container)`
   color: ${theme.TOP_MENU_COLOR};
@@ -13,10 +14,13 @@ const Title = styled(Container)`
 `;
 
 const PageLayout = props => (
-  <Layout className="layout" style={{ minHeight: '100vh', paddingBottom: 50 }}>
+  <Layout className="layout">
     <TopMenu />
-    {props.title && <Title>{props.title}</Title>}
-    {props.children}
+    <div style={{ minHeight: 'calc(100vh - 189px)' }}>
+      {props.title && <Title>{props.title}</Title>}
+      {props.children}
+    </div>
+    <Footer />
   </Layout>
 );
 
