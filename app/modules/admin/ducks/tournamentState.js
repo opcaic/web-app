@@ -1,5 +1,8 @@
 import { callApi } from '@/modules/shared/helpers/apiMiddleware';
 import { put, call, takeEvery, all } from 'redux-saga/effects';
+import { notification } from 'antd';
+import { defineMessages } from 'react-intl';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 export const actionTypes = {
   publish: {
@@ -29,7 +32,14 @@ export const actionTypes = {
   },
 };
 
-export const reducer = state => state;
+const intlMessages = defineMessages({
+  changeSuccessNotification: {
+    id: 'app.admin.tournamentState.changeSuccessNotification',
+  },
+  changeFailureNotification: {
+    id: 'app.admin.tournamentState.changeFailureNotification',
+  },
+});
 
 export function publishTournament(
   tournamentId,
@@ -105,13 +115,9 @@ export function stopTournament(tournamentId, successCallback, failureCallback) {
 function createHandler(actionName) {
   const actions = actionTypes[actionName];
 
-  console.log('createHadnler');
-
   function* handleTournamentAction({
     payload: { tournamentId, successCallback, failureCallback },
   }) {
-    console.log('handling');
-
     try {
       const { status } = yield call(callApi, {
         endpoint: `api/tournaments/${tournamentId}/${actionName}`,
@@ -122,10 +128,21 @@ function createHandler(actionName) {
         yield put({
           type: actions.SUCCESS,
         });
+        yield call(notification.success, {
+          message: intlGlobal.formatMessage(
+            intlMessages.changeSuccessNotification,
+          ),
+        });
+
         if (successCallback) successCallback();
       } else {
         yield put({
           type: actions.FAILURE,
+        });
+        yield call(notification.error, {
+          message: intlGlobal.formatMessage(
+            intlMessages.changeFailureNotification,
+          ),
         });
 
         if (failureCallback) failureCallback();
@@ -139,7 +156,6 @@ function createHandler(actionName) {
 }
 
 export function* saga() {
-  console.log('saging');
   yield all([takeEvery(actionTypes.publish.REQUEST, createHandler('publish'))]);
   yield all([takeEvery(actionTypes.start.REQUEST, createHandler('start'))]);
   yield all([takeEvery(actionTypes.pause.REQUEST, createHandler('pause'))]);

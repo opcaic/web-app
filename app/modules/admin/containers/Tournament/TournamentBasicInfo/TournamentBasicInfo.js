@@ -1,23 +1,23 @@
-import React from 'react';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import PropTypes from 'prop-types';
-import { Col, Row } from 'antd';
 import TournamentForm from '@/modules/admin/components/Tournament/TournamentForm';
-import {
-  actions as gameActions,
-  selectors as gameSelectors,
-} from '@/modules/admin/ducks/games';
+import TournamentStats from '@/modules/admin/components/Tournament/TournamentStats';
+import TournamentActionButtons from '@/modules/admin/containers/Tournament/TournamentActionButtons';
 import {
   actions as documentActions,
   selectors as documentSelectors,
 } from '@/modules/admin/ducks/documents';
+import {
+  actions as gameActions,
+  selectors as gameSelectors,
+} from '@/modules/admin/ducks/games';
 import { actions as tournamentsActions } from '@/modules/admin/ducks/tournaments';
 import Spin from '@/modules/shared/components/Spin';
+import { Col, Row } from 'antd';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import TournamentStats from '@/modules/admin/components/Tournament/TournamentStats';
-import TournamentActionButtons from '@/modules/admin/containers/Tournament/TournamentActionButtons';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentBasicInfo extends React.PureComponent {
@@ -56,7 +56,7 @@ class TournamentBasicInfo extends React.PureComponent {
           <Col span={16}>
             <TournamentStats resource={this.state.resource} />
           </Col>
-          <Col offset={4} span={4}>
+          <Col offset={6} span={2}>
             <TournamentActionButtons
               resource={this.state.resource}
               handleClick={this.changeState}

@@ -47,7 +47,7 @@ class TournamentForm extends React.PureComponent {
 
     this.state = {
       selectedTab: 'write',
-      description: props.resource.description || '',
+      description: props.resource.description,
       scope: props.resource.scope || tournamentScopeEnum.ONGOING,
       format: props.resource.format || tournamentFormatEnum.SINGLE_PLAYER,
       hexColor: props.resource.themeColor,
@@ -69,15 +69,12 @@ class TournamentForm extends React.PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const sanitatedValues = Object.assign(
-          {
-            description: this.state.description,
-            menuItems: this.menuDataPostprocess(this.state.menuItems || []),
-            format: this.state.format,
-            scope: this.state.scope,
-          },
-          values,
-        );
+        const sanitatedValues = Object.assign({}, values, {
+          menuItems: this.menuItemsPostprocess(this.state.menuItems || []),
+          format: this.state.format,
+          scope: this.state.scope,
+          maxSubmissionSize: values.maxSubmissionSize * MB_IN_BYTES,
+        });
 
         if (this.state.useGameDesign) {
           sanitatedValues.imageUrl = undefined;
@@ -247,7 +244,7 @@ class TournamentForm extends React.PureComponent {
             label={<FormattedMessage id="app.admin.tournamentForm.deadline" />}
           >
             {getFieldDecorator('deadline', {
-              initialValue: this.props.resource.deadline,
+              initialValue: moment(this.props.resource.deadline),
             })(
               <DatePicker
                 showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
