@@ -240,3 +240,18 @@ tournamentFinishedSortEnum.helpers = createEnum(
     1: { id: 'app.enums.tournamentFinishedSort.finishedRecentlyLast' },
   }),
 );
+
+export const gameTypeEnum = {
+  SINGLE_PLAYER: 1,
+  TWO_PLAYER: 2,
+  MULTIPLAYER: 3,
+};
+
+gameTypeEnum.helpers = createEnum(
+  gameTypeEnum,
+  defineMessages({
+    1: { id: 'app.enums.gameType.singlePlayer' },
+    2: { id: 'app.enums.gameType.twoPlayer' },
+    3: { id: 'app.enums.gameType.multiplayer' },
+  }),
+);
