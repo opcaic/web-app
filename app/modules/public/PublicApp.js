@@ -32,6 +32,7 @@ import PrivateRoute from '@/modules/shared/containers/PrivateRoute/PrivateRoute'
 import { handleCookieConsent } from '@/modules/shared/helpers/utils';
 import HomePageSwitch from '@/modules/public/pages/Home/HomePageSwitch/HomePageSwitch';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
+import GameDetailPage from '@/modules/public/pages/Games/GameDetailPage';
 
 const MenuSyncedHomePageSwitch = withMenuSync(HomePageSwitch, {
   topMenu: ['home'],
@@ -46,6 +47,10 @@ const MenuSyncedTournamentDetailPage = withMenuSync(TournamentDetailPage, {
 });
 
 const MenuSyncedGameListPage = withMenuSync(GameListPage, {
+  topMenu: ['games'],
+});
+
+const MenuSyncedGameDetailPage = withMenuSync(GameDetailPage, {
   topMenu: ['games'],
 });
 
@@ -68,7 +73,10 @@ export class PublicApp extends React.Component {
           path="/tournaments/:id"
           component={MenuSyncedTournamentDetailPage}
         />
+
         <Route exact path="/games" component={MenuSyncedGameListPage} />
+        <Route path="/games/:id" component={MenuSyncedGameDetailPage} />
+
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />
