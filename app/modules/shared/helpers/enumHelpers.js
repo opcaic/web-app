@@ -82,6 +82,11 @@ tournamentScopeEnum.helpers = createEnum(
   }),
 );
 
+export const isFormatForScope = (scope, format) =>
+  format === tournamentFormatEnum.ELO
+    ? scope === tournamentScopeEnum.ONGOING
+    : scope === tournamentScopeEnum.DEADLINE;
+
 export const tournamentAvailabilityEnum = {
   PUBLIC: 1,
   PRIVATE: 2,
