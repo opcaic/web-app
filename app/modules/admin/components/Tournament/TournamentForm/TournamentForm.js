@@ -20,6 +20,7 @@ import {
   tournamentRankingStrategyEnum,
   tournamentScopeEnum,
   tournamentAvailabilityEnum,
+  tournamentStateEnum,
   isFormatForScope,
 } from '@/modules/shared/helpers/enumHelpers';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
@@ -74,6 +75,7 @@ class TournamentForm extends React.PureComponent {
           format: this.state.format,
           scope: this.state.scope,
           maxSubmissionSize: values.maxSubmissionSize * MB_IN_BYTES,
+          themeColor: this.state.hexColor,
         });
 
         if (this.state.useGameDesign) {
@@ -113,6 +115,9 @@ class TournamentForm extends React.PureComponent {
     this.setState({ format: value });
   };
 
+  isDisabledByState = state =>
+    this.props.resource.state && this.props.resource.state !== state;
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -148,6 +153,7 @@ class TournamentForm extends React.PureComponent {
               placeholder={
                 <FormattedMessage id="app.admin.tournamentForm.gameSelectPlaceholder" />
               }
+              disabled={this.isDisabledByState(tournamentStateEnum.CREATED)}
             >
               {this.props.games.map(x => (
                 <Option value={x.id} key={x.id}>
@@ -189,6 +195,7 @@ class TournamentForm extends React.PureComponent {
               placeholder={
                 <FormattedMessage id="app.admin.tournamentForm.scopeSelectPlaceholder" />
               }
+              disabled={this.isDisabledByState(tournamentStateEnum.CREATED)}
               onSelect={this.setScopeValue}
             >
               {tournamentScopeEnum.getValues().map(x => (
@@ -208,9 +215,12 @@ class TournamentForm extends React.PureComponent {
             rules: [isRequired('format')],
           })(
             <Select
-              disabled={this.state.scope === undefined}
               placeholder={
                 <FormattedMessage id="app.admin.tournamentForm.formatSelectPlaceholder" />
+              }
+              disabled={
+                this.state.scope === undefined ||
+                this.isDisabledByState(tournamentStateEnum.CREATED)
               }
               onSelect={this.setFormatValue}
             >
@@ -266,6 +276,7 @@ class TournamentForm extends React.PureComponent {
               placeholder={
                 <FormattedMessage id="app.admin.tournamentForm.rankingStrategySelectPlaceholder" />
               }
+              disabled={this.isDisabledByState(tournamentStateEnum.CREATED)}
             >
               {tournamentRankingStrategyEnum.getValues().map(x => (
                 <Option value={x.id} key={x.id}>
