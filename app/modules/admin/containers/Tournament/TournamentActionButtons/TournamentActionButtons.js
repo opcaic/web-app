@@ -26,6 +26,7 @@ const ActionButton = props => {
       type={type}
       size="large"
       onClick={() => handleClick(state, createAction(tournamentId))}
+      style={{ marginLeft: 10 }}
     >
       {message}
     </Button>

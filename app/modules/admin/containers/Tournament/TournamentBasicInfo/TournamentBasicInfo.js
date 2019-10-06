@@ -52,11 +52,11 @@ class TournamentBasicInfo extends React.PureComponent {
       <Spin
         spinning={this.props.isFetchingGames || this.props.isFetchingDocuments}
       >
-        <Row>
-          <Col span={16}>
+        <Row style={{ marginBottom: 20 }}>
+          <Col xl={16}>
             <TournamentStats resource={this.state.resource} />
           </Col>
-          <Col offset={6} span={2}>
+          <Col xl={8} style={{ textAlign: 'right' }}>
             <TournamentActionButtons
               resource={this.state.resource}
               handleClick={this.changeState}
