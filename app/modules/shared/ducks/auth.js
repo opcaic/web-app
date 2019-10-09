@@ -19,6 +19,7 @@ import { routerStateSelector } from '@/modules/shared/selectors/router';
 import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 import { resetState, resetStateActionType } from '@/reducers';
 import { changeLocale } from '@/modules/shared/ducks/localization';
+import { settings } from '@/modules/shared/helpers/utils';
 
 /*
  * Action types
@@ -260,10 +261,7 @@ function* authenticate(
  */
 function* handleRefreshToken() {
   while (
-    yield call(
-      delay,
-      1000 * parseInt(process.env.AUTH_REFRESH_PERIOD_SECONDS, 10),
-    )
+    yield call(delay, 1000 * parseInt(settings.authRefreshPeriodSeconds, 10))
   ) {
     yield call(refreshTokenSaga);
   }
@@ -392,7 +390,7 @@ function setAuthData(id, role, rememberMe, refreshToken) {
   const options = {};
 
   if (rememberMe) {
-    options.expires = parseInt(process.env.AUTH_REMEMBER_ME_DAYS, 10);
+    options.expires = parseInt(settings.authRememberMeDays, 10);
   }
 
   Cookies.set(

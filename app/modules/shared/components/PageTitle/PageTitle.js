@@ -1,14 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-
-// eslint-disable-next-line prefer-destructuring
-const APP_NAME = process.env.APP_NAME;
+import { settings } from '@/modules/shared/helpers/utils';
 
 const PageTitle = props => (
   <Helmet>
     <title>
-      {props.title} | {APP_NAME}
+      {props.title} | {settings.appName}
     </title>
   </Helmet>
 );
