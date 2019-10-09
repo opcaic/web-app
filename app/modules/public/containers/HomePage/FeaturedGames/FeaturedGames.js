@@ -14,10 +14,11 @@ import { Typography } from 'antd';
 import StyledButton from '@/modules/shared/components/StyledButton';
 import { Link } from 'react-router-dom';
 import Container from '@/modules/public/components/layout/Container';
+import { FormattedMessage } from 'react-intl';
 
 /* eslint-disable react/prefer-stateless-function */
 export class FeaturedGames extends React.PureComponent {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchItems();
   }
 
@@ -25,20 +26,25 @@ export class FeaturedGames extends React.PureComponent {
     return (
       <Container>
         <Typography.Title level={1} style={{ marginBottom: 30 }}>
-          Featured games
+          <FormattedMessage id="app.public.featuredGames.title" />
         </Typography.Title>
 
         <GameList
           dataSource={this.props.items}
           loading={this.props.isFetching}
           fetch={this.props.fetchItems}
+          emptyText={<FormattedMessage id="app.public.featuredGames.noGames" />}
         />
 
-        <div style={{ textAlign: 'center' }}>
-          <StyledButton type="primary" size="large">
-            <Link to="/games">Browse all games</Link>
-          </StyledButton>
-        </div>
+        {this.props.totalItems > 4 && (
+          <div style={{ textAlign: 'center' }}>
+            <StyledButton type="primary" size="large">
+              <Link to="/games">
+                <FormattedMessage id="app.public.featuredGames.button" />
+              </Link>
+            </StyledButton>
+          </div>
+        )}
       </Container>
     );
   }
@@ -48,6 +54,7 @@ FeaturedGames.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape(gamePropType)),
   isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,
+  totalItems: PropTypes.number.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -55,7 +62,7 @@ export function mapDispatchToProps(dispatch) {
     fetchItems: () =>
       dispatch(
         gameActions.fetchMany(
-          prepareFilterParams({ count: 4 }, 'activeTournamentsCount', true),
+          prepareFilterParams({ count: 4 }, 'activeTournamentsCount', false),
         ),
       ),
   };
