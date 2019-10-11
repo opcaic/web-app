@@ -21,6 +21,7 @@ import {
   tournamentScopeEnum,
   tournamentAvailabilityEnum,
   tournamentStateEnum,
+  tournamentMatchLogVisibility,
   isFormatForScope,
 } from '@/modules/shared/helpers/enumHelpers';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
@@ -49,8 +50,8 @@ class TournamentForm extends React.PureComponent {
     this.state = {
       selectedTab: 'write',
       description: props.resource.description,
-      scope: props.resource.scope || tournamentScopeEnum.ONGOING,
-      format: props.resource.format || tournamentFormatEnum.SINGLE_PLAYER,
+      scope: props.resource.scope,
+      format: props.resource.format,
       hexColor: props.resource.themeColor,
       useGameDesign: props.resource.id === undefined,
     };
@@ -76,6 +77,8 @@ class TournamentForm extends React.PureComponent {
           scope: this.state.scope,
           maxSubmissionSize: values.maxSubmissionSize * MB_IN_BYTES,
           themeColor: this.state.hexColor,
+          privateMatchLog:
+            values.matchLogVisibility === tournamentMatchLogVisibility.PRIVATE,
         });
 
         if (this.state.useGameDesign) {
@@ -182,6 +185,25 @@ class TournamentForm extends React.PureComponent {
             </Radio.Group>,
           )}
         </Form.Item>
+        <Form.Item
+          label={
+            <FormattedMessage id="app.admin.tournamentForm.matchLogVisibility" />
+          }
+        >
+          {getFieldDecorator('matchLogVisibility', {
+            initialValue: this.props.resource.privateMatchLog
+              ? tournamentMatchLogVisibility.PRIVATE
+              : tournamentMatchLogVisibility.PUBLIC,
+          })(
+            <Radio.Group buttonStyle="solid">
+              {tournamentMatchLogVisibility.helpers.getValues().map(item => (
+                <Radio.Button key={item.id} value={item.id}>
+                  {item.text}
+                </Radio.Button>
+              ))}
+            </Radio.Group>,
+          )}
+        </Form.Item>
         <Divider />
 
         <Form.Item
@@ -255,6 +277,7 @@ class TournamentForm extends React.PureComponent {
           >
             {getFieldDecorator('deadline', {
               initialValue: moment(this.props.resource.deadline),
+              rules: [isRequired('deadline')],
             })(
               <DatePicker
                 showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
