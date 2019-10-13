@@ -1,4 +1,4 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -18,6 +18,9 @@ import {
 import FormErrors from '@/modules/shared/components/FormErrors';
 import { compose } from 'redux';
 import withPasswordConfirmation from '@/modules/shared/helpers/hocs/withPasswordConfirmation';
+import { FormattedMessage } from 'react-intl';
+import Reaptcha from 'reaptcha';
+import { settings } from '@/modules/shared/helpers/utils';
 
 class RegisterForm extends React.PureComponent {
   handleSubmit = e => {
@@ -27,6 +30,10 @@ class RegisterForm extends React.PureComponent {
         this.props.onSubmit(values);
       }
     });
+  };
+
+  verifyCaptcha = () => {
+    this.props.form.setFieldsValue({ captcha: true });
   };
 
   render() {
@@ -82,7 +89,7 @@ class RegisterForm extends React.PureComponent {
               />,
             )}
           </Form.Item>
-          <Form.Item style={{ marginBottom: 5 }}>
+          <Form.Item style={{ marginBottom: 15 }}>
             {getFieldDecorator('confirmPassword', {
               validateTrigger: 'onBlur',
               rules: [
@@ -100,15 +107,36 @@ class RegisterForm extends React.PureComponent {
               />,
             )}
           </Form.Item>
-          {/* <Form.Item>
-            {getFieldDecorator('agreement', {
+          <Form.Item style={{ marginBottom: 5 }}>
+            {getFieldDecorator('captcha', {
+              rules: [isRequired('captcha', accountErrorMessageProvider)],
+            })(
+              <Reaptcha
+                sitekey={settings.captchaKey}
+                onVerify={this.verifyCaptcha}
+              />,
+            )}
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 5 }}>
+            {getFieldDecorator('privacyPolicy', {
               valuePropName: 'checked',
+              normalize: value => value || undefined,
+              rules: [isRequired('privacyPolicy', accountErrorMessageProvider)],
             })(
               <Checkbox>
-                I have read the <Link to="/agreement">agreement</Link>
+                <FormattedMessage
+                  id="app.public.registrationForm.privacyPolicyText"
+                  values={{
+                    link: (
+                      <a href={settings.privacyPolicyUrl} target="_blank">
+                        <FormattedMessage id="app.public.registrationForm.privacyPolicyLink" />
+                      </a>
+                    ),
+                  }}
+                />
               </Checkbox>,
             )}
-          </Form.Item> */}
+          </Form.Item>
           <Form.Item style={{ marginBottom: 0 }}>
             <Button
               type="primary"
