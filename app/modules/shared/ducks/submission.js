@@ -8,6 +8,7 @@ import { defineMessages } from 'react-intl';
 import { notification } from 'antd';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import FileSaver from 'file-saver';
+import filesize from 'filesize';
 
 const intlMessages = defineMessages({
   uploadSuccessNotification: {
@@ -51,16 +52,20 @@ export const actionTypes = {
 export function uploadSubmission(
   fileList,
   tournamentId,
+  maxSubmissionSize,
   successCallback,
   failureCallback,
+  progressCallback,
 ) {
   return {
     type: actionTypes.SUBMISSION_UPLOAD,
     payload: {
       fileList,
       tournamentId,
+      maxSubmissionSize,
       successCallback,
       failureCallback,
+      progressCallback,
     },
   };
 }
@@ -103,7 +108,14 @@ export function hideSubmissionModal() {
  * Sagas
  */
 function* handleSubmissionUpload({
-  payload: { fileList, tournamentId, successCallback, failureCallback },
+  payload: {
+    fileList,
+    tournamentId,
+    maxSubmissionSize,
+    successCallback,
+    failureCallback,
+    progressCallback,
+  },
 }) {
   yield put({
     type: actionTypes.SUBMISSION_UPLOAD_REQUEST,
@@ -130,6 +142,19 @@ function* handleSubmissionUpload({
     zipFile = yield promise;
   }
 
+  if (zipFile && zipFile.size > maxSubmissionSize) {
+    yield call(
+      handleSubmissionUploadFailure,
+      {
+        field: 'archive',
+        code: 'invalid-archive-size',
+        maximumSize: maxSubmissionSize,
+      },
+      failureCallback,
+    );
+    return;
+  }
+
   const formData = new FormData();
 
   formData.append('archive', zipFile);
@@ -142,6 +167,10 @@ function* handleSubmissionUpload({
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+    onUploadProgress: progressEvent =>
+      progressCallback(
+        Math.round((progressEvent.loaded * 100) / progressEvent.total),
+      ),
   });
 
   if (status >= 200 && status < 300) {
@@ -159,14 +188,23 @@ function* handleSubmissionUpload({
       message: intlGlobal.formatMessage(intlMessages.uploadSuccessNotification),
     });
   } else {
-    yield put({
-      type: actionTypes.SUBMISSION_UPLOAD_FAILURE,
-    });
+    yield call(handleSubmissionUploadFailure, data, failureCallback);
+  }
+}
 
-    if (failureCallback) {
-      const errors = prepareFormErrors(data, null, true);
-      failureCallback(errors);
-    }
+function* handleSubmissionUploadFailure(data, failureCallback) {
+  yield put({
+    type: actionTypes.SUBMISSION_UPLOAD_FAILURE,
+  });
+
+  if (data.code === 'invalid-archive-size') {
+    // eslint-disable-next-line no-param-reassign
+    data.maximumSize = filesize(data.maximumSize);
+  }
+
+  if (failureCallback) {
+    const errors = prepareFormErrors(data, null, true);
+    failureCallback(errors);
   }
 }
 

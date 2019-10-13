@@ -3,6 +3,7 @@ import {
   tournamentRunningSortEnum,
   tournamentStateEnum,
   tournamentFinishedSortEnum,
+  tournamentScopeEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 
 export function getFilterParams(selectedValues) {
@@ -48,4 +49,13 @@ export function getFilterParams(selectedValues) {
     .filter(x => x !== tournamentStateEnum.CREATED);
 
   return params;
+}
+
+export function acceptsSubmissions(tournament) {
+  return (
+    (tournament.scope === tournamentScopeEnum.ONGOING &&
+      tournament.state === tournamentStateEnum.RUNNING) ||
+    (tournament.scope === tournamentScopeEnum.DEADLINE &&
+      tournament.state === tournamentStateEnum.PUBLISHED)
+  );
 }

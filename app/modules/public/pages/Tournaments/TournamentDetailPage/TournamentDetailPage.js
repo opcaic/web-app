@@ -22,6 +22,13 @@ import ApiResult from '@/modules/shared/components/ApiResult';
 export class TournamentDetailPage extends React.PureComponent {
   componentDidMount() {
     this.props.fetchResource(this.props.match.params.id);
+
+    if (
+      this.props.location.state &&
+      this.props.location.state.showSubmissionModal
+    ) {
+      this.props.showSubmissionModal({ id: this.props.match.params.id });
+    }
   }
 
   render() {
@@ -53,6 +60,7 @@ TournamentDetailPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.shape(tournamentPropType),
   match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   showSubmissionModal: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   error: PropTypes.object,

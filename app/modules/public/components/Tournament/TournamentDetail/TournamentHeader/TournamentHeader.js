@@ -7,6 +7,8 @@ import { tournamentsMenu } from '@/modules/public/ducks/tournaments';
 import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import { tournamentAvailabilityEnum } from '@/modules/shared/helpers/enumHelpers';
+import { acceptsSubmissions } from '@/modules/shared/helpers/resources/tournaments';
+import { FormattedMessage } from 'react-intl';
 
 const SyncedTournamentMenu = withSyncedActiveItems(
   TournamentMenu,
@@ -65,7 +67,9 @@ const SubmitButton = styled(({ themeColor, ...rest }) => <Button {...rest} />)`
   color: white;
   border-radius: 0;
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     border-color: ${props => props.themeColor};
     color: ${props => props.themeColor};
   }
@@ -93,12 +97,14 @@ const TournamentHeader = props => (
       )}
       themeColor={props.tournament.themeColor}
     />
-    <SubmitButton
-      themeColor={props.tournament.themeColor}
-      onClick={() => props.showSubmissionModal()}
-    >
-      Submit solution
-    </SubmitButton>
+    {acceptsSubmissions(props.tournament) && (
+      <SubmitButton
+        themeColor={props.tournament.themeColor}
+        onClick={() => props.showSubmissionModal()}
+      >
+        <FormattedMessage id="app.public.tournamentHeader.submitSolution" />
+      </SubmitButton>
+    )}
   </Container>
 );
 

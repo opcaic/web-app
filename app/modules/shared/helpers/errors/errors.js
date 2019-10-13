@@ -28,6 +28,7 @@ export const errorIntlMessages = defineMessages({
   invalidToken: { id: 'app.errors.invalidToken' },
   //
   resetPasswordFailure: { id: 'app.errors.resetPasswordFailure' },
+  invalidArchiveSize: { id: 'app.errors.invalidArchiveSize' },
 });
 
 export function prepareFormErrors(
@@ -41,7 +42,7 @@ export function prepareFormErrors(
   if (Array.isArray(data.errors)) {
     apiErrors = data.errors;
   } else if (data.code) {
-    apiErrors = [{ field: null, code: data.code, message: data.message }];
+    apiErrors = [{ ...data, field: null }];
   } else {
     return {};
   }
