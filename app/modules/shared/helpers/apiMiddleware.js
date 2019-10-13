@@ -10,8 +10,9 @@ import {
 } from '../selectors/auth';
 import { defineMessages } from 'react-intl';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { settings } from '@/modules/shared/helpers/utils';
 
-export const API_BASE = process.env.API_URL;
+export const API_BASE = settings.apiUrl;
 export const CALL_API = 'app/CALL_API';
 const axiosInstance = axios.create();
 

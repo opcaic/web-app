@@ -11,6 +11,15 @@ export const theme = {
   ERROR_COLOR: '#f5222d',
 };
 
+export const settings = {
+  apiUrl: process.env.API_URL,
+  privacyPolicyUrl: process.env.PRIVACY_POLICY_URL,
+  captchaKey: process.env.CAPTCHA_KEY,
+  authRefreshPeriodSeconds: process.env.AUTH_REFRESH_PERIOD_SECONDS,
+  authRememberMeDays: process.env.AUTH_REMEMBER_ME_DAYS,
+  appName: process.env.APP_NAME,
+};
+
 const cookieConsentIntl = defineMessages({
   message: { id: 'app.shared.cookieConsent.message' },
   dismiss: { id: 'app.shared.cookieConsent.dismiss' },
