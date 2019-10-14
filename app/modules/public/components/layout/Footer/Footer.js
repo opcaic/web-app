@@ -35,7 +35,7 @@ const SecondaryText = styled.div`
 
 const StyledLink = styled(Link)`
   color: rgba(255, 255, 255, 0.85);
-  margin-left: 20px;
+  margin-left: 30px;
   font-size: 14px;
 
   &:hover {
@@ -54,7 +54,10 @@ const Footer = () => (
           <FormattedMessage id="app.public.footer.secondaryText" />
         </SecondaryText>
         <Links>
-          <StyledLink to="TODO">
+          <StyledLink to="/faq">
+            <FormattedMessage id="app.public.footer.faq" />
+          </StyledLink>
+          <StyledLink to="/about">
             <FormattedMessage id="app.public.footer.about" />
           </StyledLink>
           <StyledLink to="TODO">

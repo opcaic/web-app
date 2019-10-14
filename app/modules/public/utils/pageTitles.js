@@ -61,4 +61,10 @@ export const pageTitles = defineMessages({
   changePasswordPage: {
     id: 'app.public.pageTitles.changePasswordPage',
   },
+  aboutPage: {
+    id: 'app.public.pageTitles.aboutPage',
+  },
+  faqPage: {
+    id: 'app.public.pageTitles.faqPage',
+  },
 });
