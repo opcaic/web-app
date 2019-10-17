@@ -16,6 +16,10 @@ export const accountErrorIntlMessages = defineMessages({
   fieldRequiredUsername: { id: 'app.public.accountErrors.usernameRequired' },
   fieldRequiredEmail: { id: 'app.public.accountErrors.emailRequired' },
   fieldRequiredPassword: { id: 'app.public.accountErrors.passwordRequired' },
+  fieldRequiredCaptcha: { id: 'app.public.accountErrors.captchaRequired' },
+  fieldRequiredPrivacyPolicy: {
+    id: 'app.public.accountErrors.privacyPolicyRequired',
+  },
   fieldRequiredConfirmPassword: {
     id: 'app.public.accountErrors.confirmPasswordRequired',
   },

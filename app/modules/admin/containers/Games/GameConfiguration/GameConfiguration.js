@@ -81,7 +81,11 @@ class GameConfiguration extends React.Component {
             <Title>
               <FormattedMessage id="app.admin.gameConfiguration.form" />
             </Title>
-            <DynamicForm formSchema={this.state.formSchema} />
+            <DynamicForm
+              formSchema={this.state.formSchema}
+              // just preview, we do not want to do anything on change
+              onConfigurationChanged={() => {}}
+            />
           </Col>
         </Row>
         <Button onClick={this.submit} type="primary">

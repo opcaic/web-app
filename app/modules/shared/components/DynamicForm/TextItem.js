@@ -1,9 +1,16 @@
 import React from 'react';
-import { Input } from 'antd';
+import { Form as AntForm, Input } from 'antd';
 import PropTypes from 'prop-types';
 
-export const TextItem = props => <Input label={props.label} />;
+export const TextItem = props => (
+  <AntForm.Item label={props.label} {...props.options.formItemLayout}>
+    <Input value={props.value} onChange={e => props.onChange(e.target.value)} />
+  </AntForm.Item>
+);
 
 TextItem.propTypes = {
-  label: PropTypes.object,
+  label: PropTypes.string,
+  value: PropTypes.any,
+  onChange: PropTypes.func,
+  formItemLayout: PropTypes.object,
 };

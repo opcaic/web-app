@@ -21,12 +21,14 @@ import {
   tournamentScopeEnum,
   tournamentAvailabilityEnum,
   tournamentStateEnum,
+  tournamentMatchLogVisibility,
   isFormatForScope,
 } from '@/modules/shared/helpers/enumHelpers';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import * as Showdown from 'showdown';
 import ReactMde from 'react-mde';
 import TournamentMenuEditor from '@/modules/admin/components/Tournament/TournamentMenuEditor';
+import TournamentGameInfo from '@/modules/admin/containers/Tournament/TournamentGameInfo';
 import moment from 'moment';
 import { ChromePicker } from 'react-color';
 import { compose } from 'redux';
@@ -47,10 +49,12 @@ class TournamentForm extends React.PureComponent {
     super(props);
 
     this.state = {
+      gameId: props.resource.game ? props.resource.game.id : null,
+      configuration: props.resource.configuration,
       selectedTab: 'write',
       description: props.resource.description,
-      scope: props.resource.scope || tournamentScopeEnum.ONGOING,
-      format: props.resource.format || tournamentFormatEnum.SINGLE_PLAYER,
+      scope: props.resource.scope,
+      format: props.resource.format,
       hexColor: props.resource.themeColor,
       useGameDesign: props.resource.id === undefined,
     };
@@ -76,6 +80,10 @@ class TournamentForm extends React.PureComponent {
           scope: this.state.scope,
           maxSubmissionSize: values.maxSubmissionSize * MB_IN_BYTES,
           themeColor: this.state.hexColor,
+          gameId: this.state.gameId,
+          configuration: this.state.configuration,
+          privateMatchLog:
+            values.matchLogVisibility === tournamentMatchLogVisibility.PRIVATE,
         });
 
         if (this.state.useGameDesign) {
@@ -118,6 +126,14 @@ class TournamentForm extends React.PureComponent {
   isDisabledByState = state =>
     this.props.resource.state && this.props.resource.state !== state;
 
+  handleGameChange = id => {
+    this.setState({ gameId: id, configuration: {} });
+  };
+
+  handleConfigurationChanged = configuration => {
+    this.setState({ configuration });
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -141,28 +157,14 @@ class TournamentForm extends React.PureComponent {
             rules: [isRequired('name')],
           })(<Input />)}
         </Form.Item>
-        <Form.Item
-          label={<FormattedMessage id="app.admin.tournamentForm.game" />}
-        >
-          {getFieldDecorator('gameId', {
-            initialValue:
-              this.props.resource.game && this.props.resource.game.id,
-            rules: [isRequired('game')],
-          })(
-            <Select
-              placeholder={
-                <FormattedMessage id="app.admin.tournamentForm.gameSelectPlaceholder" />
-              }
-              disabled={this.isDisabledByState(tournamentStateEnum.CREATED)}
-            >
-              {this.props.games.map(x => (
-                <Option value={x.id} key={x.id}>
-                  {x.name}
-                </Option>
-              ))}
-            </Select>,
-          )}
-        </Form.Item>
+
+        <TournamentGameInfo
+          onConfigurationChanged={this.handleConfigurationChanged}
+          gameId={this.state.gameId}
+          onGameChange={this.handleGameChange}
+          gameChangeDisabled={this.props.resource.game}
+          configuration={this.state.configuration}
+        />
 
         <Form.Item
           label={
@@ -175,6 +177,25 @@ class TournamentForm extends React.PureComponent {
           })(
             <Radio.Group buttonStyle="solid">
               {tournamentAvailabilityEnum.helpers.getValues().map(item => (
+                <Radio.Button key={item.id} value={item.id}>
+                  {item.text}
+                </Radio.Button>
+              ))}
+            </Radio.Group>,
+          )}
+        </Form.Item>
+        <Form.Item
+          label={
+            <FormattedMessage id="app.admin.tournamentForm.matchLogVisibility" />
+          }
+        >
+          {getFieldDecorator('matchLogVisibility', {
+            initialValue: this.props.resource.privateMatchLog
+              ? tournamentMatchLogVisibility.PRIVATE
+              : tournamentMatchLogVisibility.PUBLIC,
+          })(
+            <Radio.Group buttonStyle="solid">
+              {tournamentMatchLogVisibility.helpers.getValues().map(item => (
                 <Radio.Button key={item.id} value={item.id}>
                   {item.text}
                 </Radio.Button>
@@ -255,6 +276,7 @@ class TournamentForm extends React.PureComponent {
           >
             {getFieldDecorator('deadline', {
               initialValue: moment(this.props.resource.deadline),
+              rules: [isRequired('deadline')],
             })(
               <DatePicker
                 showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -400,19 +422,17 @@ class TournamentForm extends React.PureComponent {
         )}
 
         <Form.Item {...tailFormItemLayout}>
-          <div>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={this.props.isSubmitting}
-            >
-              {this.props.resource.id ? (
-                <FormattedMessage id="app.generic.save" />
-              ) : (
-                <FormattedMessage id="app.generic.create" />
-              )}
-            </Button>
-          </div>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={this.props.isSubmitting}
+          >
+            {this.props.resource.id ? (
+              <FormattedMessage id="app.generic.save" />
+            ) : (
+              <FormattedMessage id="app.generic.create" />
+            )}
+          </Button>
         </Form.Item>
       </Form>
     );

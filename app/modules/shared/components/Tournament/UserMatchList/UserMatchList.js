@@ -100,7 +100,6 @@ function prepareColumns({ user, view }) {
       if (currentUserResult) {
         botResults.unshift(currentUserResult);
       }
-
       return botResults.map((x, index) => [
         <span key={`sep_${x.submission.author.id}`}>
           {index ? ' vs ' : ''}

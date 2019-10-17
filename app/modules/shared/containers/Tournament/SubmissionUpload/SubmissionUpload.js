@@ -11,6 +11,9 @@ import {
   submissionUploadTournamentSelector,
   submissionUploadVisibleSelector,
 } from '@/modules/shared/selectors/submissionUpload';
+import { isLoggedIn } from '@/modules/shared/selectors/auth';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class SubmissionUpload extends Component {
@@ -20,14 +23,9 @@ class SubmissionUpload extends Component {
         visible={this.props.visible}
         hideModal={this.props.hideModal}
         tournament={this.props.tournament}
-        onUpload={(fileList, tournamentId, successCallback, failureCallback) =>
-          this.props.uploadSubmission(
-            fileList,
-            tournamentId,
-            successCallback,
-            failureCallback,
-          )
-        }
+        isLoggedIn={this.props.isLoggedIn}
+        location={this.props.location}
+        onUpload={this.props.uploadSubmission}
       />
     );
   }
@@ -38,6 +36,8 @@ SubmissionUpload.propTypes = {
   hideModal: PropTypes.func.isRequired,
   tournament: PropTypes.object,
   visible: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  location: PropTypes.object,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -45,15 +45,19 @@ function mapDispatchToProps(dispatch) {
     uploadSubmission: (
       fileList,
       tournamentId,
+      maxSubmissionSize,
       successCallback,
       failureCallback,
+      progressCallback,
     ) =>
       dispatch(
         uploadSubmission(
           fileList,
           tournamentId,
+          maxSubmissionSize,
           successCallback,
           failureCallback,
+          progressCallback,
         ),
       ),
     hideModal: () => dispatch(hideSubmissionModal()),
@@ -63,9 +67,13 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   visible: submissionUploadVisibleSelector,
   tournament: submissionUploadTournamentSelector,
+  isLoggedIn,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withRouter,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(SubmissionUpload);

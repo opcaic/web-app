@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   ${props =>
     props.size === 'small' &&
     css`
-      width: 325px;
+      width: 343px;
     `};
 
   ${props =>

@@ -15,7 +15,7 @@ import GameListLoadMore from '@/modules/public/components/Game/GameListLoadMore'
 export class GameListPage extends React.PureComponent {
   render() {
     return (
-      <PageLayout>
+      <PageLayout title={intlGlobal.formatMessage(pageTitles.gameListPage)}>
         <PageTitle title={intlGlobal.formatMessage(pageTitles.gameListPage)} />
 
         <Container>
@@ -38,7 +38,7 @@ export function mapDispatchToProps(dispatch) {
           prepareFilterParams(
             {},
             'activeTournamentsCount',
-            true,
+            false,
             additionalParams,
           ),
           { meta: { successCallback, failureCallback } },

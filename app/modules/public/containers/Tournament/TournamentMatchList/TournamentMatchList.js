@@ -27,7 +27,7 @@ export class TournamentMatchList extends React.PureComponent {
     return (
       <PageContent
         title={<FormattedMessage id="app.public.tournamentMatchList.title" />}
-        withPadding={this.props.tournament.privateMatchlog}
+        withPadding={this.props.tournament.privateMatchLog}
       >
         <TournamentPageTitle
           tournament={this.props.tournament}
@@ -36,7 +36,7 @@ export class TournamentMatchList extends React.PureComponent {
           )}
         />
 
-        {this.props.tournament.privateMatchlog ? (
+        {this.props.tournament.privateMatchLog ? (
           <div>
             <FormattedHTMLMessage id="app.public.tournamentMatchList.privateMatchlog" />
           </div>

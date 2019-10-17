@@ -1,19 +1,12 @@
 import React from 'react';
-import { Form as AntForm } from 'antd';
 import PropTypes from 'prop-types';
 
 export const CustomFieldTemplate = props => {
-  const { label, required, children } = props;
+  const { children } = props;
 
-  return (
-    <AntForm.Item label={label} required={required}>
-      {children}
-    </AntForm.Item>
-  );
+  return <div>{children}</div>;
 };
 
 CustomFieldTemplate.propTypes = {
-  label: PropTypes.object,
-  required: PropTypes.bool,
-  children: PropTypes.object,
+  children: PropTypes.array,
 };

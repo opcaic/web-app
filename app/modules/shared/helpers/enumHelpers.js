@@ -255,3 +255,16 @@ gameTypeEnum.helpers = createEnum(
     3: { id: 'app.enums.gameType.multiplayer' },
   }),
 );
+
+export const tournamentMatchLogVisibility = {
+  PUBLIC: 1,
+  PRIVATE: 2,
+};
+
+tournamentMatchLogVisibility.helpers = createEnum(
+  tournamentMatchLogVisibility,
+  defineMessages({
+    1: { id: 'app.enums.tournamentMatchLogVisibility.public' },
+    2: { id: 'app.enums.tournamentMatchLogVisibility.private' },
+  }),
+);

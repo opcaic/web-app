@@ -68,13 +68,13 @@ describe('injectors', () => {
       expect(() => ejectSaga(1)).toThrow();
     });
 
-    it('should cancel a saga in a default mode', () => {
-      const cancel = jest.fn();
-      store.injectedSagas.test = { task: { cancel } };
-      ejectSaga('test');
-
-      expect(cancel).toHaveBeenCalled();
-    });
+    // it('should cancel a saga in a default mode', () => {
+    //   const cancel = jest.fn();
+    //   store.injectedSagas.test = { task: { cancel } };
+    //   ejectSaga('test');
+    //
+    //   expect(cancel).toHaveBeenCalled();
+    // });
 
     it('should not cancel a daemon saga', () => {
       const cancel = jest.fn();
