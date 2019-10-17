@@ -11,10 +11,11 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import PageContent from '@/modules/public/components/layout/PageContent';
-import { addSharedPlaces } from '@/modules/shared/helpers/resources/leaderboards';
+import { getLeaderboardData } from '@/modules/shared/helpers/resources/leaderboards';
 import PropTypes from 'prop-types';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
+import ProgressVisualization from '@/modules/shared/components/Tournament/ProgressVisualization';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentLeaderboard extends React.PureComponent {
@@ -35,11 +36,15 @@ export class TournamentLeaderboard extends React.PureComponent {
           )}
         />
 
+        {this.props.resource && (
+          <div style={{ marginBottom: 25, marginLeft: 25, marginTop: 10 }}>
+            <ProgressVisualization leaderboard={this.props.resource} />
+          </div>
+        )}
+
         <Leaderboard
           leaderboard={this.props.resource}
-          dataSource={addSharedPlaces(
-            (this.props.resource && this.props.resource.participations) || [],
-          )}
+          dataSource={getLeaderboardData(this.props.resource)}
           loading={this.props.isFetching}
         />
       </PageContent>

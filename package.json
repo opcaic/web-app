@@ -79,6 +79,8 @@
     "intl": "1.2.5",
     "invariant": "2.2.4",
     "ip": "1.1.5",
+    "jquery": "^3.4.1",
+    "jquery-bracket": "^0.11.1",
     "js-cookie": "^2.2.1",
     "jszip": "^3.2.2",
     "jwt-decode": "^2.2.0",

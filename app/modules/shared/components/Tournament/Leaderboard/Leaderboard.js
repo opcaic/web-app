@@ -40,8 +40,8 @@ function prepareColumns({ leaderboard }) {
 
   columns.push({
     title: <FormattedMessage id="app.shared.leaderboard.name" />,
-    dataIndex: 'user.username',
-    key: 'user.username',
+    dataIndex: 'author.username',
+    key: 'author.username',
     sorter: true,
     render: (text, record) =>
       record.place <= 3 ? (
@@ -76,8 +76,8 @@ function prepareColumns({ leaderboard }) {
 
   columns.push({
     title: <FormattedMessage id="app.shared.leaderboard.organization" />,
-    dataIndex: 'user.organization',
-    key: 'user.organization',
+    dataIndex: 'author.organization',
+    key: 'author.organization',
     width: 200,
   });
 
@@ -93,7 +93,7 @@ const StyledTable = styled(Table)`
 const Leaderboard = props => (
   <StyledTable
     columns={prepareColumns(props)}
-    rowKey={record => record.user.id}
+    rowKey={record => record.author.id}
     pagination={false}
     locale={{
       emptyText: (

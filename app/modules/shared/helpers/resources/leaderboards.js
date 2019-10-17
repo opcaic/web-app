@@ -1,4 +1,21 @@
-export function addSharedPlaces(leaderboard) {
+import { tournamentFormatEnum } from '@/modules/shared/helpers/enumHelpers';
+
+export function getLeaderboardData(leaderboard) {
+  if (!leaderboard) {
+    return [];
+  }
+
+  if (
+    leaderboard.finished === false &&
+    leaderboard.format !== tournamentFormatEnum.ELO
+  ) {
+    return [];
+  }
+
+  return addSharedPlaces(leaderboard.participations);
+}
+
+function addSharedPlaces(leaderboard) {
   const sharedPlacesCount = {};
 
   leaderboard.forEach(x => {
