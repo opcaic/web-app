@@ -21,13 +21,13 @@ class Bracket extends Component {
   };
 
   componentDidMount() {
-    const { leaderboard, type } = this.props;
-    const data =
-      type === bracketType.DOUBLE_ELIMINATION
-        ? getDoubleEliminationBracket(leaderboard)
-        : getSingleEliminationBracket(leaderboard);
-
     if (!this.state.loaded) {
+      const { leaderboard, type } = this.props;
+      const data =
+        type === bracketType.DOUBLE_ELIMINATION
+          ? getDoubleEliminationBracket(leaderboard)
+          : getSingleEliminationBracket(leaderboard);
+
       // Delay execution because there were problems with generating the bracket if the container is not yet visible
       setTimeout(() => {
         jQuery('#bracket')

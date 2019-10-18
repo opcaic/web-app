@@ -102,6 +102,7 @@ function getFinalMatches(leaderboard) {
 }
 
 export function getDoubleEliminationBracket(leaderboard) {
+  // Switch scores if minimum ranking strategy
   if (leaderboard.rankingStrategy === tournamentRankingStrategyEnum.MINIMUM) {
     switchScores(leaderboard.matches);
   }
@@ -120,6 +121,11 @@ export function getDoubleEliminationBracket(leaderboard) {
 
   const finalMatches = getFinalMatches(leaderboard);
 
+  // Switch scores back so that the data are not modified
+  if (leaderboard.rankingStrategy === tournamentRankingStrategyEnum.MINIMUM) {
+    switchScores(leaderboard.matches);
+  }
+
   return {
     teams: initialPlayerPairs,
     results: [winnersBracketMatches, losersBracketMatches, finalMatches],
@@ -127,6 +133,7 @@ export function getDoubleEliminationBracket(leaderboard) {
 }
 
 export function getSingleEliminationBracket(leaderboard) {
+  // Switch scores if minimum ranking strategy
   if (leaderboard.rankingStrategy === tournamentRankingStrategyEnum.MINIMUM) {
     switchScores(leaderboard.matches);
   }
@@ -137,6 +144,11 @@ export function getSingleEliminationBracket(leaderboard) {
     leaderboard.matches,
     leaderboard.brackets,
   );
+
+  // Switch scores back so that the data are not modified
+  if (leaderboard.rankingStrategy === tournamentRankingStrategyEnum.MINIMUM) {
+    switchScores(leaderboard.matches);
+  }
 
   return {
     teams: initialPlayerPairs,
