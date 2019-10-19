@@ -33,6 +33,8 @@ import { handleCookieConsent } from '@/modules/shared/helpers/utils';
 import HomePageSwitch from '@/modules/public/pages/Home/HomePageSwitch/HomePageSwitch';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import GameDetailPage from '@/modules/public/pages/Games/GameDetailPage';
+import AboutPage from '@/modules/public/pages/AboutPage/AboutPage';
+import FaqPage from '@/modules/public/pages/FaqPage/FaqPage';
 
 const MenuSyncedHomePageSwitch = withMenuSync(HomePageSwitch, {
   topMenu: ['home'],
@@ -52,6 +54,14 @@ const MenuSyncedGameListPage = withMenuSync(GameListPage, {
 
 const MenuSyncedGameDetailPage = withMenuSync(GameDetailPage, {
   topMenu: ['games'],
+});
+
+const MenuSyncedAboutPage = withMenuSync(AboutPage, {
+  topMenu: [],
+});
+
+const MenuSyncedFaqPage = withMenuSync(FaqPage, {
+  topMenu: [],
 });
 
 /* eslint-disable react/prefer-stateless-function */
@@ -88,6 +98,9 @@ export class PublicApp extends React.Component {
         />
 
         <PrivateRoute path="/settings" component={SettingsPage} />
+
+        <Route exact path="/about" component={MenuSyncedAboutPage} />
+        <Route exact path="/faq" component={MenuSyncedFaqPage} />
 
         <Route path="/" component={NotFoundPage} />
       </Switch>
