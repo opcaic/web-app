@@ -13,6 +13,7 @@ import {
 } from '@/modules/shared/helpers/enumHelpers';
 import PropTypes from 'prop-types';
 import { longDateFormat } from '@/modules/shared/helpers/time';
+import { formatScore } from '@/modules/shared/helpers/resources/matches';
 
 function hasEntries(object) {
   return object && Object.entries(object).length !== 0;
@@ -42,7 +43,11 @@ function prepareColumns({ tournament, matchExecution }) {
     key: 'score',
     dataIndex: 'score',
     render: (text, record) =>
-      record.score === bestScore ? <b>{text}</b> : text,
+      record.score === bestScore ? (
+        <b>{formatScore(record.score)}</b>
+      ) : (
+        formatScore(record.score)
+      ),
     sorter: (a, b) => a.score - b.score,
     defaultSortOrder:
       tournament.rankingStrategy === tournamentRankingStrategyEnum.MAXIMUM

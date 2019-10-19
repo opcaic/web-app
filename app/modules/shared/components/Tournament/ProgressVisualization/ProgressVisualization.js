@@ -4,6 +4,8 @@ import { tournamentFormatEnum } from '@/modules/shared/helpers/enumHelpers';
 import Bracket from '@/modules/shared/components/Tournament/Bracket';
 import { Button, Modal } from 'antd';
 import { FormattedMessage } from 'react-intl';
+import Table from '@/modules/shared/components/Tournament/Table';
+import { tournamentPropType } from '@/modules/public/utils/propTypes';
 
 class ProgressVisualization extends Component {
   state = {
@@ -27,6 +29,12 @@ class ProgressVisualization extends Component {
 
     if (leaderboard.format === tournamentFormatEnum.SINGLE_ELIMINATION) {
       return <Bracket type="single-elimination" leaderboard={leaderboard} />;
+    }
+
+    if (leaderboard.format === tournamentFormatEnum.TABLE) {
+      return (
+        <Table leaderboard={leaderboard} tournament={this.props.tournament} />
+      );
     }
 
     return null;
@@ -55,6 +63,12 @@ class ProgressVisualization extends Component {
       );
     }
 
+    if (leaderboard.format === tournamentFormatEnum.TABLE) {
+      buttonText = (
+        <FormattedMessage id="app.shared.progressVisualization.buttonTable" />
+      );
+    }
+
     return (
       <div>
         <Button type="primary" onClick={this.showModal}>
@@ -62,7 +76,12 @@ class ProgressVisualization extends Component {
         </Button>
 
         <Modal
-          title="Tournament visualisation"
+          title={
+            <FormattedMessage
+              id="app.shared.progressVisualization.modalTitle"
+              values={{ tournamentName: this.props.tournament.name }}
+            />
+          }
           visible={this.state.modalVisible}
           footer={null}
           width="calc(100vw - 60px)"
@@ -84,6 +103,7 @@ class ProgressVisualization extends Component {
 }
 
 ProgressVisualization.propTypes = {
+  tournament: PropTypes.shape(tournamentPropType).isRequired,
   leaderboard: PropTypes.object,
 };
 

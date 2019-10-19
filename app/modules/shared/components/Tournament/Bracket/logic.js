@@ -1,5 +1,6 @@
 import { mapArrayToObject } from '@/modules/shared/helpers/utils';
 import { tournamentRankingStrategyEnum } from '@/modules/shared/helpers/enumHelpers';
+import { formatScore } from '@/modules/shared/helpers/resources/matches';
 
 /*
  * Gets pairs of players competing in the first round.
@@ -44,7 +45,10 @@ function switchScores(matches) {
  * Get match score in the format [firstPlayerScore, secondPlayerScore]
  */
 function getMatchScore(match) {
-  return [match.firstPlayer.score, match.secondPlayer.score];
+  return [
+    formatScore(match.firstPlayer.score),
+    formatScore(match.secondPlayer.score),
+  ];
 }
 
 /*

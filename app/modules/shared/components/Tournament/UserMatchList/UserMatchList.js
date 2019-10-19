@@ -11,6 +11,7 @@ import {
 } from '@/modules/shared/helpers/enumHelpers';
 import PropTypes from 'prop-types';
 import {
+  formatScore,
   getBestScore,
   getUserResult,
 } from '@/modules/shared/helpers/resources/matches';
@@ -113,7 +114,7 @@ function prepareColumns({ user, view }) {
                 : 400,
           }}
         >
-          {x.submission.author.username} ({x.score})
+          {x.submission.author.username} ({formatScore(x.score)})
         </span>,
       ]);
     },

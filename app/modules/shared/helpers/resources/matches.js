@@ -37,3 +37,7 @@ export function getUserResult(userId, botResults, rankingStrategy) {
 
   return matchResultEnum.LOSER;
 }
+
+export function formatScore(score) {
+  return +score.toFixed(2);
+}

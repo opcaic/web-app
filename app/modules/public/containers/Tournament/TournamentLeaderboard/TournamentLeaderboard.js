@@ -38,7 +38,10 @@ export class TournamentLeaderboard extends React.PureComponent {
 
         {this.props.resource && (
           <div style={{ marginBottom: 25, marginLeft: 25, marginTop: 10 }}>
-            <ProgressVisualization leaderboard={this.props.resource} />
+            <ProgressVisualization
+              leaderboard={this.props.resource}
+              tournament={this.props.tournament}
+            />
           </div>
         )}
 
