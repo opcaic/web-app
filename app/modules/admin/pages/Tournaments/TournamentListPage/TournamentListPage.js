@@ -59,7 +59,9 @@ export function mapDispatchToProps(dispatch) {
   return {
     fetchItems: params =>
       dispatch(
-        tournamentActions.fetchMany(prepareFilterParams(params, 'name', true)),
+        tournamentActions.fetchMany(
+          prepareFilterParams(params, 'created', false),
+        ),
       ),
     fetchGames: () =>
       dispatch(

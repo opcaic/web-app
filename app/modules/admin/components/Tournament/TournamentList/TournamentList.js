@@ -8,9 +8,12 @@ import {
 } from '@/modules/shared/helpers/table';
 import {
   tournamentFormatEnum,
-  tournamentRankingStrategyEnum,
   tournamentScopeEnum,
+  tournamentStateEnum,
 } from '@/modules/shared/helpers/enumHelpers';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { longDateFormat } from '@/modules/shared/helpers/time';
+import Timeago from 'react-timeago';
 
 const columns = props => [
   {
@@ -31,6 +34,38 @@ const columns = props => [
     filterMultiple: false,
   },
   {
+    title: <FormattedMessage id="app.admin.tournamentList.created" />,
+    dataIndex: 'created',
+    key: 'created',
+    render: date =>
+      date ? (
+        <Timeago date={date} />
+      ) : (
+        <FormattedMessage id="app.admin.tournamentList.noPublished" />
+      ),
+    sorter: true,
+  },
+  {
+    title: <FormattedMessage id="app.admin.tournamentList.published" />,
+    dataIndex: 'published',
+    key: 'published',
+    render: date =>
+      date ? (
+        <Timeago date={date} />
+      ) : (
+        <FormattedMessage id="app.admin.tournamentList.noPublished" />
+      ),
+    sorter: true,
+  },
+  {
+    title: <FormattedMessage id="app.admin.tournamentList.state" />,
+    dataIndex: 'state',
+    key: 'state',
+    render: id => tournamentStateEnum.helpers.idToText(id),
+    filters: tournamentStateEnum.helpers.getFilterOptions(),
+    filterMultiple: false,
+  },
+  {
     title: <FormattedMessage id="app.admin.tournamentList.format" />,
     dataIndex: 'format',
     key: 'format',
@@ -47,12 +82,16 @@ const columns = props => [
     filterMultiple: false,
   },
   {
-    title: <FormattedMessage id="app.admin.tournamentList.rankingStrategy" />,
-    dataIndex: 'rankingStrategy',
-    key: 'rankingStrategy',
-    render: id => tournamentRankingStrategyEnum.helpers.idToText(id),
-    filters: tournamentRankingStrategyEnum.helpers.getFilterOptions(),
-    filterMultiple: false,
+    title: <FormattedMessage id="app.admin.tournamentList.deadline" />,
+    dataIndex: 'deadline',
+    key: 'deadline',
+    render: date =>
+      date ? (
+        intlGlobal.formatDate(date, longDateFormat)
+      ) : (
+        <FormattedMessage id="app.admin.tournamentList.noDeadline" />
+      ),
+    sorter: true,
   },
   {
     ...getEditResourceButton(record => `/admin/tournaments/${record.id}`),
