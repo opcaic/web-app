@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
 import PropTypes from 'prop-types';
 import { tournamentFormatEnum } from '@/modules/shared/helpers/enumHelpers';
+import { getPlaceText } from '@/modules/shared/helpers/resources/leaderboards';
+import { formatScore } from '@/modules/shared/helpers/resources/matches';
 
 function getCrownColor(place) {
   if (place === 1) {
@@ -15,14 +17,6 @@ function getCrownColor(place) {
     return '#A8A8A8';
   }
   return '#965A38';
-}
-
-function getPlaceText(record) {
-  if (record.place !== record.placeShared) {
-    return `${record.place}.-${record.placeShared}.`;
-  }
-
-  return `${record.place}.`;
 }
 
 function prepareColumns({ leaderboard }) {
@@ -40,8 +34,8 @@ function prepareColumns({ leaderboard }) {
 
   columns.push({
     title: <FormattedMessage id="app.shared.leaderboard.name" />,
-    dataIndex: 'user.username',
-    key: 'user.username',
+    dataIndex: 'author.username',
+    key: 'author.username',
     sorter: true,
     render: (text, record) =>
       record.place <= 3 ? (
@@ -61,23 +55,29 @@ function prepareColumns({ leaderboard }) {
 
   if (
     leaderboard != null &&
-    (leaderboard.tournamentFormat === tournamentFormatEnum.ELO ||
-      leaderboard.tournamentFormat === tournamentFormatEnum.SINGLE_PLAYER ||
-      leaderboard.tournamentFormat === tournamentFormatEnum.TABLE)
+    (leaderboard.format === tournamentFormatEnum.ELO ||
+      leaderboard.format === tournamentFormatEnum.SINGLE_PLAYER ||
+      leaderboard.format === tournamentFormatEnum.TABLE)
   ) {
     columns.push({
-      title: <FormattedMessage id="app.shared.leaderboard.score" />,
-      dataIndex: 'score',
-      key: 'score',
+      title:
+        leaderboard.format === tournamentFormatEnum.ELO ? (
+          <FormattedMessage id="app.shared.leaderboard.elo" />
+        ) : (
+          <FormattedMessage id="app.shared.leaderboard.score" />
+        ),
+      dataIndex: 'submissionScore',
+      key: 'submissionScore',
       align: 'center',
       width: 100,
+      render: (text, record) => formatScore(record.submissionScore),
     });
   }
 
   columns.push({
     title: <FormattedMessage id="app.shared.leaderboard.organization" />,
-    dataIndex: 'user.organization',
-    key: 'user.organization',
+    dataIndex: 'author.organization',
+    key: 'author.organization',
     width: 200,
   });
 
@@ -93,7 +93,7 @@ const StyledTable = styled(Table)`
 const Leaderboard = props => (
   <StyledTable
     columns={prepareColumns(props)}
-    rowKey={record => record.user.id}
+    rowKey={record => record.author.id}
     pagination={false}
     locale={{
       emptyText: (

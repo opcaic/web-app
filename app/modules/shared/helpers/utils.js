@@ -43,3 +43,14 @@ export function handleCookieConsent() {
     },
   });
 }
+
+export function mapArrayToObject(array, keySelector, valueSelector) {
+  const obj = {};
+
+  array.forEach(x => {
+    const key = keySelector(x);
+    obj[key] = valueSelector ? valueSelector(x) : x;
+  });
+
+  return obj;
+}

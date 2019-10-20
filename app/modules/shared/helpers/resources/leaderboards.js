@@ -1,7 +1,24 @@
-export function addSharedPlaces(leaderboard) {
+import { tournamentFormatEnum } from '@/modules/shared/helpers/enumHelpers';
+
+export function getLeaderboardData(leaderboard) {
+  if (!leaderboard) {
+    return [];
+  }
+
+  if (
+    leaderboard.finished === false &&
+    leaderboard.format !== tournamentFormatEnum.ELO
+  ) {
+    return [];
+  }
+
+  return addSharedPlaces(leaderboard.participations);
+}
+
+export function addSharedPlaces(participations) {
   const sharedPlacesCount = {};
 
-  leaderboard.forEach(x => {
+  participations.forEach(x => {
     if (!sharedPlacesCount[x.place]) {
       sharedPlacesCount[x.place] = 0;
     }
@@ -9,7 +26,15 @@ export function addSharedPlaces(leaderboard) {
     sharedPlacesCount[x.place] += 1;
   });
 
-  return leaderboard.map(x =>
+  return participations.map(x =>
     Object.assign({ placeShared: x.place + sharedPlacesCount[x.place] - 1 }, x),
   );
+}
+
+export function getPlaceText(record) {
+  if (record.place !== record.placeShared) {
+    return `${record.place}.-${record.placeShared}.`;
+  }
+
+  return `${record.place}.`;
 }

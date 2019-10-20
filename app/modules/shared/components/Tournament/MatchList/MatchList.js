@@ -14,7 +14,10 @@ import {
   tournamentFormatEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 import PropTypes from 'prop-types';
-import { getBestScore } from '@/modules/shared/helpers/resources/matches';
+import {
+  formatScore,
+  getBestScore,
+} from '@/modules/shared/helpers/resources/matches';
 import TimeAgo from '@/modules/shared/components/TimeAgo/TimeAgo';
 
 function prepareColumns({ tournament, isAdmin }) {
@@ -86,7 +89,7 @@ function prepareColumns({ tournament, isAdmin }) {
         >
           {x.submission.author.username}{' '}
           {record.state === matchStateEnum.EXECUTED && !isSinglePlayer ? (
-            <span>({x.score})</span>
+            <span>({formatScore(x.score)})</span>
           ) : null}
         </span>,
       ]);

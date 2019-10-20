@@ -8,7 +8,8 @@ import {
   selectors as leaderboardSelectors,
 } from '@/modules/admin/ducks/leaderboards';
 import { createStructuredSelector } from 'reselect';
-import { addSharedPlaces } from '@/modules/shared/helpers/resources/leaderboards';
+import { getLeaderboardData } from '@/modules/shared/helpers/resources/leaderboards';
+import ProgressVisualization from '@/modules/shared/components/Tournament/ProgressVisualization';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentLeaderboard extends React.PureComponent {
@@ -19,11 +20,15 @@ export class TournamentLeaderboard extends React.PureComponent {
   render() {
     return (
       <div>
+        {this.props.resource && (
+          <div style={{ marginBottom: 25 }}>
+            <ProgressVisualization leaderboard={this.props.resource} />
+          </div>
+        )}
+
         <Leaderboard
           leaderboard={this.props.resource}
-          dataSource={addSharedPlaces(
-            (this.props.resource && this.props.resource.participations) || [],
-          )}
+          dataSource={getLeaderboardData(this.props.resource)}
           loading={this.props.isFetching}
         />
       </div>
