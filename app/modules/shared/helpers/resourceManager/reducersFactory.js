@@ -52,7 +52,7 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
     case actionTypes.FETCH_MANY_SUCCESS:
       return state.merge({
         items: action.payload.list,
-        totalItems: action.payload.total,
+        totalItems: action.payload.total || action.payload.list.length,
         isFetching: false,
       });
     case actionTypes.FETCH_MANY_FAILURE:

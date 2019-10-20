@@ -1,4 +1,4 @@
-import { Form, Input, Button, Divider, Select, InputNumber } from 'antd';
+import { Form, Input, Button, Divider, Select, InputNumber, Icon } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -10,6 +10,7 @@ import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import { ChromePicker } from 'react-color';
 import { gameTypeEnum } from '@/modules/shared/helpers/enumHelpers';
 import { compose } from 'redux';
+import { theme } from '@/modules/shared/helpers/utils';
 
 const MB_IN_BYTES = 1024 * 1024;
 
@@ -18,6 +19,7 @@ class GameForm extends React.PureComponent {
     super(props);
 
     this.state = {
+      gameKey: props.resource.key,
       hexColor: props.resource.id
         ? props.resource.defaultTournamentThemeColor
         : '#323232',
@@ -47,10 +49,14 @@ class GameForm extends React.PureComponent {
     this.setState({ hexColor: color.hex });
   };
 
+  isGameSupported = key => !key || this.props.supportedGameKeys.includes(key);
+
+  handleGameKeyChange = e => this.setState({ gameKey: e.target.value });
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
-      labelCol: { span: 6 },
+      labelCol: { span: 4 },
       wrapperCol: { span: 14 },
     };
     const tailFormItemLayout = {
@@ -74,8 +80,22 @@ class GameForm extends React.PureComponent {
           {getFieldDecorator('key', {
             initialValue: this.props.resource.key,
             rules: [isRequired('key'), isMaxLength(30, 'key')],
-          })(<Input />)}
+          })(<Input onChange={this.handleGameKeyChange} />)}
         </Form.Item>
+
+        {!this.isGameSupported(this.state.gameKey) && (
+          <Form.Item colon={false} label={<div />} {...formItemLayout}>
+            <Icon
+              type="exclamation-circle"
+              style={{
+                color: theme.DANGER_COLOR,
+                fontSize: 16,
+                marginRight: 5,
+              }}
+            />
+            <FormattedMessage id="app.admin.gameForm.gameNotSupported" />
+          </Form.Item>
+        )}
 
         <Form.Item label={<FormattedMessage id="app.admin.gameForm.type" />}>
           {getFieldDecorator('type', {

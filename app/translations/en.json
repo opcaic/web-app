@@ -15,6 +15,7 @@
   "app.admin.gameForm.maxAdditionalFilesSize": "Size limit of additional game files",
   "app.admin.gameForm.name": "Name",
   "app.admin.gameForm.type": "Type",
+  "app.admin.gameForm.gameNotSupported": "There is no game module, which can evaluate game with this key at the moment.",
   "app.admin.gameList.createNew": "Create new game",
   "app.admin.gameList.name": "Name",
   "app.admin.gameMenu.basicInfo": "Basic info",

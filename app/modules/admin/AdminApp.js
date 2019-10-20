@@ -10,6 +10,7 @@ import matchesReducer from './ducks/matches';
 import leaderboardsReducer from './ducks/leaderboards';
 import submissionsReducer from './ducks/submissions';
 import validationsReducer from './ducks/validations';
+import workersReducer from './ducks/workers';
 import tournamentsReducer, {
   saga as tournamentsSaga,
 } from './ducks/tournaments';
@@ -99,6 +100,7 @@ const withReducers = [
   injectReducer({ key: 'leaderboards', reducer: leaderboardsReducer }),
   injectReducer({ key: 'submissions', reducer: submissionsReducer }),
   injectReducer({ key: 'validations', reducer: validationsReducer }),
+  injectReducer({ key: 'workers', reducer: workersReducer }),
 ];
 
 export default compose(
