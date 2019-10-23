@@ -4,6 +4,7 @@ import axios from 'axios';
 import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 import { Button, notification } from 'antd';
 import React from 'react';
+import * as qs from 'query-string';
 import {
   isLoggedIn as isLoggedInSelector,
   accessTokenSelector,
@@ -34,6 +35,7 @@ function prepareAxiosParams({ method, endpoint, ...rest }) {
     validateStatus(status) {
       return status >= 200 && status < 500;
     },
+    paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' }),
     ...rest,
   };
 }
