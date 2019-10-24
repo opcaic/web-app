@@ -63,7 +63,7 @@ const StartButton = props => (
 const PauseButton = props => (
   <ActionButton
     createAction={pauseTournament}
-    state={tournamentStateEnum.STOPPED}
+    state={tournamentStateEnum.PAUSED}
     message={<FormattedMessage id="app.admin.tournamentForm.pause" />}
     type="normal"
     {...props}
@@ -115,7 +115,7 @@ class TournamentActionButtons extends React.PureComponent {
             <StopButton tournamentId={resource.id} handleClick={handleClick} />
           </div>
         );
-      case tournamentStateEnum.STOPPED:
+      case tournamentStateEnum.PAUSED:
         return (
           <div>
             <UnpauseButton

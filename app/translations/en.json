@@ -151,7 +151,7 @@
   "app.enums.tournamentState.finished": "Finished",
   "app.enums.tournamentState.published": "Published",
   "app.enums.tournamentState.running": "Running",
-  "app.enums.tournamentState.stopped": "Stopped",
+  "app.enums.tournamentState.paused": "Paused",
   "app.enums.tournamentState.waitingForFinish": "Waiting for finish",
   "app.errors.fieldInvalidEmail": "The input is not a valid email",
   "app.errors.fieldMaxLength": "The {field} must be at most {length} characters long",

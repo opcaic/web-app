@@ -84,6 +84,7 @@ class TournamentForm extends React.PureComponent {
           configuration: this.state.configuration,
           privateMatchLog:
             values.matchLogVisibility === tournamentMatchLogVisibility.PRIVATE,
+          description: this.state.description,
         });
 
         if (this.state.useGameDesign) {

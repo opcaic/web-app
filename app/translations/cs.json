@@ -151,7 +151,7 @@
   "app.enums.tournamentState.finished": "",
   "app.enums.tournamentState.published": "",
   "app.enums.tournamentState.running": "",
-  "app.enums.tournamentState.stopped": "",
+  "app.enums.tournamentState.paused": "",
   "app.enums.tournamentState.waitingForFinish": "",
   "app.errors.fieldInvalidEmail": "",
   "app.errors.fieldMaxLength": "",

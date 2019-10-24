@@ -104,9 +104,9 @@ export const tournamentStateEnum = {
   CREATED: 0,
   PUBLISHED: 1,
   RUNNING: 2,
-  STOPPED: 3,
-  WAITING_FOR_FINISH: 4,
-  FINISHED: 5,
+  WAITING_FOR_FINISH: 3,
+  FINISHED: 4,
+  PAUSED: 5,
 };
 
 tournamentStateEnum.helpers = createEnum(
@@ -115,9 +115,9 @@ tournamentStateEnum.helpers = createEnum(
     0: { id: 'app.enums.tournamentState.created' },
     1: { id: 'app.enums.tournamentState.published' },
     2: { id: 'app.enums.tournamentState.running' },
-    3: { id: 'app.enums.tournamentState.stopped' },
-    4: { id: 'app.enums.tournamentState.waitingForFinish' },
-    5: { id: 'app.enums.tournamentState.finished' },
+    3: { id: 'app.enums.tournamentState.waitingForFinish' },
+    4: { id: 'app.enums.tournamentState.finished' },
+    5: { id: 'app.enums.tournamentState.paused' },
   }),
 );
 
