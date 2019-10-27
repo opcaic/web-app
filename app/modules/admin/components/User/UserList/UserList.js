@@ -2,13 +2,14 @@ import { Table } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
-import { roleIdToText } from '@/modules/shared/helpers/roles';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 import {
   getEditResourceButton,
   getSearchProps,
 } from '@/modules/shared/helpers/table';
+import TimeAgo from 'react-timeago';
 
-const columns = [
+const columns = () => [
   {
     title: <FormattedMessage id="app.generic.username" />,
     dataIndex: 'username',
@@ -24,14 +25,18 @@ const columns = [
     ...getSearchProps('email'),
   },
   {
+    title: <FormattedMessage id="app.admin.userList.created" />,
+    dataIndex: 'created',
+    key: 'created',
+    sorter: true,
+    render: date => <TimeAgo date={date} />,
+  },
+  {
     title: <FormattedMessage id="app.admin.userList.role" />,
-    dataIndex: 'userRole',
+    dataIndex: 'role',
     key: 'userRole',
-    render: text => roleIdToText(text),
-    filters: [1, 2, 3].map(x => ({
-      value: x,
-      text: roleIdToText(x),
-    })),
+    render: id => userRoleEnum.helpers.idToText(id),
+    filters: userRoleEnum.helpers.getFilterOptions(),
     filterMultiple: false,
   },
   {
@@ -40,7 +45,7 @@ const columns = [
 ];
 
 const UserList = props => (
-  <Table columns={columns} rowKey={record => record.id} {...props} />
+  <Table columns={columns()} rowKey={record => record.id} {...props} />
 );
 
 export default withAjax(UserList);

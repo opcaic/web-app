@@ -268,3 +268,31 @@ tournamentMatchLogVisibility.helpers = createEnum(
     2: { id: 'app.enums.tournamentMatchLogVisibility.private' },
   }),
 );
+
+export const userRoleEnum = {
+  USER: 1,
+  ORGANIZER: 2,
+  ADMIN: 3,
+};
+
+userRoleEnum.helpers = createEnum(
+  userRoleEnum,
+  defineMessages({
+    1: { id: 'app.enums.userRole.user' },
+    2: { id: 'app.enums.userRole.organizer' },
+    3: { id: 'app.enums.userRole.admin' },
+  }),
+);
+
+export const emailNotificationsEnum = {
+  ON: 1,
+  OFF: 2,
+};
+
+emailNotificationsEnum.helpers = createEnum(
+  emailNotificationsEnum,
+  defineMessages({
+    1: { id: 'app.enums.emailNotifications.on' },
+    2: { id: 'app.enums.emailNotifications.off' },
+  }),
+);

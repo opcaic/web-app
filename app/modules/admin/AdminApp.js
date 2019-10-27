@@ -2,7 +2,7 @@ import { Route, Switch } from 'react-router-dom';
 import React from 'react';
 import { compose } from 'redux';
 import injectReducer from '../../utils/injectReducer';
-import usersReducers from './ducks/users';
+import usersReducers, { saga as usersSaga } from './ducks/users';
 import gamesReducer, { saga as gamesSaga } from './ducks/games';
 import documentsReducer, { saga as documentsSaga } from './ducks/documents';
 import { saga as tournamentStateSaga } from './ducks/tournamentState';
@@ -26,7 +26,7 @@ import TournamentRoutes from '@/modules/admin/pages/Tournaments/TournamentRoutes
 import UserRoutes from '@/modules/admin/pages/Users/UserRoutes';
 import GameRoutes from '@/modules/admin/pages/Games/GameRoutes';
 import AuthorizedRoute from '../shared/containers/AuthorizedRoute/AuthorizedRoute';
-import { ROLE_ORGANIZER, ROLE_ADMIN } from '../shared/helpers/roles';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
 // TODO: check if withMenuSync can be called directly in the component prop or if it should be declared beforehand
 
@@ -38,7 +38,7 @@ export class AdminApp extends React.PureComponent {
         <AuthorizedRoute
           exact
           path="/admin/"
-          requiredRole={ROLE_ORGANIZER}
+          requiredRole={userRoleEnum.ORGANIZER}
           component={withMenuSync(DashboardPage, {
             adminSidebar: ['dashboard'],
           })}
@@ -46,26 +46,26 @@ export class AdminApp extends React.PureComponent {
 
         <AuthorizedRoute
           path="/admin/tournaments/"
-          requiredRole={ROLE_ORGANIZER}
+          requiredRole={userRoleEnum.ORGANIZER}
           component={TournamentRoutes}
         />
 
         <AuthorizedRoute
           path="/admin/games/"
-          requiredRole={ROLE_ORGANIZER}
+          requiredRole={userRoleEnum.ORGANIZER}
           component={GameRoutes}
         />
 
         <AuthorizedRoute
           path="/admin/users/"
-          requiredRole={ROLE_ADMIN}
+          requiredRole={userRoleEnum.ADMIN}
           component={UserRoutes}
         />
 
         <AuthorizedRoute
           exact
           path="/admin/system/"
-          requiredRole={ROLE_ADMIN}
+          requiredRole={userRoleEnum.ADMIN}
           component={withMenuSync(SystemPage, {
             adminSidebar: ['system'],
           })}
@@ -86,6 +86,7 @@ const withSagas = [
   }),
   injectSaga({ key: 'documents', saga: documentsSaga }),
   injectSaga({ key: 'tournamentState', saga: tournamentStateSaga }),
+  injectSaga({ key: 'users', saga: usersSaga }),
 ];
 const withReducers = [
   injectReducer({ key: 'users', reducer: usersReducers }),
