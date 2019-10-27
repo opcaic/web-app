@@ -22,7 +22,6 @@ import {
 } from '@/modules/shared/helpers/enumHelpers';
 import { getFilterParams } from '@/modules/shared/helpers/resources/tournaments';
 import TournamentCardListLoadMore from '@/modules/public/components/Tournament/TournamentCardListLoadMore';
-import { transformTournamentForList } from '@/modules/public/helpers/tournaments';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentListPage extends React.PureComponent {
@@ -60,7 +59,7 @@ export class TournamentListPage extends React.PureComponent {
   fetchDataSuccessCallback = originalSuccessCallback => (data, ...rest) => {
     const transformedData = {
       total: data.total,
-      list: data.list.map(x => transformTournamentForList(x)),
+      list: data.list,
     };
 
     if (originalSuccessCallback) {
@@ -80,7 +79,7 @@ export class TournamentListPage extends React.PureComponent {
         <Container>
           <TournamentFilter
             onChange={this.onFilterChange}
-            initialValues={this.state.selectedFilterValues}
+            selectedValues={this.state.selectedFilterValues}
             games={this.props.games || []}
             isFetchingGames={this.props.isFetchingGames}
           />
@@ -89,6 +88,15 @@ export class TournamentListPage extends React.PureComponent {
             key={this.state.filterStateNumber}
             pageSize={12}
             fetchData={this.fetchData}
+            updateFilter={selectedValues =>
+              this.onFilterChange(
+                Object.assign(
+                  {},
+                  this.state.selectedFilterValues,
+                  selectedValues,
+                ),
+              )
+            }
           />
         </Container>
       </PageLayout>

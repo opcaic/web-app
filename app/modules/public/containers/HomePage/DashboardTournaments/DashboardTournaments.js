@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
-import { getTournamentsListItems } from '@/modules/public/selectors/tournaments';
 import { Card } from 'antd';
 import CardTable from '@/modules/public/components/Home/CardTable';
 import TournamentList from '@/modules/shared/components/Tournament/TournamentList';
@@ -65,7 +64,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  items: getTournamentsListItems,
+  items: tournamentSelectors.getItems,
   isFetching: tournamentSelectors.isFetching,
   totalItems: tournamentSelectors.getTotalItems,
   currentUser: currentUserSelector,

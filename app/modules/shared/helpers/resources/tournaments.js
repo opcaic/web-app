@@ -59,3 +59,35 @@ export function acceptsSubmissions(tournament) {
       tournament.state === tournamentStateEnum.PUBLISHED)
   );
 }
+
+export function getSimplifiedState(tournament) {
+  if (tournament.scope === tournamentScopeEnum.DEADLINE) {
+    switch (tournament.state) {
+      case tournamentStateEnum.PUBLISHED:
+        return tournamentSimplifiedStateEnum.RUNNING;
+      case tournamentStateEnum.RUNNING:
+      case tournamentStateEnum.WAITING_FOR_FINISH:
+        return tournamentSimplifiedStateEnum.EVALUATING;
+      case tournamentStateEnum.PAUSED:
+        return tournamentSimplifiedStateEnum.PAUSED;
+      case tournamentStateEnum.FINISHED:
+        return tournamentSimplifiedStateEnum.FINISHED;
+      default:
+        return tournamentSimplifiedStateEnum.RUNNING;
+    }
+  } else {
+    switch (tournament.state) {
+      case tournamentStateEnum.PUBLISHED:
+      case tournamentStateEnum.RUNNING:
+        return tournamentSimplifiedStateEnum.RUNNING;
+      case tournamentStateEnum.WAITING_FOR_FINISH:
+        return tournamentSimplifiedStateEnum.EVALUATING;
+      case tournamentStateEnum.PAUSED:
+        return tournamentSimplifiedStateEnum.PAUSED;
+      case tournamentStateEnum.FINISHED:
+        return tournamentSimplifiedStateEnum.FINISHED;
+      default:
+        return tournamentSimplifiedStateEnum.RUNNING;
+    }
+  }
+}

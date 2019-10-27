@@ -123,14 +123,18 @@ tournamentStateEnum.helpers = createEnum(
 
 export const tournamentSimplifiedStateEnum = {
   RUNNING: 0,
-  FINISHED: 1,
+  EVALUATING: 1,
+  PAUSED: 2,
+  FINISHED: 3,
 };
 
 tournamentSimplifiedStateEnum.helpers = createEnum(
   tournamentSimplifiedStateEnum,
   defineMessages({
     0: { id: 'app.enums.tournamentSimplifiedState.running' },
-    1: { id: 'app.enums.tournamentSimplifiedState.finished' },
+    1: { id: 'app.enums.tournamentSimplifiedState.evaluating' },
+    2: { id: 'app.enums.tournamentSimplifiedState.paused' },
+    3: { id: 'app.enums.tournamentSimplifiedState.finished' },
   }),
 );
 

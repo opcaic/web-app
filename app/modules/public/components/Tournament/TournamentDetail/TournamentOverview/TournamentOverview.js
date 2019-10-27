@@ -143,7 +143,7 @@ class TournamentOverview extends Component {
 
 TournamentOverview.propTypes = {
   tournament: PropTypes.shape(tournamentPropType).isRequired,
-  documents: PropTypes.object.isRequired,
+  documents: PropTypes.array.isRequired,
 };
 
 export default TournamentOverview;

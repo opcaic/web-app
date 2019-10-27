@@ -23,7 +23,7 @@ const FilterItem = props => (
       <Select
         style={{ width: props.width || 160, fontSize: 13 }}
         onChange={props.handleChange(props.field)}
-        defaultValue={props.selectedValues[props.field]}
+        value={props.selectedValues[props.field]}
         placeholder={props.placeholder}
         dropdownMatchSelectWidth={false}
         allowClear

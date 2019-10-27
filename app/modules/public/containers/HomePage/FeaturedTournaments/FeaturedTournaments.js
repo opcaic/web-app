@@ -9,7 +9,6 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
-import { transformTournamentForList } from '@/modules/public/helpers/tournaments';
 import { Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import StyledButton from '@/modules/shared/components/StyledButton';
@@ -30,7 +29,7 @@ export class FeaturedTournaments extends React.PureComponent {
         </Typography.Title>
 
         <TournamentCardList
-          dataSource={this.props.items.map(transformTournamentForList)}
+          dataSource={this.props.items}
           loading={this.props.isFetching}
           fetch={this.props.fetchItems}
           totalItems={this.props.totalItems}

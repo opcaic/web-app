@@ -26,6 +26,7 @@ export class TournamentCardListLoadMore extends React.PureComponent {
         loadMore={loadMoreButton}
         loading={this.props.initialLoad}
         emptyText={this.props.emptyText}
+        updateFilter={this.props.updateFilter}
       />
     );
   }
@@ -38,6 +39,7 @@ TournamentCardListLoadMore.propTypes = {
   dataSource: PropTypes.array.isRequired,
   fetchData: PropTypes.func.isRequired,
   emptyText: PropTypes.string,
+  updateFilter: PropTypes.func.isRequired,
 };
 
 export default withLoadMore()(TournamentCardListLoadMore);

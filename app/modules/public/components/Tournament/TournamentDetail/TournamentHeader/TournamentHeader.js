@@ -6,7 +6,6 @@ import TournamentMenu from '@/modules/public/components/Tournament/TournamentDet
 import { tournamentsMenu } from '@/modules/public/ducks/tournaments';
 import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
-import { tournamentAvailabilityEnum } from '@/modules/shared/helpers/enumHelpers';
 import { acceptsSubmissions } from '@/modules/shared/helpers/resources/tournaments';
 import { FormattedMessage } from 'react-intl';
 
@@ -82,12 +81,26 @@ const TournamentHeader = props => (
       overlay={props.tournament.imageOverlay}
     >
       <Name>{props.tournament.name}</Name>
-      <Game>Tournament in the game {props.tournament.game.name}</Game>
+      <Game>
+        {' '}
+        <FormattedMessage
+          id="app.public.tournamentHeader.tournamentGame"
+          values={{ game: props.tournament.game.name }}
+        />
+      </Game>
       <Info>
-        <InfoItem>{props.tournament.playersCount} players</InfoItem>
-        <InfoItem>{props.tournament.status}</InfoItem>
-        {props.tournament.availability ===
-          tournamentAvailabilityEnum.PRIVATE && <InfoItem>private</InfoItem>}
+        <InfoItem>
+          <FormattedMessage
+            id="app.public.tournamentHeader.players"
+            values={{ playersCount: props.tournament.playersCount }}
+          />
+        </InfoItem>
+        <InfoItem>
+          <FormattedMessage
+            id="app.public.tournamentHeader.submissions"
+            values={{ submissionsCount: props.tournament.submissionsCount }}
+          />
+        </InfoItem>
       </Info>
     </Content>
     <SyncedTournamentMenu

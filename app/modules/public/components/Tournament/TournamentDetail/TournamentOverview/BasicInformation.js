@@ -7,13 +7,20 @@ import {
   scopeTextIntlMessages,
   scopeTooltipIntlMessages,
 } from '@/modules/public/components/Tournament/TournamentDetail/TournamentOverview/localization';
-import { tournamentFormatEnum } from '@/modules/shared/helpers/enumHelpers';
+import {
+  tournamentFormatEnum,
+  tournamentScopeEnum,
+  tournamentSimplifiedStateEnum,
+  tournamentStateEnum,
+} from '@/modules/shared/helpers/enumHelpers';
 import ReactMarkdown from 'react-markdown';
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import CodeBlock from '@/modules/shared/components/CodeBlock';
+import TimeAgo from '@/modules/shared/components/TimeAgo/TimeAgo';
+import { getSimplifiedState } from '@/modules/shared/helpers/resources/tournaments';
 
 const WithTooltip = styled.span`
   border-bottom: 1px dotted black;
@@ -42,6 +49,20 @@ const BasicInformation = props => (
         </Link>
       </Descriptions.Item>
       <Descriptions.Item
+        label={<FormattedMessage id="app.public.tournamentOverview.state" />}
+      >
+        {props.tournament.state === tournamentStateEnum.FINISHED ? (
+          <span>
+            <FormattedMessage id="app.public.tournamentOverview.finished" />{' '}
+            <TimeAgo date={props.tournament.evaluationFinished} />
+          </span>
+        ) : (
+          tournamentSimplifiedStateEnum.helpers.idToText(
+            getSimplifiedState(props.tournament),
+          )
+        )}
+      </Descriptions.Item>
+      <Descriptions.Item
         label={<FormattedMessage id="app.public.tournamentOverview.scope" />}
       >
         <Tooltip
@@ -53,11 +74,9 @@ const BasicInformation = props => (
           <WithTooltip>
             {intlGlobal.formatMessage(
               scopeTextIntlMessages[props.tournament.scope],
-              {
-                deadline: intlGlobal.formatDate(
-                  new Date(props.tournament.deadline),
-                ),
-              },
+            )}
+            {props.tournament.scope === tournamentScopeEnum.DEADLINE && (
+              <TimeAgo date={props.tournament.deadline} />
             )}
           </WithTooltip>
         </Tooltip>
