@@ -17,6 +17,9 @@ import tournamentsReducer, {
 import tournamentParticipantsReducer, {
   saga as tournamentParticipantsSaga,
 } from './ducks/tournamentParticipants';
+import tournamentFilesReducer, {
+  saga as tournamentFilesSaga,
+} from './ducks/tournamentFiles';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import DashboardPage from '@/modules/admin/pages/DashboardPage';
 import SystemPage from '@/modules/admin/pages/SystemPage';
@@ -86,6 +89,7 @@ const withSagas = [
   }),
   injectSaga({ key: 'documents', saga: documentsSaga }),
   injectSaga({ key: 'tournamentState', saga: tournamentStateSaga }),
+  injectSaga({ key: 'tournamentFiles', saga: tournamentFilesSaga }),
   injectSaga({ key: 'users', saga: usersSaga }),
 ];
 const withReducers = [
@@ -101,6 +105,10 @@ const withReducers = [
   injectReducer({ key: 'leaderboards', reducer: leaderboardsReducer }),
   injectReducer({ key: 'submissions', reducer: submissionsReducer }),
   injectReducer({ key: 'validations', reducer: validationsReducer }),
+  injectReducer({
+    key: 'tournamentFilesUpload',
+    reducer: tournamentFilesReducer,
+  }),
   injectReducer({ key: 'workers', reducer: workersReducer }),
 ];
 

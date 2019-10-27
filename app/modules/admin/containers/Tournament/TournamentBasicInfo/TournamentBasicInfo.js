@@ -18,6 +18,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import TournamentFilesUpload from '../TournamentFilesUpload';
+import {
+  uploadTournamentFiles,
+  downloadTournamentFiles,
+  hideTournamentFilesModal,
+  showTournamentFilesModal,
+  tournamentFilesUploadVisibleSelector,
+} from '@/modules/admin/ducks/tournamentFiles';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentBasicInfo extends React.PureComponent {
@@ -26,7 +34,12 @@ class TournamentBasicInfo extends React.PureComponent {
 
     this.state = {
       resource: this.props.tournament,
+      hasAdditionalFiles: this.props.tournament.hasAdditionalFiles,
     };
+  }
+
+  componentWillMount() {
+    this.props.fetchGame(this.props.tournament.game.id);
   }
 
   componentDidMount() {
@@ -45,6 +58,10 @@ class TournamentBasicInfo extends React.PureComponent {
     }));
 
     this.props.changeState(stateAction);
+  };
+
+  handleUploadSuccess = () => {
+    this.setState({ hasAdditionalFiles: true });
   };
 
   render() {
@@ -76,6 +93,12 @@ class TournamentBasicInfo extends React.PureComponent {
                   failureCallback,
                 )
               }
+              showTournamentFilesModal={this.props.showModal}
+              downloadTournamentFiles={this.props.downloadTournamentFiles}
+              hasAdditionalFiles={this.state.hasAdditionalFiles}
+            />
+            <TournamentFilesUpload
+              additionalSuccessCallback={this.handleUploadSuccess}
             />
           </Col>
         </Row>
@@ -90,10 +113,13 @@ TournamentBasicInfo.propTypes = {
   games: PropTypes.arrayOf(PropTypes.object),
   isFetchingGames: PropTypes.bool.isRequired,
   fetchGames: PropTypes.func.isRequired,
+  fetchGame: PropTypes.func,
   documents: PropTypes.arrayOf(PropTypes.object),
   isFetchingDocuments: PropTypes.bool.isRequired,
   fetchDocuments: PropTypes.func.isRequired,
   changeState: PropTypes.func.isRequired,
+  downloadTournamentFiles: PropTypes.func,
+  showModal: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -115,6 +141,7 @@ export function mapDispatchToProps(dispatch) {
           asc: true,
         }),
       ),
+    fetchGame: id => dispatch(gameActions.fetchResource(id)),
     fetchDocuments: tournamentId =>
       dispatch(
         documentActions.fetchMany({
@@ -125,6 +152,28 @@ export function mapDispatchToProps(dispatch) {
         }),
       ),
     changeState: action => dispatch(action),
+    uploadTournamentFiles: (
+      fileList,
+      tournamentId,
+      maxSubmissionSize,
+      successCallback,
+      failureCallback,
+      progressCallback,
+    ) =>
+      dispatch(
+        uploadTournamentFiles(
+          fileList,
+          tournamentId,
+          maxSubmissionSize,
+          successCallback,
+          failureCallback,
+          progressCallback,
+        ),
+      ),
+    hideModal: () => dispatch(hideTournamentFilesModal()),
+    showModal: tournament => dispatch(showTournamentFilesModal(tournament)),
+    downloadTournamentFiles: tournamentId =>
+      dispatch(downloadTournamentFiles(tournamentId)),
   };
 }
 
@@ -133,6 +182,7 @@ const mapStateToProps = createStructuredSelector({
   games: gameSelectors.getItems,
   isFetchingDocuments: documentSelectors.isFetching,
   documents: documentSelectors.getItems,
+  visible: tournamentFilesUploadVisibleSelector,
 });
 
 const withConnect = connect(

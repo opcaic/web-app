@@ -147,7 +147,7 @@ function* handleSubmissionUpload({
       handleSubmissionUploadFailure,
       {
         field: 'archive',
-        code: 'invalid-archive-size',
+        code: 'submission-invalid-archive-size',
         maximumSize: maxSubmissionSize,
       },
       failureCallback,

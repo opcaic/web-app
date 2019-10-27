@@ -28,7 +28,12 @@ export const errorIntlMessages = defineMessages({
   invalidToken: { id: 'app.errors.invalidToken' },
   //
   resetPasswordFailure: { id: 'app.errors.resetPasswordFailure' },
-  invalidArchiveSize: { id: 'app.errors.invalidArchiveSize' },
+  submissionInvalidArchiveSize: {
+    id: 'app.errors.submissionInvalidArchiveSize',
+  },
+  tournamentFilesInvalidArchiveSize: {
+    id: 'app.errors.tournamentFilesInvalidArchiveSize',
+  },
 });
 
 export function prepareFormErrors(

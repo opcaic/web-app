@@ -163,9 +163,38 @@ class TournamentForm extends React.PureComponent {
           onConfigurationChanged={this.handleConfigurationChanged}
           gameId={this.state.gameId}
           onGameChange={this.handleGameChange}
-          gameChangeDisabled={this.props.resource.game}
+          gameChangeDisabled={this.props.resource.game !== undefined}
           configuration={this.state.configuration}
         />
+
+        {this.props.resource.id && (
+          <Form.Item
+            label={
+              <FormattedMessage id="app.admin.tournamentForm.additionalFiles" />
+            }
+          >
+            {this.props.hasAdditionalFiles ? (
+              <Button
+                type="primary"
+                onClick={() =>
+                  this.props.downloadTournamentFiles(this.props.resource.id)
+                }
+              >
+                <FormattedMessage id="app.admin.tournamentForm.downloadFiles" />
+              </Button>
+            ) : (
+              <FormattedMessage id="app.admin.tournamentForm.noFiles" />
+            )}
+            <Button
+              onClick={() =>
+                this.props.showTournamentFilesModal(this.props.resource)
+              }
+              style={{ marginLeft: 5 }}
+            >
+              <FormattedMessage id="app.admin.tournamentForm.uploadFiles" />
+            </Button>
+          </Form.Item>
+        )}
 
         <Form.Item
           label={
