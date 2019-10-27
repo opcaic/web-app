@@ -15,7 +15,6 @@ import Container from '@/modules/public/components/layout/Container';
 import ApiResult from '@/modules/shared/components/ApiResult';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import TournamentCardListLoadMore from '@/modules/public/components/Tournament/TournamentCardListLoadMore/TournamentCardListLoadMore';
-import { transformTournamentForList } from '@/modules/public/helpers/tournaments';
 import GameHeader from '@/modules/public/components/Game/GameHeader';
 import styled from 'styled-components';
 import { theme } from '@/modules/shared/helpers/utils';
@@ -47,7 +46,7 @@ export class GameDetailPage extends React.PureComponent {
   fetchDataSuccessCallback = originalSuccessCallback => (data, ...rest) => {
     const transformedData = {
       total: data.total,
-      list: data.list.map(x => transformTournamentForList(x)),
+      list: data.list,
     };
 
     if (originalSuccessCallback) {

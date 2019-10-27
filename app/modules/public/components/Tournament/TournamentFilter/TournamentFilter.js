@@ -20,26 +20,12 @@ const StyledFilter = styled.div`
 `;
 
 class TournamentFilter extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { selectedValues: props.initialValues || {} };
-  }
-
   handleChange = filterName => value => {
-    this.setState(
-      state => {
-        const newState = Object.assign({}, state);
-        newState.selectedValues[filterName] = value;
-
-        return newState;
-      },
-      () => {
-        if (this.props.onChange) {
-          this.props.onChange(Object.assign({}, this.state.selectedValues));
-        }
-      },
-    );
+    if (this.props.onChange) {
+      const newSelectedValues = Object.assign({}, this.props.selectedValues);
+      newSelectedValues[filterName] = value;
+      this.props.onChange(newSelectedValues);
+    }
   };
 
   render() {
@@ -52,8 +38,14 @@ class TournamentFilter extends Component {
             <FormattedMessage id="app.public.tournamentFilter.statePlaceholder" />
           }
           handleChange={this.handleChange}
-          selectedValues={this.state.selectedValues}
-          options={tournamentSimplifiedStateEnum.helpers.getFilterOptions()}
+          selectedValues={this.props.selectedValues}
+          options={tournamentSimplifiedStateEnum.helpers
+            .getFilterOptions()
+            .filter(
+              x =>
+                x.value === tournamentSimplifiedStateEnum.RUNNING ||
+                x.value === tournamentSimplifiedStateEnum.FINISHED,
+            )}
           selectProps={{ allowClear: false }}
         />
 
@@ -64,7 +56,7 @@ class TournamentFilter extends Component {
             <FormattedMessage id="app.public.tournamentFilter.gamePlaceholder" />
           }
           handleChange={this.handleChange}
-          selectedValues={this.state.selectedValues}
+          selectedValues={this.props.selectedValues}
           options={this.props.games.map(x => ({ value: x.id, text: x.name }))}
           selectProps={{
             optionFilterProp: 'children',
@@ -84,7 +76,7 @@ class TournamentFilter extends Component {
             <FormattedMessage id="app.public.tournamentFilter.formatPlaceholder" />
           }
           handleChange={this.handleChange}
-          selectedValues={this.state.selectedValues}
+          selectedValues={this.props.selectedValues}
           options={tournamentFormatEnum.helpers.getFilterOptions()}
         />
 
@@ -95,7 +87,7 @@ class TournamentFilter extends Component {
             <FormattedMessage id="app.public.tournamentFilter.scopePlaceholder" />
           }
           handleChange={this.handleChange}
-          selectedValues={this.state.selectedValues}
+          selectedValues={this.props.selectedValues}
           options={tournamentScopeEnum.helpers.getFilterOptions()}
         />
 
@@ -106,13 +98,13 @@ class TournamentFilter extends Component {
             <FormattedMessage id="app.public.tournamentFilter.sortPlaceholder" />
           }
           handleChange={this.handleChange}
-          selectedValues={this.state.selectedValues}
+          selectedValues={this.props.selectedValues}
           options={tournamentRunningSortEnum.helpers.getFilterOptions()}
           style={{
             float: 'right',
             marginRight: 0,
             display:
-              this.state.selectedValues.state ===
+              this.props.selectedValues.state ===
               tournamentSimplifiedStateEnum.RUNNING
                 ? 'block'
                 : 'none',
@@ -127,13 +119,13 @@ class TournamentFilter extends Component {
             <FormattedMessage id="app.public.tournamentFilter.sortPlaceholder" />
           }
           handleChange={this.handleChange}
-          selectedValues={this.state.selectedValues}
+          selectedValues={this.props.selectedValues}
           options={tournamentFinishedSortEnum.helpers.getFilterOptions()}
           style={{
             float: 'right',
             marginRight: 0,
             display:
-              this.state.selectedValues.state ===
+              this.props.selectedValues.state ===
               tournamentSimplifiedStateEnum.FINISHED
                 ? 'block'
                 : 'none',
@@ -146,7 +138,7 @@ class TournamentFilter extends Component {
 }
 
 TournamentFilter.propTypes = {
-  initialValues: PropTypes.object,
+  selectedValues: PropTypes.object,
   onChange: PropTypes.func,
   games: PropTypes.array,
   isFetchingGames: PropTypes.bool.isRequired,
