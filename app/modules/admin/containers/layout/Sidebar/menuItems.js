@@ -1,34 +1,34 @@
-import { ROLE_ORGANIZER, ROLE_ADMIN } from '../../../../shared/helpers/roles';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
 export const menuItems = [
   {
     key: 'dashboard',
     link: '/admin',
     labelName: 'dashboard',
-    requiredRole: ROLE_ORGANIZER,
+    requiredRole: userRoleEnum.ORGANIZER,
   },
   {
     key: 'tournaments_list',
     link: '/admin/tournaments',
     labelName: 'tournaments',
-    requiredRole: ROLE_ORGANIZER,
+    requiredRole: userRoleEnum.ORGANIZER,
   },
   {
     key: 'games_list',
     link: '/admin/games',
     labelName: 'games',
-    requiredRole: ROLE_ORGANIZER,
+    requiredRole: userRoleEnum.ORGANIZER,
   },
   {
     key: 'users_list',
     link: '/admin/users',
     labelName: 'users',
-    requiredRole: ROLE_ADMIN,
+    requiredRole: userRoleEnum.ADMIN,
   },
   {
     key: 'system',
     link: '/admin/system',
     labelName: 'system',
-    requiredRole: ROLE_ADMIN,
+    requiredRole: userRoleEnum.ADMIN,
   },
 ];

@@ -67,6 +67,22 @@ function getActionProps(buttonGenerator) {
   };
 }
 
+function getActionsProps(buttonGenerators) {
+  return {
+    title: <FormattedMessage id="app.generic.action" />,
+    key: 'action',
+    width: 150,
+    align: 'center',
+    render: (text, record) => (
+      <div style={{ whiteSpace: 'nowrap' }}>
+        {buttonGenerators.map(gen => (
+          <span>{gen(text, record)}</span>
+        ))}
+      </div>
+    ),
+  };
+}
+
 export function getDetailActionProps(linkGenerator) {
   return {
     title: <FormattedMessage id="app.generic.action" />,
@@ -115,6 +131,30 @@ export function getDeleteResourceButton(deleteResourceFnc) {
       <FormattedMessage id="app.generic.delete" />
     </Button>
   ));
+}
+
+export function getTournamentActionButtons(
+  detailLinkGenerator,
+  cloneTournament,
+) {
+  return getActionsProps([
+    (text, record) => (
+      <Button type="primary">
+        <Link to={detailLinkGenerator(record)}>
+          <FormattedMessage id="app.generic.edit" />
+        </Link>
+      </Button>
+    ),
+    (text, record) => (
+      <Button
+        type="default"
+        onClick={() => cloneTournament(record.id)}
+        style={{ marginLeft: 5 }}
+      >
+        <FormattedMessage id="app.admin.tournamentList.clone" />
+      </Button>
+    ),
+  ]);
 }
 
 export function getEmptyColumnProps() {
