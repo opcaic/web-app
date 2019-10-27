@@ -3,7 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 import {
-  getEditResourceButton,
+  getTournamentActionButtons,
   getSearchProps,
 } from '@/modules/shared/helpers/table';
 import {
@@ -94,7 +94,10 @@ const columns = props => [
     sorter: true,
   },
   {
-    ...getEditResourceButton(record => `/admin/tournaments/${record.id}`),
+    ...getTournamentActionButtons(
+      record => `/admin/tournaments/${record.id}`,
+      props.cloneTournament,
+    ),
   },
 ];
 

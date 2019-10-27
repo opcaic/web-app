@@ -9,6 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import {
   actions as tournamentActions,
   selectors as tournamentSelectors,
+  cloneTournament,
 } from '../../../ducks/tournaments';
 import {
   actions as gameActions,
@@ -39,6 +40,7 @@ class TournamentListPage extends React.PureComponent {
           fetch={this.props.fetchItems}
           totalItems={this.props.totalItems}
           games={this.props.games}
+          cloneTournament={this.props.cloneTournament}
         />
       </PageLayout>
     );
@@ -53,6 +55,7 @@ TournamentListPage.propTypes = {
   games: PropTypes.arrayOf(PropTypes.object),
   isFetchingGames: PropTypes.bool.isRequired,
   fetchGames: PropTypes.func.isRequired,
+  cloneTournament: PropTypes.func.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -71,6 +74,7 @@ export function mapDispatchToProps(dispatch) {
           asc: true,
         }),
       ),
+    cloneTournament: id => dispatch(cloneTournament(id)),
   };
 }
 
