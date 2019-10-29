@@ -305,10 +305,13 @@ class TournamentForm extends React.PureComponent {
             label={<FormattedMessage id="app.admin.tournamentForm.deadline" />}
           >
             {getFieldDecorator('deadline', {
-              initialValue: moment(this.props.resource.deadline),
+              initialValue:
+                this.props.resource.deadline &&
+                moment(this.props.resource.deadline),
               rules: [isRequired('deadline')],
             })(
               <DatePicker
+                disabledDate={date => date < moment()}
                 showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
               />,
             )}

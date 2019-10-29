@@ -9,23 +9,19 @@ import {
 } from '@/modules/admin/ducks/tournamentState';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { tournamentStateEnum } from '@/modules/shared/helpers/enumHelpers';
+import {
+  tournamentStateEnum,
+  tournamentScopeEnum,
+} from '@/modules/shared/helpers/enumHelpers';
 
 const ActionButton = props => {
-  const {
-    tournamentId,
-    handleClick,
-    createAction,
-    message,
-    type,
-    state,
-  } = props;
+  const { handleClick, createAction, message, type, state } = props;
 
   return (
     <Button
       type={type}
       size="large"
-      onClick={() => handleClick(state, createAction(tournamentId))}
+      onClick={() => handleClick(state, createAction())}
       style={{ marginLeft: 10 }}
     >
       {message}
@@ -34,7 +30,6 @@ const ActionButton = props => {
 };
 
 ActionButton.propTypes = {
-  tournamentId: PropTypes.number,
   handleClick: PropTypes.func,
   createAction: PropTypes.func,
   message: PropTypes.object,
@@ -44,7 +39,9 @@ ActionButton.propTypes = {
 
 const PublishButton = props => (
   <ActionButton
-    createAction={publishTournament}
+    createAction={() =>
+      publishTournament(props.tournamentId, null, props.failureCallback)
+    }
     state={tournamentStateEnum.PUBLISHED}
     message={<FormattedMessage id="app.admin.tournamentForm.publish" />}
     type="primary"
@@ -53,7 +50,9 @@ const PublishButton = props => (
 );
 const StartButton = props => (
   <ActionButton
-    createAction={startTournament}
+    createAction={() =>
+      startTournament(props.tournamentId, null, props.failureCallback)
+    }
     state={tournamentStateEnum.RUNNING}
     message={<FormattedMessage id="app.admin.tournamentForm.start" />}
     type="primary"
@@ -62,7 +61,9 @@ const StartButton = props => (
 );
 const PauseButton = props => (
   <ActionButton
-    createAction={pauseTournament}
+    createAction={() =>
+      pauseTournament(props.tournamentId, null, props.failureCallback)
+    }
     state={tournamentStateEnum.PAUSED}
     message={<FormattedMessage id="app.admin.tournamentForm.pause" />}
     type="normal"
@@ -71,7 +72,9 @@ const PauseButton = props => (
 );
 const UnpauseButton = props => (
   <ActionButton
-    createAction={unpauseTournament}
+    createAction={() =>
+      unpauseTournament(props.tournamentId, null, props.failureCallback)
+    }
     state={tournamentStateEnum.RUNNING}
     message={<FormattedMessage id="app.admin.tournamentForm.unpause" />}
     type="normal"
@@ -80,7 +83,9 @@ const UnpauseButton = props => (
 );
 const StopButton = props => (
   <ActionButton
-    createAction={stopTournament}
+    createAction={() =>
+      stopTournament(props.tournamentId, null, props.failureCallback)
+    }
     state={tournamentStateEnum.FINISHED}
     message={<FormattedMessage id="app.admin.tournamentForm.stop" />}
     type="danger"
@@ -90,38 +95,35 @@ const StopButton = props => (
 
 class TournamentActionButtons extends React.PureComponent {
   render() {
-    const { resource, handleClick } = this.props;
+    const { resource, ...rest } = this.props;
 
     switch (resource.state) {
       case tournamentStateEnum.CREATED:
         return (
           <div>
-            <PublishButton
-              tournamentId={resource.id}
-              handleClick={handleClick}
-            />
+            <PublishButton tournamentId={resource.id} {...rest} />
           </div>
         );
       case tournamentStateEnum.PUBLISHED:
         return (
           <div>
-            <StartButton tournamentId={resource.id} handleClick={handleClick} />
+            <StartButton tournamentId={resource.id} {...rest} />
           </div>
         );
       case tournamentStateEnum.RUNNING:
         return (
           <div>
-            <PauseButton tournamentId={resource.id} handleClick={handleClick} />
-            <StopButton tournamentId={resource.id} handleClick={handleClick} />
+            <PauseButton tournamentId={resource.id} {...rest} />
+            {resource.scope !== tournamentScopeEnum.DEADLINE && (
+              <StopButton tournamentId={resource.id} {...rest} />
+            )}
           </div>
         );
       case tournamentStateEnum.PAUSED:
         return (
           <div>
-            <UnpauseButton
-              tournamentId={resource.id}
-              handleClick={handleClick}
-            />
+            <UnpauseButton tournamentId={resource.id} {...rest} />
+            <StopButton tournamentId={resource.id} {...rest} />
           </div>
         );
       case tournamentStateEnum.WAITING_FOR_FINISH:
