@@ -19,8 +19,7 @@ import TournamentList from '@/modules/admin/components/Tournament/TournamentList
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 
-/* eslint-disable react/prefer-stateless-function */
-class TournamentListPage extends React.PureComponent {
+class TournamentListPage extends React.Component {
   componentWillMount() {
     this.props.fetchGames();
   }
