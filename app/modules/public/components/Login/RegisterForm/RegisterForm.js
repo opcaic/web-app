@@ -2,7 +2,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  isMinLength,
+  isPasswordMinLength,
   isRequired,
   isValidEmail,
 } from '@/modules/shared/helpers/errors/formValidations';
@@ -76,7 +76,7 @@ class RegisterForm extends React.PureComponent {
               validateTrigger: 'onBlur',
               rules: [
                 isRequired('password', accountErrorMessageProvider),
-                isMinLength(8, 'password'),
+                isPasswordMinLength(8),
                 {
                   validator: this.props.compareToSecondPassword,
                 },

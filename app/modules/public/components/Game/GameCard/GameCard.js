@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ListCard from '@/modules/public/components/ListCard';
 import { gamePropType } from '@/modules/public/utils/propTypes';
+import { FormattedMessage } from 'react-intl';
 
 const GameCard = props => (
   <ListCard
@@ -10,7 +11,10 @@ const GameCard = props => (
     imageUrl={props.game.imageUrl}
     headerUrl={`/games/${props.game.id}`}
   >
-    <div>Active tournaments: {props.game.activeTournamentsCount}</div>
+    <div>
+      <FormattedMessage id="app.public.gameCard.activeTournaments" />{' '}
+      {props.game.activeTournamentsCount}
+    </div>
   </ListCard>
 );
 

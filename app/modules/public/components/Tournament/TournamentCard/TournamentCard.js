@@ -90,7 +90,7 @@ const TournamentCard = props => {
         )}
       </Deadline>
       <Game>
-        Game:{' '}
+        <FormattedMessage id="app.public.tournamentCard.game" />{' '}
         <Link to={`/games/${props.tournament.game.id}`}>
           {props.tournament.game.name}
         </Link>

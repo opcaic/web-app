@@ -18,29 +18,38 @@ export function isRequired(field, errorMessageProvider) {
   };
 }
 
-export function isValidEmail(overriddenErrorMessages) {
+export function isValidEmail(errorMessageProvider) {
   return {
     type: 'email',
-    message: getErrorMessage('fieldInvalidEmail', overriddenErrorMessages),
+    message: getErrorMessage('fieldInvalidEmail', errorMessageProvider),
   };
 }
 
-export function isMinLength(length, field = 'input', overriddenErrorMessages) {
+export function isMinLength(length, field = 'input', errorMessageProvider) {
   return {
     min: length,
-    message: getErrorMessage('fieldMinLength', overriddenErrorMessages, {
+    message: getErrorMessage('fieldMinLength', errorMessageProvider, {
       length,
       field,
     }),
   };
 }
 
-export function isMaxLength(length, field = 'input', overriddenErrorMessages) {
+export function isMaxLength(length, field = 'input', errorMessageProvider) {
   return {
     max: length,
-    message: getErrorMessage('fieldMaxLength', overriddenErrorMessages, {
+    message: getErrorMessage('fieldMaxLength', errorMessageProvider, {
       length,
       field,
+    }),
+  };
+}
+
+export function isPasswordMinLength(length, errorMessageProvider) {
+  return {
+    min: length,
+    message: getErrorMessage('fieldPasswordShort', errorMessageProvider, {
+      minimum: length,
     }),
   };
 }

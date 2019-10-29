@@ -98,6 +98,14 @@ const notAuthenticatedNotificationMessages = defineMessages({
 function* handle401Interceptor() {
   axiosInstance.interceptors.response.use(response => {
     if (response.status === 401) {
+      if (response.data && response.data.code === 'login-invalid') {
+        return response;
+      }
+
+      if (response.data && response.data.code === 'invalid-token') {
+        return response;
+      }
+
       const key = `notAuthenticatedNotification`;
       const btn = (
         <Button type="primary" onClick={() => location.reload()}>
