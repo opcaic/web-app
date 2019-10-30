@@ -26,6 +26,12 @@ export const menuItems = [
     requiredRole: userRoleEnum.ADMIN,
   },
   {
+    key: 'email_templates',
+    link: '/admin/emailTemplates',
+    labelName: 'emailTemplates',
+    requiredRole: userRoleEnum.ADMIN,
+  },
+  {
     key: 'system',
     link: '/admin/system',
     labelName: 'system',

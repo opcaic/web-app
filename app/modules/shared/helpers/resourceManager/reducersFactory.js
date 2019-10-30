@@ -63,16 +63,16 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
       });
 
     // UPDATE
-    case actionTypes.UDPATE_REQUEST:
+    case actionTypes.UPDATE_REQUEST:
       return state.merge({
         isUpdating: true,
         error: null,
       });
-    case actionTypes.UDPATE_SUCCESS:
+    case actionTypes.UPDATE_SUCCESS:
       return state.merge({
         isUpdating: false,
       });
-    case actionTypes.UDPATE_FAILURE:
+    case actionTypes.UPDATE_FAILURE:
       return state.merge({
         isUpdating: false,
       });

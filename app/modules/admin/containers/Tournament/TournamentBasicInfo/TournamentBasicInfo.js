@@ -2,8 +2,8 @@ import TournamentForm from '@/modules/admin/components/Tournament/TournamentForm
 import TournamentStats from '@/modules/admin/components/Tournament/TournamentStats';
 import TournamentActionButtons from '@/modules/admin/containers/Tournament/TournamentActionButtons';
 import {
-  actions as documentActions,
   selectors as documentSelectors,
+  actions as documentActions,
 } from '@/modules/admin/ducks/documents';
 import {
   actions as gameActions,
@@ -29,14 +29,10 @@ import {
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentBasicInfo extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      resource: this.props.tournament,
-      hasAdditionalFiles: this.props.tournament.hasAdditionalFiles,
-    };
-  }
+  state = {
+    resource: this.props.tournament,
+    hasAdditionalFiles: this.props.tournament.hasAdditionalFiles,
+  };
 
   componentWillMount() {
     this.props.fetchGame(this.props.tournament.game.id);
@@ -60,6 +56,10 @@ class TournamentBasicInfo extends React.PureComponent {
     this.props.changeState(stateAction);
   };
 
+  reloadResource = () => {
+    this.props.fetchResource(this.props.tournament.id);
+  };
+
   handleUploadSuccess = () => {
     this.setState({ hasAdditionalFiles: true });
   };
@@ -77,6 +77,7 @@ class TournamentBasicInfo extends React.PureComponent {
             <TournamentActionButtons
               resource={this.state.resource}
               handleClick={this.changeState}
+              failureCallback={this.reloadResource}
             />
           </Col>
         </Row>
@@ -109,14 +110,15 @@ class TournamentBasicInfo extends React.PureComponent {
 
 TournamentBasicInfo.propTypes = {
   tournament: PropTypes.object,
+  fetchResource: PropTypes.func.isRequired,
   updateResource: PropTypes.func.isRequired,
   games: PropTypes.arrayOf(PropTypes.object),
   isFetchingGames: PropTypes.bool.isRequired,
   fetchGames: PropTypes.func.isRequired,
   fetchGame: PropTypes.func,
+  fetchDocuments: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.object),
   isFetchingDocuments: PropTypes.bool.isRequired,
-  fetchDocuments: PropTypes.func.isRequired,
   changeState: PropTypes.func.isRequired,
   downloadTournamentFiles: PropTypes.func,
   showModal: PropTypes.func,
@@ -124,6 +126,7 @@ TournamentBasicInfo.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
+    fetchResource: id => dispatch(tournamentsActions.fetchResource(id)),
     updateResource: (resource, successCallback, failureCallback) =>
       dispatch(
         tournamentsActions.updateResource(resource.id, resource, {

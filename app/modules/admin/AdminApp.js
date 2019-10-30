@@ -11,6 +11,9 @@ import leaderboardsReducer from './ducks/leaderboards';
 import submissionsReducer from './ducks/submissions';
 import validationsReducer from './ducks/validations';
 import workersReducer from './ducks/workers';
+import emailTemplatesReducer, {
+  saga as emailTemplatesSaga,
+} from './ducks/emailTemplates';
 import tournamentsReducer, {
   saga as tournamentsSaga,
 } from './ducks/tournaments';
@@ -29,6 +32,7 @@ import TournamentRoutes from '@/modules/admin/pages/Tournaments/TournamentRoutes
 import UserRoutes from '@/modules/admin/pages/Users/UserRoutes';
 import GameRoutes from '@/modules/admin/pages/Games/GameRoutes';
 import AuthorizedRoute from '../shared/containers/AuthorizedRoute/AuthorizedRoute';
+import EmailTemplateRoutes from '@/modules/admin/pages/EmailTemplates/EmailTemplateRoutes';
 import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
 // TODO: check if withMenuSync can be called directly in the component prop or if it should be declared beforehand
@@ -66,6 +70,12 @@ export class AdminApp extends React.PureComponent {
         />
 
         <AuthorizedRoute
+          path="/admin/emailTemplates"
+          requiredRole={userRoleEnum.ADMIN}
+          component={EmailTemplateRoutes}
+        />
+
+        <AuthorizedRoute
           exact
           path="/admin/system/"
           requiredRole={userRoleEnum.ADMIN}
@@ -89,6 +99,7 @@ const withSagas = [
   }),
   injectSaga({ key: 'documents', saga: documentsSaga }),
   injectSaga({ key: 'tournamentState', saga: tournamentStateSaga }),
+  injectSaga({ key: 'emailTemplates', saga: emailTemplatesSaga }),
   injectSaga({ key: 'tournamentFiles', saga: tournamentFilesSaga }),
   injectSaga({ key: 'users', saga: usersSaga }),
 ];
@@ -110,6 +121,7 @@ const withReducers = [
     reducer: tournamentFilesReducer,
   }),
   injectReducer({ key: 'workers', reducer: workersReducer }),
+  injectReducer({ key: 'emailTemplates', reducer: emailTemplatesReducer }),
 ];
 
 export default compose(
