@@ -38,7 +38,7 @@ export class FeaturedTournaments extends React.PureComponent {
           }
         />
 
-        {this.props.totalItems > 4 && (
+        {this.props.totalItems > 0 && (
           <div style={{ textAlign: 'center' }}>
             <StyledButton type="primary" size="large">
               <Link to="/tournaments">

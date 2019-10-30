@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
 const TournamentCardList = props => {
-  const { updateFilter, emptyText, ...rest } = props;
+  const { updateFilter, emptyText, loading, dataSource } = props;
 
   return (
     <List
@@ -31,15 +31,17 @@ const TournamentCardList = props => {
           />
         ),
       }}
-      {...rest}
+      dataSource={dataSource}
+      loading={loading}
     />
   );
 };
 
 TournamentCardList.propTypes = {
   dataSource: PropTypes.arrayOf(PropTypes.shape(tournamentListItemPropType)),
-  emptyText: PropTypes.string,
+  emptyText: PropTypes.object,
   updateFilter: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 export default TournamentCardList;

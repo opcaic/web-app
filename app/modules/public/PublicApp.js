@@ -35,6 +35,7 @@ import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import GameDetailPage from '@/modules/public/pages/Games/GameDetailPage';
 import AboutPage from '@/modules/public/pages/AboutPage/AboutPage';
 import FaqPage from '@/modules/public/pages/FaqPage/FaqPage';
+import ResendConfirmationEmailPage from '@/modules/public/pages/User/ResendConfirmationEmailPage';
 
 const MenuSyncedHomePageSwitch = withMenuSync(HomePageSwitch, {
   topMenu: ['home'],
@@ -92,6 +93,10 @@ export class PublicApp extends React.Component {
         <Route path="/forgot-password" component={ForgotPasswordPage} />
         <Route path="/reset-password" component={ResetPasswordPage} />
         <Route path="/confirm-email" component={ConfirmEmailPage} />
+        <Route
+          path="/resend-confirmation-email"
+          component={ResendConfirmationEmailPage}
+        />
         <Route
           path="/registration-successful"
           component={RegistrationSuccessfulPage}

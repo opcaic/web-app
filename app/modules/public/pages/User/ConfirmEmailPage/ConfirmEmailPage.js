@@ -82,9 +82,14 @@ export class ConfirmEmailPage extends React.PureComponent {
               <FormattedHTMLMessage id="app.public.confirmEmail.failureText" />
             }
             extra={[
-              <Button type="primary" key="console">
+              <Button type="primary" key="back">
                 <Link to="/">
                   <FormattedMessage id="app.public.confirmEmail.backToHomepage" />
+                </Link>
+              </Button>,
+              <Button type="default" key="resend">
+                <Link to="/resend-confirmation-email">
+                  <FormattedMessage id="app.public.confirmEmail.resendConfirmationEmail" />
                 </Link>
               </Button>,
             ]}

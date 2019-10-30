@@ -14,6 +14,13 @@ export const actionTypes = {
   RESET_PASSWORD_REQUEST: 'app/public/account/RESET_PASSWORD_REQUEST',
   RESET_PASSWORD_SUCCESS: 'app/public/account/RESET_PASSWORD_SUCCESS',
   RESET_PASSWORD_FAILURE: 'app/public/account/RESET_PASSWORD_FAILURE',
+  RESEND_CONFIRMATION_EMAIL: 'app/public/account/RESEND_CONFIRMATION_EMAIL',
+  RESEND_CONFIRMATION_EMAIL_REQUEST:
+    'app/public/account/RESEND_CONFIRMATION_EMAIL_REQUEST',
+  RESEND_CONFIRMATION_EMAIL_SUCCESS:
+    'app/public/account/RESEND_CONFIRMATION_EMAIL_SUCCESS',
+  RESEND_CONFIRMATION_EMAIL_FAILURE:
+    'app/public/account/RESEND_CONFIRMATION_EMAIL_FAILURE',
 };
 
 /*
@@ -49,6 +56,21 @@ export function resetPassword(
   };
 }
 
+export function resendConfirmationEmail(
+  email,
+  successCallback,
+  failureCallback,
+) {
+  return {
+    type: actionTypes.RESEND_CONFIRMATION_EMAIL,
+    payload: {
+      email,
+      successCallback,
+      failureCallback,
+    },
+  };
+}
+
 /*
  * Sagas
  */
@@ -59,35 +81,32 @@ function* handleForgotPassword({
     type: actionTypes.FORGOT_PASSWORD_REQUEST,
   });
 
-  try {
-    const { data, status } = yield call(callApi, {
-      endpoint: 'api/users/forgotPassword',
-      method: 'POST',
-      data: {
-        email,
-      },
+  const { data, status } = yield call(callApi, {
+    endpoint: 'api/users/forgotPassword',
+    method: 'POST',
+    data: {
+      email,
+    },
+  });
+
+  if (status >= 200 && status < 300) {
+    yield put({
+      type: actionTypes.FORGOT_PASSWORD_SUCCESS,
     });
 
-    if (status >= 200 && status < 300) {
-      yield put({
-        type: actionTypes.FORGOT_PASSWORD_SUCCESS,
-      });
-
-      if (successCallback) {
-        successCallback();
-      }
-    } else {
-      yield put({
-        type: actionTypes.FORGOT_PASSWORD_FAILURE,
-      });
-
-      if (failureCallback) {
-        const errors = prepareFormErrors(data);
-        failureCallback(errors);
-      }
+    if (successCallback) {
+      successCallback();
     }
-    // eslint-disable-next-line no-empty
-  } catch (e) {}
+  } else {
+    yield put({
+      type: actionTypes.FORGOT_PASSWORD_FAILURE,
+    });
+
+    if (failureCallback) {
+      const errors = prepareFormErrors(data);
+      failureCallback(errors);
+    }
+  }
 }
 
 function* handleResetPassword({
@@ -97,50 +116,90 @@ function* handleResetPassword({
     type: actionTypes.RESET_PASSWORD_REQUEST,
   });
 
-  try {
-    const { data, status } = yield call(callApi, {
-      endpoint: 'api/users/passwordReset',
-      method: 'POST',
-      data: {
-        email,
-        resetToken,
-        password,
-      },
+  const { data, status } = yield call(callApi, {
+    endpoint: 'api/users/passwordReset',
+    method: 'POST',
+    data: {
+      email,
+      resetToken,
+      password,
+    },
+  });
+
+  if (status >= 200 && status < 300) {
+    yield put({
+      type: actionTypes.RESET_PASSWORD_SUCCESS,
     });
 
-    if (status >= 200 && status < 300) {
-      yield put({
-        type: actionTypes.RESET_PASSWORD_SUCCESS,
-      });
+    if (successCallback) {
+      successCallback();
+    }
+  } else {
+    yield put({
+      type: actionTypes.RESET_PASSWORD_FAILURE,
+    });
 
-      if (successCallback) {
-        successCallback();
-      }
-    } else {
-      yield put({
-        type: actionTypes.RESET_PASSWORD_FAILURE,
-      });
-
-      if (failureCallback) {
-        if (
-          Array.isArray(data.errors) &&
-          !data.errors.find(x => x.field !== 'password')
-        ) {
-          const errors = prepareFormErrors(data);
-          failureCallback(errors);
-        } else {
-          const errors = prepareFormErrors({
-            code: 'reset-password-failure',
-          });
-          failureCallback(errors);
-        }
+    if (failureCallback) {
+      if (
+        Array.isArray(data.errors) &&
+        !data.errors.find(x => x.field !== 'password')
+      ) {
+        const errors = prepareFormErrors(data);
+        failureCallback(errors);
+      } else {
+        const errors = prepareFormErrors({
+          code: 'reset-password-failure',
+        });
+        failureCallback(errors);
       }
     }
-    // eslint-disable-next-line no-empty
-  } catch (e) {}
+  }
+}
+
+function* handleResendConfirmationEmail({
+  payload: { email, successCallback, failureCallback },
+}) {
+  yield put({
+    type: actionTypes.RESEND_CONFIRMATION_EMAIL_REQUEST,
+  });
+
+  const { status } = yield call(callApi, {
+    endpoint: 'api/users/resendVerificationEmail',
+    method: 'POST',
+    data: {
+      email,
+    },
+  });
+
+  if (status >= 200 && status < 300) {
+    yield put({
+      type: actionTypes.RESEND_CONFIRMATION_EMAIL_SUCCESS,
+    });
+
+    if (successCallback) {
+      successCallback();
+    }
+  } else {
+    yield put({
+      type: actionTypes.RESEND_CONFIRMATION_EMAIL_FAILURE,
+    });
+
+    if (failureCallback) {
+      const errors = prepareFormErrors({
+        code: 'resend-confirmation-email-failure',
+      });
+      failureCallback(errors);
+    }
+  }
 }
 
 export function* saga() {
   yield all([takeEvery(actionTypes.FORGOT_PASSWORD, handleForgotPassword)]);
   yield all([takeEvery(actionTypes.RESET_PASSWORD, handleResetPassword)]);
+  yield all([
+    takeEvery(
+      actionTypes.RESEND_CONFIRMATION_EMAIL,
+      handleResendConfirmationEmail,
+    ),
+  ]);
 }

@@ -16,7 +16,7 @@ export const errorIntlMessages = defineMessages({
   // General errors
   genericError: {
     id: 'app.errors.genericError',
-  }, // TODO: todo
+  },
   fieldMinLength: {
     id: 'app.errors.fieldMinLength',
   },
@@ -34,56 +34,56 @@ export const errorIntlMessages = defineMessages({
   },
   fieldInvalidUrl: {
     id: 'app.errors.fieldInvalidUrl',
-  }, // TODO: invalid url
+  },
   fieldInvalidUsername: {
     id: 'app.errors.fieldInvalidUsername',
-  }, // TODO: invalid email
+  },
   fieldRange: {
     id: 'app.errors.fieldRange',
   },
   deadlinePassed: {
     id: 'app.errors.deadlinePassed',
-  }, // TODO: tournament deadline passed
+  },
   tournamentNotActive: {
     id: 'app.errors.tournamentNotActive',
-  }, // TODO: tournament deadline passed
+  },
   tournamentInBadState: {
     id: 'app.errors.tournamentInBadState',
-  }, // TODO: tournament deadline passed
+  },
   tournamentInBadScope: {
     id: 'app.errors.tournamentInBadScope',
-  }, // TODO: tournament deadline passed
+  },
   uneditablePropertyOfAPublishedTournament: {
     id: 'app.errors.uneditablePropertyOfAPublishedTournament',
-  }, // TODO: tournament deadline passed
+  },
   userIsAlreadyManagerOfTournament: {
     id: 'app.errors.userIsAlreadyManagerOfTournament',
-  }, // TODO: tournament deadline passed
+  },
   userIsNotManagerOfTournament: {
     id: 'app.errors.userIsNotManagerOfTournament',
-  }, // TODO: tournament deadline passed
-  // Password // TODO:
+  },
+  // Password
   fieldPasswordShort: {
     id: 'app.errors.fieldPasswordShort',
-  }, // TODO: tournament deadline passed
+  },
   fieldPasswordUniqueChars: {
     id: 'app.errors.fieldPasswordUniqueChars',
-  }, // TODO: tournament deadline passed
+  },
   fieldPasswordNonAlphanumeric: {
     id: 'app.errors.fieldPasswordNonAlphanumeric',
-  }, // TODO: tournament deadline passed
+  },
   fieldPasswordDigit: {
     id: 'app.errors.fieldPasswordDigit',
-  }, // TODO: tournament deadline passed
+  },
   fieldPasswordLower: {
     id: 'app.errors.fieldPasswordLower',
-  }, // TODO: tournament deadline passed
+  },
   fieldPasswordUpper: {
     id: 'app.errors.fieldPasswordUpper',
-  }, // TODO: tournament deadline passed
+  },
   fieldPasswordMismatch: {
     id: 'app.errors.fieldPasswordMismatch',
-  }, // TODO: tournament deadline passed
+  },
   // Conflicts
   gameNameConflict: {
     id: 'app.errors.gameNameConflict',
@@ -109,20 +109,23 @@ export const errorIntlMessages = defineMessages({
   },
   // Other
   invalidReference: {
-    id: 'app.errors.invalidReference', // TODO:
+    id: 'app.errors.invalidReference',
   },
   invalidSchema: {
-    id: 'app.errors.invalidSchema', // TODO:
+    id: 'app.errors.invalidSchema',
   },
   invalidConfiguration: {
-    id: 'app.errors.invalidConfiguration', // TODO:
+    id: 'app.errors.invalidConfiguration',
   },
   invalidArchiveSize: {
-    id: 'app.errors.invalidArchiveSize', // TODO:
+    id: 'app.errors.invalidArchiveSize',
   },
   // Custom
   tournamentFilesInvalidArchiveSize: {
     id: 'app.errors.tournamentFilesInvalidArchiveSize',
+  },
+  resetPasswordFailure: {
+    id: 'app.errors.resetPasswordFailure',
   },
 });
 
@@ -182,4 +185,11 @@ export function prepareFormErrors(
   });
 
   return errors;
+}
+
+export function getGenericFormError() {
+  return prepareFormErrors({
+    code: 'generic-error',
+    field: null,
+  });
 }

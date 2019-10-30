@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
 
 const GameList = props => (
   <List
-    {...props}
+    dataSource={props.dataSource}
+    loading={props.loading}
     grid={{
       gutter: 16,
       xs: 4,
@@ -34,7 +35,9 @@ const GameList = props => (
 );
 
 GameList.propTypes = {
-  emptyText: PropTypes.string,
+  emptyText: PropTypes.object,
+  loading: PropTypes.bool,
+  dataSource: PropTypes.array,
 };
 
 export default GameList;

@@ -13,7 +13,7 @@ import {
 } from '@/modules/shared/helpers/enumHelpers';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { longDateFormat } from '@/modules/shared/helpers/time';
-import Timeago from 'react-timeago';
+import TimeAgo from '@/modules/shared/components/TimeAgo';
 
 const columns = props => [
   {
@@ -39,7 +39,7 @@ const columns = props => [
     key: 'created',
     render: date =>
       date ? (
-        <Timeago date={date} />
+        <TimeAgo date={date} />
       ) : (
         <FormattedMessage id="app.admin.tournamentList.noPublished" />
       ),
@@ -51,7 +51,7 @@ const columns = props => [
     key: 'published',
     render: date =>
       date ? (
-        <Timeago date={date} />
+        <TimeAgo date={date} />
       ) : (
         <FormattedMessage id="app.admin.tournamentList.noPublished" />
       ),

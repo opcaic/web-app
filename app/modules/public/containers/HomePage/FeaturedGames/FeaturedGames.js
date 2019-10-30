@@ -36,7 +36,7 @@ export class FeaturedGames extends React.PureComponent {
           emptyText={<FormattedMessage id="app.public.featuredGames.noGames" />}
         />
 
-        {this.props.totalItems > 4 && (
+        {this.props.totalItems > 0 && (
           <div style={{ textAlign: 'center' }}>
             <StyledButton type="primary" size="large">
               <Link to="/games">

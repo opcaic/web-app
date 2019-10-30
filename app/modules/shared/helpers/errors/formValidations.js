@@ -21,7 +21,9 @@ export function isRequired(field, errorMessageProvider) {
 export function isValidEmail(errorMessageProvider) {
   return {
     type: 'email',
-    message: getErrorMessage('fieldInvalidEmail', errorMessageProvider),
+    message: getErrorMessage('fieldInvalidEmail', errorMessageProvider, {
+      field: 'email',
+    }),
   };
 }
 

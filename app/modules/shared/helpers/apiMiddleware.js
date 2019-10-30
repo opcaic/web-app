@@ -1,13 +1,13 @@
 /* eslint-disable no-restricted-globals */
-import { put, takeEvery, all, call, select } from 'redux-saga/effects';
+import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 import { Button, notification } from 'antd';
 import React from 'react';
 import * as qs from 'query-string';
 import {
-  isLoggedIn as isLoggedInSelector,
   accessTokenSelector,
+  isLoggedIn as isLoggedInSelector,
 } from '../selectors/auth';
 import { defineMessages } from 'react-intl';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
@@ -50,7 +50,12 @@ export function* callApi(request) {
     requestParams.headers.Authorization = `Bearer ${accessToken}`;
   }
 
-  return yield call(axiosInstance.request, requestParams);
+  try {
+    return yield call(axiosInstance.request, requestParams);
+  } catch (e) {
+    yield call(showGenericErrorNotification);
+    throw e;
+  }
 }
 
 function* handleApiCalls({ request, meta = {} }) {
@@ -87,6 +92,23 @@ function* handleApiCalls({ request, meta = {} }) {
       meta.failureCallback(errors);
     }
   }
+}
+
+const genericErrorNotificationMessages = defineMessages({
+  title: { id: 'app.shared.genericErrorNotification.title' },
+  description: { id: 'app.shared.genericErrorNotification.description' },
+});
+
+function* showGenericErrorNotification() {
+  const key = `genericErrorNotification`;
+  notification.error({
+    message: intlGlobal.formatMessage(genericErrorNotificationMessages.title),
+    description: intlGlobal.formatMessage(
+      genericErrorNotificationMessages.description,
+    ),
+    key,
+    duration: 0,
+  });
 }
 
 const notAuthenticatedNotificationMessages = defineMessages({
