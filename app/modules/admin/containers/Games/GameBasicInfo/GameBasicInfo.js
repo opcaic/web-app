@@ -26,19 +26,27 @@ class GameBasicInfo extends React.Component {
     return allGames.filter((item, index) => allGames.indexOf(item) === index);
   };
 
+  updateResource = (values, successCallback, failureCallback) =>
+    this.props.updateResource(
+      Object.assign({}, this.props.resource, values),
+      successCallback,
+      failureCallback,
+    );
+
+  createResource = (values, successCallback, failureCallback) =>
+    this.props.createResource(values, successCallback, failureCallback);
+
   render() {
     return (
       <Spin spinning={this.props.isFetching || this.props.resource === null}>
         <Row>
           <Col span={24}>
             <GameForm
-              resource={this.props.resource || {}}
-              onSubmit={(values, successCallback, failureCallback) =>
-                this.props.updateResource(
-                  Object.assign({}, this.props.resource, values),
-                  successCallback,
-                  failureCallback,
-                )
+              resource={this.props.resource}
+              onSubmit={
+                this.props.resource.id
+                  ? this.updateResource
+                  : this.createResource
               }
               supportedGameKeys={this.getSupportedGames()}
             />
@@ -52,6 +60,7 @@ class GameBasicInfo extends React.Component {
 GameBasicInfo.propTypes = {
   resource: PropTypes.object,
   updateResource: PropTypes.func.isRequired,
+  createResource: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
   workers: PropTypes.array,
   fetchWorkers: PropTypes.func,
@@ -63,6 +72,15 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
+    createResource: (resource, successCallback, failureCallback) =>
+      dispatch(
+        gameActions.createResource(resource, {
+          meta: {
+            successCallback,
+            failureCallback,
+          },
+        }),
+      ),
     updateResource: (resource, successCallback, failureCallback) =>
       dispatch(
         gameActions.updateResource(resource.id, resource, {

@@ -1,4 +1,5 @@
 {
+  "app.admin.tournamentFilesUpload.logIn": "",
   "app.admin.documentForm.name": "Název",
   "app.admin.documents.createSuccessNotification": "Dokument byl úspěšně vytvořen",
   "app.admin.documents.updateSuccessNotification": "Dokument byl úspěšně upraven",
@@ -30,6 +31,8 @@
   "app.admin.gameMenu.configuration": "Konfigurace",
   "app.admin.games.createSuccessNotification": "Hra úspěšně vytvořena",
   "app.admin.games.updateSuccessNotification": "Hra úspěšně upravena",
+  "app.admin.games.createFailureNotification": "Při vytváření hry nastala chyba",
+  "app.admin.games.updateFailureNotification": "Pri editaci hry nastala chyba",
   "app.admin.notFound.backToDashboard": "Zpátky do přehledu",
   "app.admin.notFound.text": "Požadovaná stránka neexistuje",
   "app.admin.sidebar.backToPublic": "Zpátky do veřejné části",

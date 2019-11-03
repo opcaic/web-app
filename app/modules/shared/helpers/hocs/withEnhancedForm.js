@@ -50,7 +50,7 @@ function withEnhancedForm(hocOptions = {}) {
         const fieldsData = {};
 
         Object.entries(errors.withField).forEach(element => {
-          const key = element[0];
+          const key = element[0].toLowerCase();
           const fieldErrors = element[1];
 
           fieldsData[key] = {
