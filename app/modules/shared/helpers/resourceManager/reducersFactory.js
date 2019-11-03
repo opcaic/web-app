@@ -52,6 +52,13 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
         error: null,
       });
     case actionTypes.FETCH_MANY_SUCCESS:
+      if (Array.isArray(action.payload)) {
+        return state.merge({
+          items: action.payload,
+          totalItems: action.payload.length,
+          isFetching: false,
+        });
+      }
       return state.merge({
         items: action.payload.list,
         totalItems: action.payload.total || action.payload.list.length,

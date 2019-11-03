@@ -1,6 +1,6 @@
 import React from 'react';
 
-function withAjax(WrappedComponent) {
+function withAjax(WrappedComponent, withSorting = true, withPaging = true) {
   return class extends React.Component {
     static defaultProps = {
       pageSize: 10,
@@ -51,18 +51,23 @@ function withAjax(WrappedComponent) {
         }
       });
 
-      const requestParams = {
+      const pagingParams = {
         count: pagination.pageSize,
         offset: (pagination.current - 1) * pagination.pageSize,
-        ...newFilters,
       };
 
-      if (sorter.field) {
-        requestParams.sortBy = sorter.field;
-      }
+      const requestParams = withPaging
+        ? Object.assign(newFilters, pagingParams)
+        : newFilters;
 
-      if (sorter.order) {
-        requestParams.asc = sorter.order === 'ascend';
+      if (withSorting) {
+        if (sorter.field) {
+          requestParams.sortBy = sorter.field;
+        }
+
+        if (sorter.order) {
+          requestParams.asc = sorter.order === 'ascend';
+        }
       }
 
       this.props.fetch(requestParams);

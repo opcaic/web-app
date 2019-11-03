@@ -23,6 +23,9 @@ import tournamentParticipantsReducer, {
 import tournamentFilesReducer, {
   saga as tournamentFilesSaga,
 } from './ducks/tournamentFiles';
+import systemItemsReducer, {
+  saga as systemItemsSaga,
+} from './ducks/systemItems';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import DashboardPage from '@/modules/admin/pages/DashboardPage';
 import SystemPage from '@/modules/admin/pages/SystemPage';
@@ -102,6 +105,7 @@ const withSagas = [
   injectSaga({ key: 'emailTemplates', saga: emailTemplatesSaga }),
   injectSaga({ key: 'tournamentFiles', saga: tournamentFilesSaga }),
   injectSaga({ key: 'users', saga: usersSaga }),
+  injectSaga({ key: 'systemItems', saga: systemItemsSaga }),
 ];
 const withReducers = [
   injectReducer({ key: 'users', reducer: usersReducers }),
@@ -122,6 +126,7 @@ const withReducers = [
   }),
   injectReducer({ key: 'workers', reducer: workersReducer }),
   injectReducer({ key: 'emailTemplates', reducer: emailTemplatesReducer }),
+  injectReducer({ key: 'systemItems', reducer: systemItemsReducer }),
 ];
 
 export default compose(

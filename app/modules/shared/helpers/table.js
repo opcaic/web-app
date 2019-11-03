@@ -57,10 +57,9 @@ export function getSearchProps(field) {
   };
 }
 
-function getActionProps(buttonGenerator) {
+export function getActionProps(buttonGenerator, key = 'action') {
   return {
-    title: <FormattedMessage id="app.generic.action" />,
-    key: 'action',
+    key,
     width: 150,
     align: 'center',
     render: (text, record) => buttonGenerator(text, record),
