@@ -110,6 +110,9 @@ class TournamentFilter extends Component {
                 : 'none',
           }}
           width={200}
+          selectProps={{
+            allowClear: false,
+          }}
         />
 
         <FilterItem
@@ -131,6 +134,9 @@ class TournamentFilter extends Component {
                 : 'none',
           }}
           width={200}
+          selectProps={{
+            allowClear: false,
+          }}
         />
       </StyledFilter>
     );

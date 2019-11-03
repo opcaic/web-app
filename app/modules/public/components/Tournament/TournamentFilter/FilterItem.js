@@ -21,7 +21,7 @@ const FilterItem = props => (
     <Label>{props.label}</Label>
     <div>
       <Select
-        style={{ width: props.width || 160, fontSize: 13 }}
+        style={{ width: props.width || 150, fontSize: 13 }}
         onChange={props.handleChange(props.field)}
         value={props.selectedValues[props.field]}
         placeholder={props.placeholder}

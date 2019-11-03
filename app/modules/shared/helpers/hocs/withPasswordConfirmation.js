@@ -4,7 +4,7 @@ import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 export const intlMessages = defineMessages({
   passwordsDoNotMatch: {
-    id: 'app.shared.withPasswordConfirmation.passwordsDoNotMatch',
+    id: 'app.errors.fieldPasswordMismatch',
   },
 });
 

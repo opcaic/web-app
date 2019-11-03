@@ -52,6 +52,9 @@ export const pageTitles = defineMessages({
   resetPasswordPage: {
     id: 'app.public.pageTitles.resetPasswordPage',
   },
+  resendConfirmationEmailPage: {
+    id: 'app.public.pageTitles.resendConfirmationEmailPage',
+  },
   gameListPage: {
     id: 'app.public.pageTitles.gameListPage',
   },

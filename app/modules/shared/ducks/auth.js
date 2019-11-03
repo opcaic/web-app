@@ -20,6 +20,7 @@ import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
 import { resetState, resetStateActionType } from '@/reducers';
 import { changeLocale } from '@/modules/shared/ducks/localization';
 import { settings } from '@/modules/shared/helpers/utils';
+import { isLoggedIn } from '@/modules/shared/selectors/auth';
 
 /*
  * Action types
@@ -171,27 +172,30 @@ function* loginFlow() {
         );
       }
 
-      Cookies.set('loggedOut', false);
-      const loggedOutCookieTask = yield fork(watchLoggedOutCookie, action);
-      const refreshTask = yield fork(handleRefreshToken, action);
+      const isLoggedInValue = yield select(isLoggedIn);
 
-      action = yield take([
-        actionTypes.LOGOUT_REQUEST,
-        actionTypes.LOGIN_FAILURE,
-        actionTypes.LOAD_AUTH_FAILURE,
-      ]);
+      if (isLoggedInValue) {
+        Cookies.set('loggedOut', false);
+        const loggedOutCookieTask = yield fork(watchLoggedOutCookie, action);
+        const refreshTask = yield fork(handleRefreshToken, action);
 
-      clearStorage();
+        action = yield take([
+          actionTypes.LOGOUT_REQUEST,
+          actionTypes.LOAD_AUTH_FAILURE,
+        ]);
 
-      if (refreshTask) yield cancel(refreshTask);
-      if (loggedOutCookieTask) yield cancel(loggedOutCookieTask);
-      if (action.type === actionTypes.LOGOUT_REQUEST) {
-        yield put(logoutSuccess());
-        yield put(push('/'));
-        Cookies.set('loggedOut', true);
+        clearStorage();
+
+        if (refreshTask) yield cancel(refreshTask);
+        if (loggedOutCookieTask) yield cancel(loggedOutCookieTask);
+        if (action.type === actionTypes.LOGOUT_REQUEST) {
+          yield put(logoutSuccess());
+          yield put(push('/'));
+          Cookies.set('loggedOut', true);
+        }
+
+        yield put(resetState());
       }
-
-      yield put(resetState());
     } catch (e) {
       yield put(authFailure(e));
       clearStorage();
