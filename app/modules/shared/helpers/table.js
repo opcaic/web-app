@@ -84,7 +84,6 @@ function getActionsProps(buttonGenerators) {
 
 export function getDetailActionProps(linkGenerator) {
   return {
-    title: <FormattedMessage id="app.generic.action" />,
     key: 'action',
     width: 150,
     align: 'center',

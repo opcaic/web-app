@@ -1,17 +1,19 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
+  getActionProps,
   getDetailActionProps,
   getSearchProps,
   getThemedDetailActionProps,
 } from '@/modules/shared/helpers/table';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import styled from 'styled-components';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 import {
   matchStateEnum,
   tournamentFormatEnum,
+  tournamentStateEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 import PropTypes from 'prop-types';
 import {
@@ -20,7 +22,12 @@ import {
 } from '@/modules/shared/helpers/resources/matches';
 import TimeAgo from '@/modules/shared/components/TimeAgo/TimeAgo';
 
-function prepareColumns({ tournament, isAdmin }) {
+function prepareColumns({
+  tournament,
+  isAdmin,
+  createMatchExecution,
+  queuedMatchId,
+}) {
   const columns = [];
 
   // Queued
@@ -131,6 +138,21 @@ function prepareColumns({ tournament, isAdmin }) {
           `/admin/tournaments/${record.tournament.id}/matches/${record.id}`,
       ),
     });
+    if (tournament.state === tournamentStateEnum.RUNNING)
+      columns.push({
+        ...getActionProps(
+          (text, record) => (
+            <Button
+              disabled={record.state !== matchStateEnum.FAILED}
+              loading={queuedMatchId === record.id}
+              onClick={() => createMatchExecution(record.id)}
+            >
+              <FormattedMessage id="app.admin.matchList.rematch" />
+            </Button>
+          ),
+          'rematch',
+        ),
+      });
   } else {
     columns.push({
       ...getThemedDetailActionProps(

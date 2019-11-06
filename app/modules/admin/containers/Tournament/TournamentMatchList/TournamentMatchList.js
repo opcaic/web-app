@@ -7,12 +7,26 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import {
   actions as matchActions,
   selectors as matchSelectors,
+  createMatchExecution,
 } from '@/modules/admin/ducks/matches';
 import MatchList from '@/modules/shared/components/Tournament/MatchList/MatchList';
 import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 
-/* eslint-disable react/prefer-stateless-function */
 class TournamentMatchList extends React.PureComponent {
+  state = {
+    queuedMatchId: null,
+  };
+
+  createMatchExecution = matchId => {
+    this.setState({ queuedMatchId: matchId });
+
+    this.props.createMatchExecution(matchId, this.handleSuccess);
+  };
+
+  handleSuccess = () => {
+    this.setState({ queuedMatchId: null });
+  };
+
   render() {
     return (
       <div>
@@ -23,6 +37,8 @@ class TournamentMatchList extends React.PureComponent {
           totalItems={this.props.totalItems}
           tournament={this.props.tournament}
           isAdmin
+          createMatchExecution={this.createMatchExecution}
+          queuedMatchId={this.state.queuedMatchId}
         />
       </div>
     );
@@ -35,6 +51,7 @@ TournamentMatchList.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,
   totalItems: PropTypes.number.isRequired,
+  createMatchExecution: PropTypes.func.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -47,6 +64,8 @@ export function mapDispatchToProps(dispatch) {
           }),
         ),
       ),
+    createMatchExecution: (matchId, successCallback, failureCallback) =>
+      dispatch(createMatchExecution(matchId, successCallback, failureCallback)),
   };
 }
 
