@@ -20,6 +20,9 @@ import tournamentsReducer, {
 import tournamentParticipantsReducer, {
   saga as tournamentParticipantsSaga,
 } from './ducks/tournamentParticipants';
+import tournamentManagersReducer, {
+  saga as tournamentManagersSaga,
+} from './ducks/tournamentManagers';
 import tournamentFilesReducer, {
   saga as tournamentFilesSaga,
 } from './ducks/tournamentFiles';
@@ -100,6 +103,7 @@ const withSagas = [
     key: 'tournamentParticipants',
     saga: tournamentParticipantsSaga,
   }),
+  injectSaga({ key: 'tournamentManagers', saga: tournamentManagersSaga }),
   injectSaga({ key: 'documents', saga: documentsSaga }),
   injectSaga({ key: 'tournamentState', saga: tournamentStateSaga }),
   injectSaga({ key: 'emailTemplates', saga: emailTemplatesSaga }),
@@ -114,6 +118,10 @@ const withReducers = [
   injectReducer({
     key: 'tournamentParticipants',
     reducer: tournamentParticipantsReducer,
+  }),
+  injectReducer({
+    key: 'tournamentManagers',
+    reducer: tournamentManagersReducer,
   }),
   injectReducer({ key: 'documents', reducer: documentsReducer }),
   injectReducer({ key: 'matches', reducer: matchesReducer }),

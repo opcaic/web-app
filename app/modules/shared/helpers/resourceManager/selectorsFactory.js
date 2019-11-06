@@ -20,6 +20,7 @@ const selectorsFactory = ({ storePath }) => {
       state.get('isFetchingItem'),
     ),
     isCreating: createSelector(getState, state => state.get('isCreating')),
+    isDeleting: createSelector(getState, state => state.get('isDeleting')),
   };
 };
 

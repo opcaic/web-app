@@ -124,9 +124,17 @@ export function getEditResourceButton(linkGenerator) {
   ));
 }
 
-export function getDeleteResourceButton(deleteResourceFnc) {
+export function getDeleteResourceButton(
+  deleteResourceFnc,
+  deleteKeySelector,
+  isDeleting,
+) {
   return getActionProps((text, record) => (
-    <Button type="danger" onClick={() => deleteResourceFnc(record.email)}>
+    <Button
+      type="danger"
+      onClick={() => deleteResourceFnc(deleteKeySelector(record))}
+      loading={isDeleting}
+    >
       <FormattedMessage id="app.generic.delete" />
     </Button>
   ));

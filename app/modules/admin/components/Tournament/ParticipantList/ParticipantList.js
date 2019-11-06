@@ -7,7 +7,7 @@ import {
   getSearchProps,
 } from '@/modules/shared/helpers/table';
 
-function prepareColumns(deleteAction) {
+function prepareColumns(props) {
   return [
     {
       title: <FormattedMessage id="app.generic.email" />,
@@ -24,14 +24,18 @@ function prepareColumns(deleteAction) {
       ...getSearchProps('username'),
     },
     {
-      ...getDeleteResourceButton(deleteAction),
+      ...getDeleteResourceButton(
+        props.deleteItem,
+        record => record.email,
+        props.isDeleting,
+      ),
     },
   ];
 }
 
 const ParticipantList = props => (
   <Table
-    columns={prepareColumns(props.deleteItem)}
+    columns={prepareColumns(props)}
     rowKey={record => record.id}
     {...props}
   />

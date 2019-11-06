@@ -13,6 +13,7 @@ import TournamentMatchDetail from '@/modules/admin/containers/Tournament/Tournam
 import TournamentLeaderboard from '@/modules/admin/containers/Tournament/TournamentLeaderboard';
 import TournamentSubmissionList from '@/modules/admin/containers/Tournament/TournamentSubmissionList';
 import TournamentSubmissionDetail from '@/modules/admin/containers/Tournament/TournamentSubmissionDetail';
+import TournamentManagers from '../../../containers/Tournament/TournamentManagers/TournamentManagers';
 
 const MenuSyncedBasicInfo = withMenuSync(TournamentBasicInfo, {
   tournamentMenu: ['basic_info'],
@@ -28,6 +29,10 @@ const MenuSyncedDocumentNew = withMenuSync(TournamentDocumentNew, {
 
 const MenuSyncedDocumentDetail = withMenuSync(TournamentDocumentDetail, {
   tournamentMenu: ['documents'],
+});
+
+const MenuSyncedManagers = withMenuSync(TournamentManagers, {
+  tournamentMenu: ['managers'],
 });
 
 const MenuSyncedParticipants = withMenuSync(TournamentParticipantList, {
@@ -79,6 +84,11 @@ const TournamentDetailRoutes = ({ tournament }) => (
       exact
       path="/admin/tournaments/:id/documents/:documentId"
       render={() => <MenuSyncedDocumentDetail tournament={tournament} />}
+    />
+    <Route
+      exact
+      path="/admin/tournaments/:id/managers"
+      render={() => <MenuSyncedManagers tournament={tournament} />}
     />
     <Route
       exact

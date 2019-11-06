@@ -20,7 +20,7 @@ const widgets = {
 const DynamicForm = props => (
   <Form
     schema={props.formSchema}
-    uiSchema={() => uiSchema(props.formItemLayout)}
+    uiSchema={uiSchema(props.formItemLayout)}
     widgets={widgets}
     FieldTemplate={CustomFieldTemplate}
     onChange={e => props.onConfigurationChanged(e.formData)}

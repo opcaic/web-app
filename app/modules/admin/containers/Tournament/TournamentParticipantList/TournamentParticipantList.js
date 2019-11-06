@@ -9,12 +9,16 @@ import { FormattedMessage } from 'react-intl';
 import {
   actions as participantsActions,
   selectors as participantsSelector,
-} from '../../../ducks/tournamentParticipants';
+} from '@/modules/admin/ducks/tournamentParticipants';
 import ParticipantList from '@/modules/admin/components/Tournament/ParticipantList';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentsParticipantList extends React.PureComponent {
+  handleSuccess = () => {
+    this.props.fetchItems(this.props.tournament.id)({ offset: 0, count: 100 });
+  };
+
   render() {
     return (
       <div>
@@ -33,7 +37,11 @@ class TournamentsParticipantList extends React.PureComponent {
           loading={this.props.isFetching}
           fetch={this.props.fetchItems(this.props.tournament.id)}
           totalItems={this.props.totalItems}
-          deleteItem={this.props.deleteItem(this.props.tournament.id)}
+          deleteItem={this.props.deleteItem(
+            this.props.tournament.id,
+            this.handleSuccess,
+          )}
+          isDeleting={this.props.isDeleting}
         />
       </div>
     );
@@ -45,6 +53,7 @@ TournamentsParticipantList.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,
   deleteItem: PropTypes.func.isRequired,
+  isDeleting: PropTypes.bool.isRequired,
   totalItems: PropTypes.number.isRequired,
   tournament: PropTypes.object.isRequired,
 };
@@ -58,10 +67,11 @@ export function mapDispatchToProps(dispatch) {
           { endpointParams: { tournamentId } },
         ),
       ),
-    deleteItem: tournamentId => params =>
+    deleteItem: (tournamentId, successCallback, failureCallback) => params =>
       dispatch(
         participantsActions.deleteResource(params, {
           endpointParams: { tournamentId },
+          meta: { successCallback, failureCallback },
         }),
       ),
   };
@@ -70,6 +80,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   items: participantsSelector.getItems,
   isFetching: participantsSelector.isFetching,
+  isDeleting: participantsSelector.isDeleting,
   totalItems: participantsSelector.getTotalItems,
 });
 

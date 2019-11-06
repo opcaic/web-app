@@ -36,11 +36,11 @@ const actionCreatorsFactory = ({ actionTypes, apiEndpointFactory }) => {
       options.meta,
     );
 
-  const createResource = (data, options = {}) =>
+  const createResource = (data, options = {}, id = undefined) =>
     createApiAction(
       {
         type: actionTypes.CREATE,
-        endpoint: apiEndpointFactory(undefined, options.endpointParams),
+        endpoint: apiEndpointFactory(id, options.endpointParams),
         endpointParams: options.endpointParams,
         method: 'POST',
         data,
