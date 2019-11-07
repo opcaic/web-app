@@ -14,7 +14,7 @@ import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import {
   accountErrorMessageProvider,
   accountIntlMessages,
-} from '@/modules/public/helpers/accountHelpers';
+} from '@/modules/public/utils/accountHelpers';
 import FormErrors from '@/modules/shared/components/FormErrors';
 import { compose } from 'redux';
 import withPasswordConfirmation from '@/modules/shared/helpers/hocs/withPasswordConfirmation';

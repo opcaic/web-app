@@ -60,6 +60,25 @@ const Validation = ({ validation, showLog }) => (
         )}
       </Descriptions.Item>
       <Descriptions.Item
+        label={<FormattedMessage id="app.shared.submission.checkerResult" />}
+      >
+        {getValidationStateIcon(validation.checkerResult)}
+        {entryPointResultEnum.helpers.idToText(validation.checkerResult)}
+        {validation.compilerResult !== entryPointResultEnum.NOT_EXECUTED && (
+          <ShowLogButton
+            size="small"
+            onClick={() =>
+              showLog(
+                <FormattedMessage id="app.shared.submission.checkerResultModalTitle" />,
+                validation.checkerLog,
+              )
+            }
+          >
+            <FormattedMessage id="app.shared.submission.showLog" />
+          </ShowLogButton>
+        )}
+      </Descriptions.Item>
+      <Descriptions.Item
         label={<FormattedMessage id="app.shared.submission.compilerResult" />}
       >
         {getValidationStateIcon(validation.compilerResult)}
@@ -72,25 +91,6 @@ const Validation = ({ validation, showLog }) => (
               showLog(
                 <FormattedMessage id="app.shared.submission.compilerResultModalTitle" />,
                 validation.compilerLog,
-              )
-            }
-          >
-            <FormattedMessage id="app.shared.submission.showLog" />
-          </ShowLogButton>
-        )}
-      </Descriptions.Item>
-      <Descriptions.Item
-        label={<FormattedMessage id="app.shared.submission.checkerResult" />}
-      >
-        {getValidationStateIcon(validation.checkerResult)}
-        {entryPointResultEnum.helpers.idToText(validation.checkerResult)}
-        {validation.compilerResult !== entryPointResultEnum.NOT_EXECUTED && (
-          <ShowLogButton
-            size="small"
-            onClick={() =>
-              showLog(
-                <FormattedMessage id="app.shared.submission.checkerResultModalTitle" />,
-                validation.checkerLog,
               )
             }
           >

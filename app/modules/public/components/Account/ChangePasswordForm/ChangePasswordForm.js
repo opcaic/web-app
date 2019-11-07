@@ -8,7 +8,7 @@ import {
   isMinLength,
   isRequired,
 } from '@/modules/shared/helpers/errors/formValidations';
-import { accountErrorMessageProvider } from '@/modules/public/helpers/accountHelpers';
+import { accountErrorMessageProvider } from '@/modules/public/utils/accountHelpers';
 import { compose } from 'redux';
 import withPasswordConfirmation from '@/modules/shared/helpers/hocs/withPasswordConfirmation';
 

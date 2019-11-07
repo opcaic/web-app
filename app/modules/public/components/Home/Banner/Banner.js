@@ -4,9 +4,10 @@ import Container from '@/modules/public/components/layout/Container';
 import { Button, Icon } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { theme } from '@/modules/shared/helpers/utils';
 
 const Wrapper = styled.div`
-  background-color: #3d518c;
+  background-color: ${theme.BANNER_COLOR};
   min-height: 400px;
   height: calc(100vh - 60px);
   position: relative;

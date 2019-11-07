@@ -13,7 +13,7 @@ import {
 import {
   accountErrorMessageProvider,
   accountIntlMessages,
-} from '@/modules/public/helpers/accountHelpers';
+} from '@/modules/public/utils/accountHelpers';
 import { compose } from 'redux';
 import withPasswordConfirmation from '@/modules/shared/helpers/hocs/withPasswordConfirmation';
 
