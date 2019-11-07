@@ -13,7 +13,7 @@ import {
 import {
   accountErrorMessageProvider,
   accountIntlMessages,
-} from '@/modules/public/helpers/accountHelpers';
+} from '@/modules/public/utils/accountHelpers';
 import { compose } from 'redux';
 
 class ResendConfirmationEmailForm extends React.PureComponent {

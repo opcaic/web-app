@@ -10,7 +10,7 @@ import FormErrors from '@/modules/shared/components/FormErrors';
 import {
   accountErrorMessageProvider,
   accountIntlMessages,
-} from '@/modules/public/helpers/accountHelpers';
+} from '@/modules/public/utils/accountHelpers';
 import { isRequired } from '@/modules/shared/helpers/errors/formValidations';
 import { compose } from 'redux';
 

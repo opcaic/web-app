@@ -21,6 +21,7 @@ import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import CodeBlock from '@/modules/shared/components/CodeBlock';
 import TimeAgo from '@/modules/shared/components/TimeAgo/TimeAgo';
 import { getSimplifiedState } from '@/modules/shared/helpers/resources/tournaments';
+import filesize from 'filesize';
 
 const WithTooltip = styled.span`
   border-bottom: 1px dotted black;
@@ -106,6 +107,13 @@ const BasicInformation = props => (
         }
       >
         {props.tournament.submissionsCount}
+      </Descriptions.Item>
+      <Descriptions.Item
+        label={
+          <FormattedMessage id="app.public.tournamentOverview.maxSubmissionSize" />
+        }
+      >
+        {filesize(props.tournament.maxSubmissionSize)}
       </Descriptions.Item>
     </StyledDescriptions>
 

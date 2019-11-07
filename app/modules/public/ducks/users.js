@@ -5,7 +5,7 @@ import { call, takeLatest, all, put } from 'redux-saga/effects';
 import resourceFactory from '../../shared/helpers/resourceManager';
 import { callApi } from '@/modules/shared/helpers/apiMiddleware';
 import { prepareFormErrors } from '@/modules/shared/helpers/errors/errors';
-import { accountErrorMessageProvider } from '@/modules/public/helpers/accountHelpers';
+import { accountErrorMessageProvider } from '@/modules/public/utils/accountHelpers';
 import { updateTokens } from '@/modules/shared/ducks/auth';
 
 export const { actions, actionTypes, reducers, selectors } = resourceFactory({

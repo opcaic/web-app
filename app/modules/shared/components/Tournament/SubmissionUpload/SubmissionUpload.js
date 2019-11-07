@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Button, Modal, Upload, Icon, Progress } from 'antd';
+import { Button, Modal, Upload, Icon, Progress, Alert } from 'antd';
 import FormErrors from '@/modules/shared/components/FormErrors';
 import { Link } from 'react-router-dom';
+import filesize from 'filesize';
 
 class SubmissionUpload extends Component {
   initialState = {
@@ -95,6 +96,22 @@ class SubmissionUpload extends Component {
             {this.state.uploading && (
               <Progress percent={this.state.percentCompleted} status="normal" />
             )}
+            {this.props.tournament && (
+              <Alert
+                message={
+                  <FormattedMessage
+                    id="app.shared.submissionUpload.maxSubmissionSize"
+                    values={{
+                      size: filesize(this.props.tournament.maxSubmissionSize),
+                    }}
+                  />
+                }
+                type="info"
+                showIcon
+                style={{ marginBottom: 10 }}
+              />
+            )}
+
             <FormErrors errors={this.state.errors} />
             <Upload.Dragger {...uploadProps}>
               <p className="ant-upload-drag-icon">

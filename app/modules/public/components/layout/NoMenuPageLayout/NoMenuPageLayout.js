@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import { settings, theme } from '@/modules/shared/helpers/utils';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   margin: auto;
-  padding-top: 100px;
+  // padding-top: 100px;
 
   ${props =>
     props.size === 'small' &&
@@ -32,8 +34,25 @@ const WrapperInner = styled.div`
   padding: 20px;
 `;
 
+const Logo = styled.div`
+  text-align: center;
+  margin: 40px 0;
+  display: inline-block;
+  width: 100%;
+`;
+
+const LogoLink = styled(Link)`
+  color: ${theme.BANNER_COLOR} !important;
+  display: inline-block;
+  font-size: 30px;
+  font-weight: 300;
+`;
+
 const NoMenuPageLayout = ({ children, ...rest }) => (
   <Wrapper {...rest}>
+    <Logo>
+      <LogoLink to="/">{settings.appName}</LogoLink>
+    </Logo>
     <WrapperInner>{children}</WrapperInner>
   </Wrapper>
 );
