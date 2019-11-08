@@ -14,6 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import { longDateFormat } from '@/modules/shared/helpers/time';
 import { formatScore } from '@/modules/shared/helpers/resources/matches';
+import { Link } from 'react-router-dom';
 
 function hasEntries(object) {
   return object && Object.entries(object).length !== 0;
@@ -128,7 +129,22 @@ const MatchExecution = props => {
         >
           {props.match.submissions.map((x, index) => [
             <span key={`sep_${x.author.id}`}>{index ? ', ' : ''}</span>,
-            <span key={x.author.id}>{x.author.username}</span>,
+            <span key={x.author.id}>
+              {x.author.username}{' '}
+              {props.isAdmin && (
+                <span>
+                  (
+                  <Link
+                    to={`/admin/tournaments/${
+                      props.match.tournament.id
+                    }/submissions/${x.id}`}
+                  >
+                    <FormattedMessage id="app.shared.matchExecution.submission" />
+                  </Link>
+                  )
+                </span>
+              )}
+            </span>,
           ])}
         </Descriptions.Item>
       </Descriptions>

@@ -19,6 +19,7 @@ import SubmissionList from '@/modules/shared/components/Tournament/SubmissionLis
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
+import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton/TournamentAdminButton';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentSubmissionList extends React.PureComponent {
@@ -29,6 +30,7 @@ export class TournamentSubmissionList extends React.PureComponent {
           <FormattedMessage id="app.public.tournamentSubmissionList.title" />
         }
         withPadding={false}
+        buttons={<TournamentAdminButton />}
       >
         <TournamentPageTitle
           tournament={this.props.tournament}

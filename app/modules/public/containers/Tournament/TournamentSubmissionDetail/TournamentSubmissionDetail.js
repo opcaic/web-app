@@ -28,6 +28,7 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import { downloadSubmission } from '@/modules/shared/ducks/submission';
 import ApiResult from '@/modules/shared/components/ApiResult';
+import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton/TournamentAdminButton';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentSubmissionDetail extends React.PureComponent {
@@ -50,13 +51,14 @@ class TournamentSubmissionDetail extends React.PureComponent {
         title={
           <FormattedMessage id="app.public.tournamentSubmissionDetail.title" />
         }
-        buttons={
-          <Button type="default" size="small">
+        buttons={[
+          <Button type="default" size="small" style={{ marginRight: 10 }}>
             <Link to={`/tournaments/${this.props.tournament.id}/submissions/`}>
               <FormattedMessage id="app.generic.backToList" />
             </Link>
-          </Button>
-        }
+          </Button>,
+          <TournamentAdminButton />,
+        ]}
       >
         <TournamentPageTitle
           tournament={this.props.tournament}

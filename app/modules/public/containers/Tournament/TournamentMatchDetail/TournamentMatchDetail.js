@@ -17,6 +17,7 @@ import TournamentPageTitle from '@/modules/public/components/Tournament/Tourname
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import ApiResult from '@/modules/shared/components/ApiResult';
+import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentMatchDetail extends React.PureComponent {
@@ -33,13 +34,14 @@ class TournamentMatchDetail extends React.PureComponent {
     return (
       <PageContent
         title={<FormattedMessage id="app.public.tournamentMatchDetail.title" />}
-        buttons={
-          <Button type="default" size="small">
+        buttons={[
+          <Button type="default" size="small" style={{ marginRight: 10 }}>
             <Link to={`/tournaments/${this.props.tournament.id}/matches/`}>
               <FormattedMessage id="app.generic.backToList" />
             </Link>
-          </Button>
-        }
+          </Button>,
+          <TournamentAdminButton />,
+        ]}
       >
         <TournamentPageTitle
           tournament={this.props.tournament}
