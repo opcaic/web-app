@@ -21,7 +21,7 @@ function getEnvKeys() {
   const basePath = `${rootPath}/env/.env`;
 
   // We're concatenating the environment name to our filename to specify the correct env file!
-  const envPath = `${basePath}.${process.env.NODE_ENV}`;
+  const envPath = `${basePath}.${process.env.CONFIG || process.env.NODE_ENV}`;
 
   // Check if the file exists, otherwise fall back to the production .env
   const finalPath = fs.existsSync(envPath) ? envPath : basePath;
