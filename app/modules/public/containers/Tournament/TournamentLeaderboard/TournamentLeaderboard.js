@@ -16,6 +16,7 @@ import PropTypes from 'prop-types';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import ProgressVisualization from '@/modules/shared/components/Tournament/ProgressVisualization';
+import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton/TournamentAdminButton';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentLeaderboard extends React.PureComponent {
@@ -28,6 +29,7 @@ export class TournamentLeaderboard extends React.PureComponent {
       <PageContent
         title={<FormattedMessage id="app.public.tournamentLeaderboard.title" />}
         withPadding={false}
+        buttons={<TournamentAdminButton />}
       >
         <TournamentPageTitle
           tournament={this.props.tournament}

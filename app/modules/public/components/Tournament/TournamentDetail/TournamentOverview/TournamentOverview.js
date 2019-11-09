@@ -10,6 +10,7 @@ import { menuItemTypeEnum } from '@/modules/shared/helpers/enumHelpers';
 import CodeBlock from '@/modules/shared/components/CodeBlock';
 import styled from 'styled-components';
 import { lighten } from 'polished';
+import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton/TournamentAdminButton';
 
 const StyledTabs = styled(Tabs)`
   & .ant-tabs-left-bar .ant-tabs-tab {
@@ -95,6 +96,7 @@ class TournamentOverview extends Component {
     return (
       <PageContent
         title={<FormattedMessage id="app.public.tournamentOverview.title" />}
+        buttons={<TournamentAdminButton />}
       >
         {tabs.length === 1 ? (
           <div>

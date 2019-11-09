@@ -55,18 +55,16 @@ class ProgressVisualization extends Component {
       buttonText = (
         <FormattedMessage id="app.shared.progressVisualization.buttonDoubleElimination" />
       );
-    }
-
-    if (leaderboard.format === tournamentFormatEnum.SINGLE_ELIMINATION) {
+    } else if (leaderboard.format === tournamentFormatEnum.SINGLE_ELIMINATION) {
       buttonText = (
         <FormattedMessage id="app.shared.progressVisualization.buttonSingleElimination" />
       );
-    }
-
-    if (leaderboard.format === tournamentFormatEnum.TABLE) {
+    } else if (leaderboard.format === tournamentFormatEnum.TABLE) {
       buttonText = (
         <FormattedMessage id="app.shared.progressVisualization.buttonTable" />
       );
+    } else {
+      return null;
     }
 
     return (
