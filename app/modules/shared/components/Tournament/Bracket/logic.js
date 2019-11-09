@@ -1,6 +1,7 @@
 import { mapArrayToObject } from '@/modules/shared/helpers/utils';
 import { tournamentRankingStrategyEnum } from '@/modules/shared/helpers/enumHelpers';
 import { formatScore } from '@/modules/shared/helpers/resources/matches';
+import { getParticipationUsername } from '@/modules/shared/helpers/resources/leaderboards';
 
 /*
  * Gets pairs of players competing in the first round.
@@ -15,7 +16,7 @@ function getInitialPlayerPairs(participations) {
   const playerNamesByStartingSlot = mapArrayToObject(
     participations,
     x => x.startingSlot,
-    x => x.author.username,
+    x => getParticipationUsername(x, false),
   );
   const playerPairs = [];
 

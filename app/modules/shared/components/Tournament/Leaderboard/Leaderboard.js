@@ -6,7 +6,10 @@ import styled from 'styled-components';
 import EmptyTablePlaceholder from '@/modules/shared/components/EmptyTablePlaceholder';
 import PropTypes from 'prop-types';
 import { tournamentFormatEnum } from '@/modules/shared/helpers/enumHelpers';
-import { getPlaceText } from '@/modules/shared/helpers/resources/leaderboards';
+import {
+  getParticipationUsername,
+  getPlaceText,
+} from '@/modules/shared/helpers/resources/leaderboards';
 import { formatScore } from '@/modules/shared/helpers/resources/matches';
 
 function getCrownColor(place) {
@@ -34,7 +37,6 @@ function prepareColumns({ leaderboard }) {
 
   columns.push({
     title: <FormattedMessage id="app.shared.leaderboard.name" />,
-    dataIndex: 'author.username',
     key: 'author.username',
     sorter: true,
     render: (text, record) =>
@@ -45,10 +47,10 @@ function prepareColumns({ leaderboard }) {
             theme="twoTone"
             twoToneColor={getCrownColor(record.place)}
           />{' '}
-          {text}
+          {getParticipationUsername(record)}
         </b>
       ) : (
-        text
+        getParticipationUsername(record)
       ),
     ...getSearchProps('name'),
   });
@@ -93,7 +95,7 @@ const StyledTable = styled(Table)`
 const Leaderboard = props => (
   <StyledTable
     columns={prepareColumns(props)}
-    rowKey={record => record.author.id}
+    rowKey={record => record.id}
     pagination={false}
     locale={{
       emptyText: (

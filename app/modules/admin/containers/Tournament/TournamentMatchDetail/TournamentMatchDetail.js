@@ -83,7 +83,12 @@ TournamentMatchDetail.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchResource: id => dispatch(matchesActions.fetchResource(id)),
+    fetchResource: id =>
+      dispatch(
+        matchesActions.fetchResource(id, {
+          request: { params: { anonymize: false } },
+        }),
+      ),
   };
 }
 

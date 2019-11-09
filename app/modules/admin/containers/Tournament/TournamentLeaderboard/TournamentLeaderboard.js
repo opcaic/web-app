@@ -49,7 +49,11 @@ TournamentLeaderboard.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     fetchItems: tournamentId =>
-      dispatch(leaderboardActions.fetchResource(tournamentId)),
+      dispatch(
+        leaderboardActions.fetchResource(tournamentId, {
+          request: { params: { anonymize: false } },
+        }),
+      ),
   };
 }
 

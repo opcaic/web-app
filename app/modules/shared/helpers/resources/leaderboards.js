@@ -1,4 +1,7 @@
 import { tournamentFormatEnum } from '@/modules/shared/helpers/enumHelpers';
+import { defineMessages } from 'react-intl';
+import React from 'react';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 
 export function getLeaderboardData(leaderboard) {
   if (!leaderboard) {
@@ -37,4 +40,29 @@ export function getPlaceText(record) {
   }
 
   return `${record.place}.`;
+}
+
+const participationIntlMessages = defineMessages({
+  anonymous: { id: 'app.shared.leaderboards.anonymous' },
+  anonymousShort: { id: 'app.shared.leaderboards.anonymousShort' },
+});
+
+export function getParticipationUsername(participation, withFormatting = true) {
+  if (participation.author !== null) {
+    return participation.author.username;
+  }
+
+  if (withFormatting) {
+    return (
+      <i>
+        {intlGlobal.formatMessage(participationIntlMessages.anonymous, {
+          id: participation.submissionId,
+        })}
+      </i>
+    );
+  }
+
+  return intlGlobal.formatMessage(participationIntlMessages.anonymousShort, {
+    id: participation.submissionId,
+  });
 }

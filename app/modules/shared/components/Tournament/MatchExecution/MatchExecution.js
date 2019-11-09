@@ -13,8 +13,11 @@ import {
 } from '@/modules/shared/helpers/enumHelpers';
 import PropTypes from 'prop-types';
 import { longDateFormat } from '@/modules/shared/helpers/time';
-import { formatScore } from '@/modules/shared/helpers/resources/matches';
 import { Link } from 'react-router-dom';
+import {
+  formatScore,
+  getSubmissionUsername,
+} from '@/modules/shared/helpers/resources/matches';
 
 function hasEntries(object) {
   return object && Object.entries(object).length !== 0;
@@ -34,9 +37,12 @@ function prepareColumns({ tournament, matchExecution }) {
   columns.push({
     title: <FormattedMessage id="app.shared.matchExecution.player" />,
     key: 'player',
-    dataIndex: 'submission.author.username',
     render: (text, record) =>
-      record.score === bestScore ? <b>{text}</b> : text,
+      record.score === bestScore ? (
+        <b>{getSubmissionUsername(record.submission)}</b>
+      ) : (
+        getSubmissionUsername(record.submission)
+      ),
   });
 
   columns.push({
@@ -128,11 +134,12 @@ const MatchExecution = props => {
           label={<FormattedMessage id="app.shared.matchExecution.players" />}
         >
           {props.match.submissions.map((x, index) => [
-            <span key={`sep_${x.author.id}`}>{index ? ', ' : ''}</span>,
-            <span key={x.author.id}>
-              {x.author.username}{' '}
+            <span key={`sep_${x.id}`}>{index ? ', ' : ''}</span>,
+            <span key={x.id}>
+              {getSubmissionUsername(x)}
               {props.isAdmin && (
                 <span>
+                  {' '}
                   (
                   <Link
                     to={`/admin/tournaments/${
@@ -157,7 +164,7 @@ const MatchExecution = props => {
 
           <Table
             columns={prepareColumns(props)}
-            rowKey={record => record.submission.author.id}
+            rowKey={record => record.submission.id}
             locale={{
               emptyText: (
                 <EmptyTablePlaceholder

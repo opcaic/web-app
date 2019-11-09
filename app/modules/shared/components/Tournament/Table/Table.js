@@ -38,7 +38,8 @@ const StyledTable = styled(AntTable)`
     font-weight: bold;
   }
 
-  & tr > th:first-child > span .ant-table-column-title {
+  & tr > th:nth-child(1) > span .ant-table-column-title,
+  & tr > th:nth-child(2) > span .ant-table-column-title {
     border-bottom: 0px !important;
   }
 `;
@@ -49,7 +50,7 @@ function Table(props) {
     <StyledTable
       dataSource={data.rows}
       columns={data.columns}
-      rowKey={row => row.participation.author.id}
+      rowKey={row => row.participation.submissionId}
       pagination={false}
       size="small"
       bordered

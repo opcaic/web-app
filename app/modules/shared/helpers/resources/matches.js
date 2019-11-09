@@ -2,6 +2,8 @@ import {
   matchResultEnum,
   tournamentRankingStrategyEnum,
 } from '@/modules/shared/helpers/enumHelpers';
+import { FormattedMessage } from 'react-intl';
+import React from 'react';
 
 export function addLastExecution(item) {
   return Object.assign(item, {
@@ -24,7 +26,7 @@ export function getUserResult(userId, botResults, rankingStrategy) {
   const bestScore = getBestScore(botResults, rankingStrategy);
   const bestScoreResults = botResults.filter(x => x.score === bestScore);
   const hasBestScore = bestScoreResults.find(
-    x => x.submission.author.id === userId,
+    x => x.submission.author && x.submission.author.id === userId,
   );
 
   if (hasBestScore) {
@@ -40,4 +42,19 @@ export function getUserResult(userId, botResults, rankingStrategy) {
 
 export function formatScore(score) {
   return +score.toFixed(2);
+}
+
+export function getSubmissionUsername(submission) {
+  if (submission.author !== null) {
+    return submission.author.username;
+  }
+
+  return (
+    <i>
+      <FormattedMessage
+        id="app.shared.matches.anonymous"
+        values={{ id: submission.id }}
+      />
+    </i>
+  );
 }

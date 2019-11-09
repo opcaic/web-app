@@ -61,6 +61,7 @@ export function mapDispatchToProps(dispatch) {
         matchActions.fetchMany(
           prepareFilterParams(params, 'executed', false, {
             tournamentId,
+            anonymize: false,
           }),
         ),
       ),
