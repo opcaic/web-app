@@ -10,7 +10,6 @@ import {
   createMatchExecution,
 } from '@/modules/admin/ducks/matches';
 import MatchList from '@/modules/shared/components/Tournament/MatchList/MatchList';
-import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 
 class TournamentMatchList extends React.PureComponent {
   state = {
@@ -31,7 +30,7 @@ class TournamentMatchList extends React.PureComponent {
     return (
       <div>
         <MatchList
-          dataSource={addLastExecutions(this.props.items)}
+          dataSource={this.props.items}
           loading={this.props.isFetching}
           fetch={this.props.fetchItems(this.props.tournament.id)}
           totalItems={this.props.totalItems}

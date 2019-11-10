@@ -18,6 +18,7 @@ import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import ApiResult from '@/modules/shared/components/ApiResult';
 import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton';
+import { downloadFiles } from '@/modules/shared/ducks/matches';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentMatchDetail extends React.PureComponent {
@@ -58,6 +59,9 @@ class TournamentMatchDetail extends React.PureComponent {
               match={match}
               tournament={this.props.tournament}
               isAdmin={false}
+              downloadFiles={() =>
+                this.props.downloadFiles(match.lastExecution.id)
+              }
             />
           )}
         </ApiResult>
@@ -68,6 +72,7 @@ class TournamentMatchDetail extends React.PureComponent {
 
 TournamentMatchDetail.propTypes = {
   fetchResource: PropTypes.func.isRequired,
+  downloadFiles: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.object,
   match: PropTypes.object.isRequired,
@@ -78,6 +83,7 @@ TournamentMatchDetail.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: id => dispatch(matchesActions.fetchResource(id)),
+    downloadFiles: id => dispatch(downloadFiles(id)),
   };
 }
 

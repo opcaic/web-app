@@ -17,6 +17,7 @@ import { apiSaga } from '@/modules/shared/helpers/apiMiddleware';
 import registrationReducer from '../../public/ducks/registration';
 import authReducer, { saga as authSaga } from '../ducks/auth';
 import submissionReducer, { saga as submissionSaga } from '../ducks/submission';
+import { saga as matchesSaga } from '../ducks/matches';
 import uiReducer from '../ducks/ui';
 import localizationReducer, {
   saga as localizationSaga,
@@ -65,6 +66,7 @@ const withSagas = [
   injectSaga({ key: 'auth', saga: authSaga }),
   injectSaga({ key: 'submissionUpload', saga: submissionSaga }),
   injectSaga({ key: 'localization', saga: localizationSaga }),
+  injectSaga({ key: 'matches_shared', saga: matchesSaga }),
 ];
 
 const withReducers = [

@@ -9,10 +9,6 @@ export function addLastExecution(item) {
   });
 }
 
-export function addLastExecutions(items) {
-  return items.map(x => addLastExecution(x));
-}
-
 export function getBestScore(botResults, rankingStrategy) {
   if (rankingStrategy === tournamentRankingStrategyEnum.MAXIMUM) {
     return Math.max(...botResults.map(x => x.score));

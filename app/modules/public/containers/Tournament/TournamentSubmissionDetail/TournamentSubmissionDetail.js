@@ -12,10 +12,6 @@ import {
   actions as matchActions,
   selectors as matchSelectors,
 } from '@/modules/public/ducks/matches';
-import {
-  actions as validationsActions,
-  selectors as validationsSelectors,
-} from '@/modules/public/ducks/validations';
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import PageContent from '@/modules/public/components/layout/PageContent';
@@ -23,7 +19,6 @@ import TournamentPageTitle from '@/modules/public/components/Tournament/Tourname
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { pageTitles } from '@/modules/public/utils/pageTitles';
 import Submission from '@/modules/shared/components/Tournament/Submission';
-import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import { downloadSubmission } from '@/modules/shared/ducks/submission';
@@ -33,16 +28,7 @@ import TournamentAdminButton from '@/modules/public/components/Tournament/Tourna
 /* eslint-disable react/prefer-stateless-function */
 class TournamentSubmissionDetail extends React.PureComponent {
   componentDidMount() {
-    this.props.fetchResource(
-      this.props.match.params.submissionId,
-      submission => {
-        if (submission.validations.length !== 0) {
-          const lastValidationId =
-            submission.validations[submission.validations.length - 1].id;
-          this.props.fetchValidation(lastValidationId);
-        }
-      },
-    );
+    this.props.fetchResource(this.props.match.params.submissionId);
   }
 
   render() {
@@ -68,24 +54,22 @@ class TournamentSubmissionDetail extends React.PureComponent {
         />
 
         <ApiResult
-          loading={
-            this.props.isFetching ||
-            this.props.resource === null ||
-            this.props.isFetchingValidations
-          }
+          loading={this.props.isFetching || this.props.resource === null}
           error={this.props.error}
         >
           <Submission
             submission={this.props.resource}
             tournament={this.props.tournament}
-            matches={addLastExecutions(this.props.matches)}
+            matches={this.props.matches}
             isFetchingMatches={this.props.isFetchingMatches}
             fetchMatches={this.props.fetchMatches(
               this.props.match.params.submissionId,
             )}
             matchesTotalItems={this.props.matchesTotalItems}
             validations={
-              this.props.validations ? [this.props.validations] : null
+              this.props.resource && this.props.resource.lastValidation
+                ? [this.props.resource.lastValidation]
+                : null
             }
             downloadSubmission={this.props.downloadSubmission}
             isAdmin={false}
@@ -106,9 +90,6 @@ TournamentSubmissionDetail.propTypes = {
   isFetchingMatches: PropTypes.bool.isRequired,
   fetchMatches: PropTypes.func.isRequired,
   matchesTotalItems: PropTypes.number,
-  fetchValidation: PropTypes.func.isRequired,
-  isFetchingValidations: PropTypes.bool.isRequired,
-  validations: PropTypes.object,
   downloadSubmission: PropTypes.func.isRequired,
   error: PropTypes.object,
 };
@@ -119,7 +100,6 @@ export function mapDispatchToProps(dispatch) {
       dispatch(
         submissionsActions.fetchResource(id, { meta: { successCallback } }),
       ),
-    fetchValidation: id => dispatch(validationsActions.fetchResource(id)),
     downloadSubmission: id => dispatch(downloadSubmission(id)),
     fetchMatches: submissionId => params =>
       dispatch(
@@ -139,8 +119,6 @@ const mapStateToProps = createStructuredSelector({
   matches: matchSelectors.getItems,
   isFetchingMatches: matchSelectors.isFetching,
   matchesTotalItems: matchSelectors.getTotalItems,
-  isFetchingValidations: validationsSelectors.isFetching,
-  validations: validationsSelectors.getItem,
   error: submissionsSelectors.getFetchItemError,
 });
 

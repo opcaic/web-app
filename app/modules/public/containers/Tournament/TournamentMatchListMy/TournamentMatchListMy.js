@@ -13,7 +13,6 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
-import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
@@ -38,7 +37,7 @@ export class TournamentMatchListMy extends React.PureComponent {
         />
 
         <UserMatchList
-          dataSource={addLastExecutions(this.props.items)}
+          dataSource={this.props.items}
           loading={this.props.isFetching}
           fetch={this.props.fetchItems(
             this.props.tournament.id,

@@ -15,7 +15,7 @@ import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { longDateFormat } from '@/modules/shared/helpers/time';
 import { theme } from '@/modules/shared/helpers/utils';
 import MatchList from '@/modules/shared/components/Tournament/MatchList';
-import LogModal from '@/modules/shared/components/Tournament/Submission/LogModal';
+import LogModal from '@/modules/shared/components/Tournament/LogModal';
 import Validation from '@/modules/shared/components/Tournament/Submission/Validation';
 
 function getStateDescription(state) {
@@ -225,7 +225,11 @@ class Submission extends Component {
                           // eslint-disable-next-line react/no-array-index-key
                           key={index}
                         >
-                          <Validation validation={x} showLog={this.showLog} />
+                          <Validation
+                            validation={x}
+                            showLog={this.showLog}
+                            isAdmin={this.props.isAdmin}
+                          />
                         </Collapse.Panel>
                       ))}
                   </Collapse>
