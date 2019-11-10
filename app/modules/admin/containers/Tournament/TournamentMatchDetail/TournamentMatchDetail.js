@@ -83,9 +83,11 @@ TournamentMatchDetail.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: id =>
-      dispatch(matchesActions.fetchResource(id), {
-        request: { endpoint: `api/matches/${id}/admin` },
-      }),
+      dispatch(
+        matchesActions.fetchResource(id, {
+          request: { endpoint: `api/matches/${id}/admin` },
+        }),
+      ),
     downloadFiles: id => dispatch(downloadFiles(id)),
   };
 }
