@@ -2,10 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Select } from 'antd';
+import { breakpoints } from '@/modules/shared/helpers/responsive';
 
 const StyledFilterItem = styled.div`
   display: inline-block;
   margin-right: 15px;
+  margin-bottom: 10px;
+
+  @media ${breakpoints.lg} {
+    margin-bottom: 0px;
+  }
 `;
 
 const Label = styled.div`
@@ -17,7 +23,7 @@ const Label = styled.div`
 `;
 
 const FilterItem = props => (
-  <StyledFilterItem style={props.style}>
+  <StyledFilterItem style={props.style} className={props.className}>
     <Label>{props.label}</Label>
     <div>
       <Select
@@ -49,6 +55,7 @@ FilterItem.propTypes = {
   selectProps: PropTypes.object,
   style: PropTypes.object,
   width: PropTypes.number,
+  className: PropTypes.string,
 };
 
 export default FilterItem;

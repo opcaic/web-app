@@ -10,6 +10,7 @@ import {
   tournamentFinishedSortEnum,
 } from '@/modules/shared/helpers/enumHelpers';
 import FilterItem from '@/modules/public/components/Tournament/TournamentFilter/FilterItem';
+import { breakpoints } from '@/modules/shared/helpers/responsive';
 
 const StyledFilter = styled.div`
   margin-bottom: 20px;
@@ -17,6 +18,13 @@ const StyledFilter = styled.div`
   background-color: white;
   padding: 15px;
   border: 1px solid #e8e8e8;
+`;
+
+const SortFilterItem = styled(FilterItem)`
+  @media ${breakpoints.lg} {
+    float: right;
+    marginright: 0;
+  }
 `;
 
 class TournamentFilter extends Component {
@@ -91,7 +99,7 @@ class TournamentFilter extends Component {
           options={tournamentScopeEnum.helpers.getFilterOptions()}
         />
 
-        <FilterItem
+        <SortFilterItem
           field="sortByRunning"
           label={<FormattedMessage id="app.public.tournamentFilter.sort" />}
           placeholder={
@@ -101,12 +109,10 @@ class TournamentFilter extends Component {
           selectedValues={this.props.selectedValues}
           options={tournamentRunningSortEnum.helpers.getFilterOptions()}
           style={{
-            float: 'right',
-            marginRight: 0,
             display:
               this.props.selectedValues.state ===
               tournamentSimplifiedStateEnum.RUNNING
-                ? 'block'
+                ? 'inline-block'
                 : 'none',
           }}
           width={200}
@@ -115,7 +121,7 @@ class TournamentFilter extends Component {
           }}
         />
 
-        <FilterItem
+        <SortFilterItem
           field="sortByFinished"
           label={<FormattedMessage id="app.public.tournamentFilter.sort" />}
           placeholder={
@@ -125,12 +131,10 @@ class TournamentFilter extends Component {
           selectedValues={this.props.selectedValues}
           options={tournamentFinishedSortEnum.helpers.getFilterOptions()}
           style={{
-            float: 'right',
-            marginRight: 0,
             display:
               this.props.selectedValues.state ===
               tournamentSimplifiedStateEnum.FINISHED
-                ? 'block'
+                ? 'inline-block'
                 : 'none',
           }}
           width={200}

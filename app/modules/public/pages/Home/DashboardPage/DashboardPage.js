@@ -26,11 +26,11 @@ export class DashboardPage extends React.PureComponent {
               <DashboardMatches />
             </Col>
           </Row>
-          <Row gutter={16} style={{ marginTop: 20 }}>
-            <Col span={12}>
+          <Row gutter={16}>
+            <Col xs={24} lg={12} style={{ marginTop: 20 }}>
               <DashboardTournaments />
             </Col>
-            <Col span={12}>
+            <Col xs={24} lg={12} style={{ marginTop: 20 }}>
               <DashboardSubmissions />
             </Col>
           </Row>
