@@ -12,12 +12,10 @@ import {
   actions as matchActions,
   selectors as matchSelectors,
 } from '@/modules/admin/ducks/matches';
-import { actions as validationsActions } from '@/modules/admin/ducks/validations';
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Spin from '@/modules/shared/components/Spin';
 import Submission from '@/modules/shared/components/Tournament/Submission';
-import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import {
   downloadSubmission,
@@ -26,55 +24,14 @@ import {
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentSubmissionDetail extends React.PureComponent {
-  isMounted = false;
-
-  state = {
-    validations: [],
-    isFetchingValidations: true,
-  };
-
   componentDidMount() {
-    this.isMounted = true;
-    const validations = {};
-
-    // Fetch submissions and then fetch all submission validation details
-    this.props.fetchResource(
-      this.props.match.params.submissionId,
-      submission => {
-        submission.validations.forEach(x => {
-          this.props.fetchValidation(x.id, validation => {
-            validations[validation.id] = validation;
-
-            // If we have all submission validations, save them to state
-            if (
-              this.isMounted &&
-              submission.validations.length === Object.keys(validations).length
-            ) {
-              this.setState({
-                isFetchingValidations: false,
-                validations: submission.validations.map(y => validations[y.id]),
-              });
-            }
-          });
-        });
-      },
-    );
-  }
-
-  componentWillUnmount() {
-    this.isMounted = false;
+    this.props.fetchResource(this.props.match.params.submissionId);
   }
 
   render() {
     return (
       <div>
-        <Spin
-          spinning={
-            this.props.isFetching ||
-            this.props.resource === null ||
-            this.state.isFetchingValidations
-          }
-        >
+        <Spin spinning={this.props.isFetching || this.props.resource === null}>
           <Button type="default" style={{ marginBottom: 20 }}>
             <Link
               to={`/admin/tournaments/${this.props.tournament.id}/submissions/`}
@@ -86,13 +43,15 @@ class TournamentSubmissionDetail extends React.PureComponent {
           <Submission
             submission={this.props.resource}
             tournament={this.props.tournament}
-            matches={addLastExecutions(this.props.matches)}
+            matches={this.props.matches}
             isFetchingMatches={this.props.isFetchingMatches}
             fetchMatches={this.props.fetchMatches(
               this.props.match.params.submissionId,
             )}
             matchesTotalItems={this.props.matchesTotalItems}
-            validations={this.state.validations}
+            validations={
+              this.props.resource ? this.props.resource.validations : []
+            }
             downloadSubmission={this.props.downloadSubmission}
             runValidation={this.props.runValidation}
             isAdmin
@@ -113,7 +72,6 @@ TournamentSubmissionDetail.propTypes = {
   isFetchingMatches: PropTypes.bool.isRequired,
   fetchMatches: PropTypes.func.isRequired,
   matchesTotalItems: PropTypes.number,
-  fetchValidation: PropTypes.func.isRequired,
   downloadSubmission: PropTypes.func.isRequired,
   runValidation: PropTypes.func.isRequired,
 };
@@ -122,11 +80,10 @@ export function mapDispatchToProps(dispatch) {
   return {
     fetchResource: (id, successCallback) =>
       dispatch(
-        submissionsActions.fetchResource(id, { meta: { successCallback } }),
-      ),
-    fetchValidation: (id, successCallback) =>
-      dispatch(
-        validationsActions.fetchResource(id, { meta: { successCallback } }),
+        submissionsActions.fetchResource(id, {
+          meta: { successCallback },
+          request: { endpoint: `api/submissions/${id}/admin` },
+        }),
       ),
     downloadSubmission: id => dispatch(downloadSubmission(id)),
     runValidation: (submissionId, tournamentId) =>

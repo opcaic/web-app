@@ -9,7 +9,6 @@ import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { addLastExecutions } from '@/modules/shared/helpers/resources/matches';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import { Card } from 'antd';
 import CardTable from '@/modules/public/components/Home/CardTable';
@@ -27,7 +26,7 @@ export class DashboardMatches extends React.PureComponent {
       >
         <CardTable>
           <UserMatchList
-            dataSource={addLastExecutions(this.props.items)}
+            dataSource={this.props.items}
             loading={this.props.isFetching}
             fetch={this.props.fetchItems(this.props.currentUser.id)}
             tournament={{ format: 1, scope: 1, rankingStrategy: 1 }}

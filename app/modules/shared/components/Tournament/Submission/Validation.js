@@ -47,7 +47,7 @@ const ShowLogButton = styled(Button)`
   float: right;
 `;
 
-const Validation = ({ validation, showLog }) => (
+const Validation = ({ validation, showLog, isAdmin }) => (
   <div>
     <Descriptions column={1} size="small" bordered style={{ marginTop: 15 }}>
       <Descriptions.Item
@@ -117,6 +117,13 @@ const Validation = ({ validation, showLog }) => (
           </ShowLogButton>
         )}
       </Descriptions.Item>
+      {isAdmin && (
+        <Descriptions.Item
+          label={<FormattedMessage id="app.shared.submission.exception" />}
+        >
+          {validation.exception}
+        </Descriptions.Item>
+      )}
     </Descriptions>
   </div>
 );
@@ -124,6 +131,7 @@ const Validation = ({ validation, showLog }) => (
 Validation.propTypes = {
   validation: PropTypes.object.isRequired,
   showLog: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool,
 };
 
 export default Validation;

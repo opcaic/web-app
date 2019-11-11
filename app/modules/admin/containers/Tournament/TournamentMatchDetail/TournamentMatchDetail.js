@@ -12,8 +12,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Spin from '@/modules/shared/components/Spin';
 import MatchExecution from '@/modules/shared/components/Tournament/MatchExecution';
-import { addLastExecution } from '@/modules/shared/helpers/resources/matches';
 import { entryPointResultEnum } from '@/modules/shared/helpers/enumHelpers';
+import { downloadFiles } from '@/modules/shared/ducks/matches';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentMatchDetail extends React.PureComponent {
@@ -22,10 +22,7 @@ class TournamentMatchDetail extends React.PureComponent {
   }
 
   render() {
-    const match =
-      this.props.resource === null
-        ? null
-        : addLastExecution(this.props.resource);
+    const match = this.props.resource;
 
     return (
       <Spin spinning={this.props.isFetching || this.props.resource === null}>
@@ -40,8 +37,8 @@ class TournamentMatchDetail extends React.PureComponent {
             </Button>
 
             <Collapse defaultActiveKey={[0]} accordion>
-              {this.props.resource &&
-                this.props.resource.executions.reverse().map((x, index) => (
+              {match &&
+                match.executions.reverse().map((x, index) => (
                   <Collapse.Panel
                     header={
                       <FormattedMessage
@@ -62,6 +59,7 @@ class TournamentMatchDetail extends React.PureComponent {
                       match={match}
                       tournament={this.props.tournament}
                       isAdmin
+                      downloadFiles={() => this.props.downloadFiles(x.id)}
                     />
                   </Collapse.Panel>
                 ))}
@@ -75,6 +73,7 @@ class TournamentMatchDetail extends React.PureComponent {
 
 TournamentMatchDetail.propTypes = {
   fetchResource: PropTypes.func.isRequired,
+  downloadFiles: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.object,
   match: PropTypes.object.isRequired,
@@ -86,9 +85,13 @@ export function mapDispatchToProps(dispatch) {
     fetchResource: id =>
       dispatch(
         matchesActions.fetchResource(id, {
-          request: { params: { anonymize: false } },
+          request: {
+            endpoint: `api/matches/${id}/admin`,
+            params: { anonymize: false },
+          },
         }),
       ),
+    downloadFiles: id => dispatch(downloadFiles(id)),
   };
 }
 
