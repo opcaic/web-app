@@ -11,7 +11,6 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import MatchExecution from '@/modules/shared/components/Tournament/MatchExecution';
-import { addLastExecution } from '@/modules/shared/helpers/resources/matches';
 import PageContent from '@/modules/public/components/layout/PageContent';
 import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
@@ -27,10 +26,7 @@ class TournamentMatchDetail extends React.PureComponent {
   }
 
   render() {
-    const match =
-      this.props.resource === null
-        ? null
-        : addLastExecution(this.props.resource);
+    const match = this.props.resource;
 
     return (
       <PageContent
