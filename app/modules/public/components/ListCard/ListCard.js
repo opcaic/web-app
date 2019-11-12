@@ -52,7 +52,7 @@ const FooterTags = styled.div`
 `;
 
 const ListCard = props => (
-  <Card style={props.style}>
+  <Card style={props.style} className={props.className}>
     <Link to={props.headerUrl}>
       <Header style={{ backgroundImage: `url(${props.imageUrl})` }}>
         {props.headerTags && <HeaderTags>{props.headerTags}</HeaderTags>}
@@ -77,6 +77,7 @@ ListCard.propTypes = {
   titleUrl: PropTypes.string.isRequired,
   children: PropTypes.node,
   footerTags: PropTypes.array,
+  className: PropTypes.any,
 };
 
 export default ListCard;

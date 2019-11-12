@@ -3,14 +3,26 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Menu } from 'antd';
+import { breakpoints } from '@/modules/shared/helpers/responsive';
 
 const StyledMenu = styled(Menu)`
   border-bottom: 0;
+  width: 150px;
+
+  @media ${breakpoints.sm} {
+    width: 300px;
+  }
+
+  @media ${breakpoints.md} {
+    width: 100%;
+  }
 `;
 
 const StyledMenuItem = styled(({ themeColor, ...rest }) => (
   <Menu.Item {...rest} />
 ))`
+  padding: 0px 10px !important;
+
   &.ant-menu-item-selected,
   &:hover {
     border-bottom-color: ${props => props.themeColor} !important;
@@ -18,6 +30,10 @@ const StyledMenuItem = styled(({ themeColor, ...rest }) => (
 
   &.ant-menu-item-selected a {
     color: ${props => props.themeColor} !important;
+  }
+
+  @media ${breakpoints.lg} {
+    padding: 0px 20px !important;
   }
 `;
 

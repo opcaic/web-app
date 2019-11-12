@@ -56,7 +56,11 @@ export function mapDispatchToProps(dispatch) {
         tournamentActions.fetchMany(
           prepareFilterParams({ count: 100 }, 'deadline', true, {
             userId,
-            state: [tournamentStateEnum.PUBLISHED],
+            acceptsSubmission: true,
+            state: tournamentStateEnum.helpers
+              .getValues()
+              .map(x => x.id)
+              .filter(x => x !== tournamentStateEnum.CREATED),
           }),
         ),
       ),
