@@ -69,14 +69,14 @@ class GameForm extends React.PureComponent {
 
     return (
       <Form onSubmit={this.handleSubmit} {...formItemLayout}>
-        <Form.Item label={<FormattedMessage id="app.admin.gameForm.name" />}>
+        <Form.Item label={<FormattedMessage id="app.admin.game.name" />}>
           {getFieldDecorator('name', {
             initialValue: this.props.resource.name,
             rules: [isRequired('name'), isMaxLength(30, 'name')],
           })(<Input />)}
         </Form.Item>
 
-        <Form.Item label={<FormattedMessage id="app.admin.gameForm.key" />}>
+        <Form.Item label={<FormattedMessage id="app.admin.game.key" />}>
           {getFieldDecorator('key', {
             initialValue: this.props.resource.key,
             rules: [isRequired('key'), isMaxLength(30, 'key')],

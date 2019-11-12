@@ -1,8 +1,8 @@
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
-import { getDeleteResourceButton } from '@/modules/shared/helpers/table';
+import { getActionProps } from '@/modules/shared/helpers/table';
 
 function prepareColumns(props) {
   return [
@@ -12,11 +12,15 @@ function prepareColumns(props) {
       sorter: (a, b) => a < b,
     },
     {
-      ...getDeleteResourceButton(
-        props.deleteItem,
-        record => record,
-        props.isDeleting,
-      ),
+      ...getActionProps((text, record) => (
+        <Button
+          type="danger"
+          loading={props.isDeleting}
+          onClick={() => props.deleteItem(record)}
+        >
+          <FormattedMessage id="app.generic.delete" />
+        </Button>
+      )),
     },
   ];
 }
