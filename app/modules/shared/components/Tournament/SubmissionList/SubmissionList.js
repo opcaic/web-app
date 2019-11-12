@@ -238,7 +238,6 @@ const SubmissionList = props => (
 );
 
 SubmissionList.propTypes = {
-  isAdmin: PropTypes.bool.isRequired,
   view: PropTypes.oneOf(['admin', 'public', 'dashboard']),
 };
 

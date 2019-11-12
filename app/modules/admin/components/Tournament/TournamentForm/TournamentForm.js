@@ -7,6 +7,7 @@ import {
   DatePicker,
   Radio,
   Divider,
+  Switch,
 } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -218,6 +219,14 @@ class TournamentForm extends React.PureComponent {
               ))}
             </Radio.Group>,
           )}
+        </Form.Item>
+        <Form.Item
+          label={<FormattedMessage id="app.admin.tournamentForm.anonymize" />}
+        >
+          {getFieldDecorator('anonymize', {
+            valuePropName: 'checked',
+            initialValue: this.props.resource.anonymize,
+          })(<Switch />)}
         </Form.Item>
         <Form.Item
           label={

@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import {
   formatScore,
   getBestScore,
+  getSubmissionUsername,
 } from '@/modules/shared/helpers/resources/matches';
 import TimeAgo from '@/modules/shared/components/TimeAgo/TimeAgo';
 
@@ -74,17 +75,15 @@ function prepareColumns({
 
       if (record.state === matchStateEnum.QUEUED) {
         return record.submissions.map((x, index) => [
-          <span key={`sep_${x.author.id}`}>{index ? ' vs ' : ''}</span>,
-          <span key={x.author.id}>{x.author.username} </span>,
+          <span key={`sep_${x.id}`}>{index ? ' vs ' : ''}</span>,
+          <span key={x.id}>{getSubmissionUsername(x)} </span>,
         ]);
       }
 
       return record.lastExecution.botResults.map((x, index) => [
-        <span key={`sep_${x.submission.author.id}`}>
-          {index ? ' vs ' : ''}
-        </span>,
+        <span key={`sep_${x.submission.id}`}>{index ? ' vs ' : ''}</span>,
         <span
-          key={x.submission.author.id}
+          key={x.submission.id}
           style={{
             fontWeight:
               x.score === bestScore &&
@@ -94,7 +93,7 @@ function prepareColumns({
                 : 400,
           }}
         >
-          {x.submission.author.username}{' '}
+          {getSubmissionUsername(x.submission)}{' '}
           {record.state === matchStateEnum.EXECUTED && !isSinglePlayer ? (
             <span>({formatScore(x.score)})</span>
           ) : null}

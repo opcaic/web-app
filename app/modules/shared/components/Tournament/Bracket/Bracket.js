@@ -33,7 +33,7 @@ class Bracket extends Component {
         jQuery('#bracket')
           .empty()
           .bracket({
-            teamWidth: 100,
+            teamWidth: 110,
             init: data,
           });
 

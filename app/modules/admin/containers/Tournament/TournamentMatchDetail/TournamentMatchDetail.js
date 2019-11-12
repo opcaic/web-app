@@ -85,7 +85,10 @@ export function mapDispatchToProps(dispatch) {
     fetchResource: id =>
       dispatch(
         matchesActions.fetchResource(id, {
-          request: { endpoint: `api/matches/${id}/admin` },
+          request: {
+            endpoint: `api/matches/${id}/admin`,
+            params: { anonymize: false },
+          },
         }),
       ),
     downloadFiles: id => dispatch(downloadFiles(id)),

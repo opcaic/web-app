@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import {
   formatScore,
   getBestScore,
+  getSubmissionUsername,
   getUserResult,
 } from '@/modules/shared/helpers/resources/matches';
 import { Link } from 'react-router-dom';
@@ -93,20 +94,18 @@ function prepareColumns({ user, view }) {
 
       // Sort bot results so the current user is always the first one in the list
       const botResults = record.lastExecution.botResults.filter(
-        x => x.submission.author.id !== user.id,
+        x => x.submission.author === null || x.submission.author.id !== user.id,
       );
       const currentUserResult = record.lastExecution.botResults.find(
-        x => x.submission.author.id === user.id,
+        x => x.submission.author && x.submission.author.id === user.id,
       );
       if (currentUserResult) {
         botResults.unshift(currentUserResult);
       }
       return botResults.map((x, index) => [
-        <span key={`sep_${x.submission.author.id}`}>
-          {index ? ' vs ' : ''}
-        </span>,
+        <span key={`sep_${x.submission.id}`}>{index ? ' vs ' : ''}</span>,
         <span
-          key={x.submission.author.id}
+          key={x.submission.id}
           style={{
             fontWeight:
               x.score === bestScore && record.state === matchStateEnum.EXECUTED
@@ -114,7 +113,7 @@ function prepareColumns({ user, view }) {
                 : 400,
           }}
         >
-          {x.submission.author.username} ({formatScore(x.score)})
+          {getSubmissionUsername(x.submission)} ({formatScore(x.score)})
         </span>,
       ]);
     },

@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   addSharedPlaces,
+  getParticipationUsername,
   getPlaceText,
 } from '@/modules/shared/helpers/resources/leaderboards';
 import { Link } from 'react-router-dom';
@@ -75,18 +76,25 @@ function getTableColumns(participationsByPlace, tournament) {
 
   columns.push({
     title: '',
+    key: `place`,
+    align: 'center',
+    render: (text, record) => <span>{getPlaceText(record.participation)}</span>,
+  });
+
+  columns.push({
+    title: '',
     key: `name`,
+
     render: (text, record) => (
       <span>
-        {getPlaceText(record.participation)}{' '}
-        <b>{record.participation.author.username}</b>
+        <b>{getParticipationUsername(record.participation)}</b>
       </span>
     ),
   });
 
   for (let i = 0; i < numberOfPlayers; i += 1) {
     columns.push({
-      title: participationsByPlace[i].author.username,
+      title: getParticipationUsername(participationsByPlace[i]),
       key: `column_${i}`,
       align: 'center',
       render: (text, record) => {
