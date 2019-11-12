@@ -43,6 +43,16 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const StyledLinkA = styled.a`
+  color: rgba(255, 255, 255, 0.85);
+  margin-left: 30px;
+  font-size: 14px;
+
+  &:hover {
+    color: white !important;
+  }
+`;
+
 const Footer = () => (
   <Wrapper>
     <Container marginTop={0}>
@@ -60,9 +70,9 @@ const Footer = () => (
           <StyledLink to="/about">
             <FormattedMessage id="app.public.footer.about" />
           </StyledLink>
-          <StyledLink to="TODO">
+          <StyledLinkA href="https://github.com/opcaic" target="_blank">
             <FormattedMessage id="app.public.footer.github" />
-          </StyledLink>
+          </StyledLinkA>
         </Links>
       </Content>
     </Container>
