@@ -11,6 +11,7 @@ import { ChromePicker } from 'react-color';
 import { gameTypeEnum } from '@/modules/shared/helpers/enumHelpers';
 import { compose } from 'redux';
 import { theme } from '@/modules/shared/helpers/utils';
+import FormErrors from '@/modules/shared/components/FormErrors';
 
 const MB_IN_BYTES = 1024 * 1024;
 
@@ -69,6 +70,8 @@ class GameForm extends React.PureComponent {
 
     return (
       <Form onSubmit={this.handleSubmit} {...formItemLayout}>
+        <FormErrors errors={this.props.errors} />
+
         <Form.Item label={<FormattedMessage id="app.admin.game.name" />}>
           {getFieldDecorator('name', {
             initialValue: this.props.resource.name,

@@ -51,6 +51,7 @@ class TournamentGameInfo extends React.Component {
               formSchema={this.props.game.configurationSchema}
               onBlur={this.onFormBlur}
               formData={this.props.configuration}
+              errors={this.props.configurationErrors}
             />
             <Divider style={{ marginTop: 0 }} />
           </div>
@@ -69,6 +70,7 @@ TournamentGameInfo.propTypes = {
   gameChangeDisabled: PropTypes.bool,
   onConfigurationChanged: PropTypes.func.isRequired,
   fetchGame: PropTypes.func,
+  configurationErrors: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({

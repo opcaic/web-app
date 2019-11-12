@@ -32,8 +32,14 @@ const intlMessages = defineMessages({
   createSuccessNotification: {
     id: 'app.admin.tournaments.createSuccessNotification',
   },
+  createFailureNotification: {
+    id: 'app.admin.tournaments.createFailureNotification',
+  },
   updateSuccessNotification: {
     id: 'app.admin.tournaments.updateSuccessNotification',
+  },
+  updateFailureNotification: {
+    id: 'app.admin.tournaments.updateFailureNotification',
   },
   cloneSuccessNotification: {
     id: 'app.admin.tournaments.cloneSuccessNotification',
@@ -50,9 +56,21 @@ function* handleCreateSuccess(action) {
   });
 }
 
+function* handleCreateFailure() {
+  yield call(notification.error, {
+    message: intlGlobal.formatMessage(intlMessages.createFailureNotification),
+  });
+}
+
 function* handleUpdateSuccess() {
   yield call(notification.success, {
     message: intlGlobal.formatMessage(intlMessages.updateSuccessNotification),
+  });
+}
+
+function* handleUpdateFailure() {
+  yield call(notification.error, {
+    message: intlGlobal.formatMessage(intlMessages.updateFailureNotification),
   });
 }
 
@@ -98,7 +116,9 @@ function* handleTournamentClone({
 
 export function* saga() {
   yield all([takeLatest(actionTypes.CREATE_SUCCESS, handleCreateSuccess)]);
+  yield all([takeLatest(actionTypes.CREATE_FAILURE, handleCreateFailure)]);
   yield all([takeLatest(actionTypes.UPDATE_SUCCESS, handleUpdateSuccess)]);
+  yield all([takeLatest(actionTypes.UPDATE_FAILURE, handleUpdateFailure)]);
   yield all([takeLatest(cloneActionTypes.REQUEST, handleTournamentClone)]);
 }
 

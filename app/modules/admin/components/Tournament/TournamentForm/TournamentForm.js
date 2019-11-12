@@ -32,6 +32,7 @@ import TournamentGameInfo from '@/modules/admin/containers/Tournament/Tournament
 import moment from 'moment';
 import { ChromePicker } from 'react-color';
 import { compose } from 'redux';
+import FormErrors from '@/modules/shared/components/FormErrors';
 
 const { Option } = Select;
 
@@ -148,8 +149,11 @@ class TournamentForm extends React.PureComponent {
       hex: this.props.resource.defaultTournamentThemeColor,
     };
 
+    const configurationErrors = this.props.innerErrors.configuration;
+
     return (
       <Form onSubmit={this.handleSubmit} {...formItemLayout}>
+        <FormErrors errors={this.props.errors} />
         <Form.Item
           label={<FormattedMessage id="app.admin.tournamentForm.name" />}
         >
@@ -165,6 +169,7 @@ class TournamentForm extends React.PureComponent {
           onGameChange={this.handleGameChange}
           gameChangeDisabled={this.props.resource.game !== undefined}
           configuration={this.state.configuration}
+          configurationErrors={configurationErrors || []}
         />
 
         {this.props.resource.id && (
