@@ -64,7 +64,7 @@ const Validation = ({ validation, showLog, isAdmin }) => (
       >
         {getValidationStateIcon(validation.checkerResult)}
         {entryPointResultEnum.helpers.idToText(validation.checkerResult)}
-        {validation.compilerResult !== entryPointResultEnum.NOT_EXECUTED && (
+        {validation.checkerResult !== entryPointResultEnum.NOT_EXECUTED && (
           <ShowLogButton
             size="small"
             onClick={() =>
@@ -103,7 +103,7 @@ const Validation = ({ validation, showLog, isAdmin }) => (
       >
         {getValidationStateIcon(validation.validatorResult)}
         {entryPointResultEnum.helpers.idToText(validation.validatorResult)}
-        {validation.compilerResult !== entryPointResultEnum.NOT_EXECUTED && (
+        {validation.validatorResult !== entryPointResultEnum.NOT_EXECUTED && (
           <ShowLogButton
             size="small"
             onClick={() =>

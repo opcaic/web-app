@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Avatar, Dropdown, Icon, Menu as AntMenu } from 'antd';
 import { theme } from '@/modules/shared/helpers/utils';
 import Container from '@/modules/public/components/layout/Container';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
 const Header = styled.header`
   background-color: ${theme.TOP_MENU_COLOR};
@@ -118,7 +119,7 @@ const languageMenu = (changeLocale) => (
   </LanguageMenu>
 );
 
-const TopMenu = ({ changeLocale, isLoggedIn, logout, activeItems }) => (
+const TopMenu = ({ changeLocale, isLoggedIn, logout, activeItems, currentUser }) => (
   <Header>
     <Container marginTop={0}>
       <Menu mode="horizontal" selectedKeys={activeItems}>
@@ -138,7 +139,7 @@ const TopMenu = ({ changeLocale, isLoggedIn, logout, activeItems }) => (
           </StyledLink>
         </MenuItem>
 
-        {isLoggedIn
+        {isLoggedIn && currentUser.role >= userRoleEnum.ORGANIZER
           && [
             <MenuItem key="administration">
               <StyledLink to="/admin">
@@ -191,6 +192,7 @@ TopMenu.propTypes = {
   logout: PropTypes.func,
   isLoggedIn: PropTypes.bool,
   activeItems: PropTypes.array,
+  currentUser: PropTypes.object,
 };
 
 export default TopMenu;
