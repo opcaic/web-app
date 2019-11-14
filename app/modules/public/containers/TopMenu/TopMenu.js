@@ -6,7 +6,10 @@ import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import TopMenuComponent from '@/modules/public/components/layout/TopMenu';
 import { changeLocale } from '@/modules/shared/ducks/localization';
-import { isLoggedIn } from '@/modules/shared/selectors/auth';
+import {
+  currentUserSelector,
+  isLoggedIn,
+} from '@/modules/shared/selectors/auth';
 import { logout } from '@/modules/shared/ducks/auth';
 import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
 
@@ -20,6 +23,7 @@ export class TopMenu extends React.PureComponent {
         changeLocale={this.props.changeLocale}
         isLoggedIn={this.props.isLoggedIn}
         logout={this.props.logout}
+        currentUser={this.props.currentUser}
       />
     );
   }
@@ -29,6 +33,7 @@ TopMenu.propTypes = {
   changeLocale: PropTypes.func,
   isLoggedIn: PropTypes.bool,
   logout: PropTypes.func,
+  currentUser: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -40,6 +45,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   isLoggedIn,
+  currentUser: currentUserSelector,
 });
 
 const withConnect = connect(

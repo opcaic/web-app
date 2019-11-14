@@ -50,12 +50,22 @@ class TopMenu extends Component {
   };
 
   render() {
-    const { changeLocale, isLoggedIn, logout, activeItems } = this.props;
+    const {
+      changeLocale,
+      isLoggedIn,
+      logout,
+      activeItems,
+      currentUser,
+    } = this.props;
     return (
       <Header>
         <Container marginTop={0}>
           <BasicMenu>
-            <BasicLeftMenu isLoggedIn={isLoggedIn} activeItems={activeItems} />
+            <BasicLeftMenu
+              isLoggedIn={isLoggedIn}
+              activeItems={activeItems}
+              currentUser={currentUser}
+            />
             <BasicRightMenu
               isLoggedIn={isLoggedIn}
               changeLocale={changeLocale}
@@ -84,6 +94,7 @@ class TopMenu extends Component {
               <DrawerLeftMenu
                 isLoggedIn={isLoggedIn}
                 activeItems={activeItems}
+                currentUser={currentUser}
               />
               <DrawerRightMenu
                 isLoggedIn={isLoggedIn}
@@ -103,6 +114,7 @@ TopMenu.propTypes = {
   logout: PropTypes.func,
   isLoggedIn: PropTypes.bool,
   activeItems: PropTypes.array,
+  currentUser: PropTypes.object,
 };
 
 export default TopMenu;

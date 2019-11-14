@@ -521,6 +521,7 @@
   "app.shared.submission.matches": "Played matches",
   "app.shared.submission.noMatches": "No matches have been played with this submission yet",
   "app.shared.submission.notActiveDescription": "The submission <b>is not used</b> when executing matches in this tournament",
+  "app.shared.submission.refreshPageValidation": "Reload the page to refresh validation state",
   "app.shared.submission.runValidation": "Run validation again",
   "app.shared.submission.showLog": "Show log",
   "app.shared.submission.state": "Validation state",

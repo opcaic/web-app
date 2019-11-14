@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
+  Alert,
   Button,
   Col,
   Collapse,
@@ -112,16 +113,23 @@ class Submission extends Component {
 
         <Row>
           <Col xs={24} lg={16}>
-            <Descriptions
-              title={
-                <Typography.Title level={3}>
-                  <FormattedMessage id="app.shared.submission.basicInformation" />
-                </Typography.Title>
-              }
-              column={1}
-              size="small"
-              bordered
-            >
+            <Typography.Title level={3}>
+              <FormattedMessage id="app.shared.submission.basicInformation" />
+            </Typography.Title>
+
+            {this.props.submission.validationState ===
+              submissionValidationStateEnum.QUEUED && (
+              <Alert
+                message={
+                  <FormattedMessage id="app.shared.submission.refreshPageValidation" />
+                }
+                type="info"
+                showIcon
+                style={{ marginBottom: 10 }}
+              />
+            )}
+
+            <Descriptions column={1} size="small" bordered>
               <Descriptions.Item
                 label={<FormattedMessage id="app.shared.submission.date" />}
               >

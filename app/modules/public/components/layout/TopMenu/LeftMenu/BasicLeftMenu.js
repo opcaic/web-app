@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { FormattedMessage } from 'react-intl';
 import React from 'react';
 import styled from 'styled-components';
@@ -5,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Menu as AntMenu } from 'antd';
 import { theme } from '@/modules/shared/helpers/utils';
 import PropTypes from 'prop-types';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
 const Menu = styled(AntMenu)`
   line-height: 64px !important;
@@ -46,7 +48,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const BasicLeftMenu = ({ activeItems, isLoggedIn }) => (
+const BasicLeftMenu = ({ activeItems, isLoggedIn, currentUser }) => (
   <Menu mode="horizontal" selectedKeys={activeItems}>
     <MenuItem key="home">
       <StyledLink to="/">
@@ -64,7 +66,8 @@ const BasicLeftMenu = ({ activeItems, isLoggedIn }) => (
       </StyledLink>
     </MenuItem>
 
-    {isLoggedIn && [
+    {isLoggedIn &&
+      currentUser.role >= userRoleEnum.ORGANIZER && [
       <MenuItem key="administration">
         <StyledLink to="/admin">
           <FormattedMessage id="app.public.topMenu.administration" />
@@ -77,6 +80,7 @@ const BasicLeftMenu = ({ activeItems, isLoggedIn }) => (
 BasicLeftMenu.propTypes = {
   isLoggedIn: PropTypes.bool,
   activeItems: PropTypes.array,
+  currentUser: PropTypes.object,
 };
 
 export default BasicLeftMenu;

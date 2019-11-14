@@ -1,10 +1,12 @@
+/* eslint-disable prettier/prettier */
 import { FormattedMessage } from 'react-intl';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 import PropTypes from 'prop-types';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
-const DrawerLeftMenu = ({ activeItems, isLoggedIn }) => (
+const DrawerLeftMenu = ({ activeItems, isLoggedIn, currentUser }) => (
   <Menu mode="inline" selectedKeys={activeItems}>
     <Menu.Item key="home">
       <Link to="/">
@@ -22,7 +24,8 @@ const DrawerLeftMenu = ({ activeItems, isLoggedIn }) => (
       </Link>
     </Menu.Item>
 
-    {isLoggedIn && [
+    {isLoggedIn &&
+      currentUser.role >= userRoleEnum.ORGANIZER && [
       <Menu.Item key="administration">
         <Link to="/admin">
           <FormattedMessage id="app.public.topMenu.administration" />
@@ -35,6 +38,7 @@ const DrawerLeftMenu = ({ activeItems, isLoggedIn }) => (
 DrawerLeftMenu.propTypes = {
   isLoggedIn: PropTypes.bool,
   activeItems: PropTypes.array,
+  currentUser: PropTypes.object,
 };
 
 export default DrawerLeftMenu;
