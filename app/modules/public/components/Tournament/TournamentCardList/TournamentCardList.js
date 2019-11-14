@@ -10,33 +10,36 @@ const TournamentCardList = props => {
   const { updateFilter, emptyText, loading, dataSource } = props;
 
   return (
-    <List
-      grid={{
-        gutter: 16,
-        xs: 1,
-        sm: 2,
-        md: 3,
-        xl: 4,
-      }}
-      renderItem={item => (
-        <List.Item>
-          <TournamentCard tournament={item} updateFilter={updateFilter} />
-        </List.Item>
-      )}
-      locale={{
-        emptyText: (
-          <EmptyTablePlaceholder
-            text={
-              emptyText || (
-                <FormattedMessage id="app.public.tournamentCardList.noTournaments" />
-              )
-            }
-          />
-        ),
-      }}
-      dataSource={dataSource}
-      loading={loading}
-    />
+    <div>
+      <List
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 2,
+          md: 3,
+          xl: 4,
+        }}
+        renderItem={item => (
+          <List.Item>
+            <TournamentCard tournament={item} updateFilter={updateFilter} />
+          </List.Item>
+        )}
+        locale={{
+          emptyText: (
+            <EmptyTablePlaceholder
+              text={
+                emptyText || (
+                  <FormattedMessage id="app.public.tournamentCardList.noTournaments" />
+                )
+              }
+            />
+          ),
+        }}
+        dataSource={dataSource}
+        loading={loading}
+      />
+      {props.loadMore}
+    </div>
   );
 };
 
@@ -45,6 +48,7 @@ TournamentCardList.propTypes = {
   emptyText: PropTypes.object,
   updateFilter: PropTypes.func,
   loading: PropTypes.bool,
+  loadMore: PropTypes.node,
 };
 
 export default TournamentCardList;

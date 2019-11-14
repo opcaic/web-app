@@ -7,7 +7,7 @@ import { currentUserSelector } from '@/modules/shared/selectors/auth';
 
 /**
  * Higher order component that provides currentUser prop that contains
- * the currently logged user or null if not logged in
+ * the currently logged user
  *
  * @param WrappedComponent
  */

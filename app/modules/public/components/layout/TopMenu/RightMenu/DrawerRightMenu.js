@@ -26,6 +26,11 @@ const DrawerRightMenu = ({ isLoggedIn, logout, changeLocale }) => (
       </Menu.SubMenu>
       {isLoggedIn
         ? [
+            <Menu.Item key="my-tournaments">
+              <Link to="/my-tournaments">
+                <FormattedMessage id="app.public.topMenu.myTournaments" />
+              </Link>
+            </Menu.Item>,
             <Menu.Item key="account">
               <Link to="/settings/profile">
                 <FormattedMessage id="app.public.topMenu.settings" />

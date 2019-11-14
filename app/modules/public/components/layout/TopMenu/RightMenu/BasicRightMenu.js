@@ -59,6 +59,11 @@ const LanguageMenu = styled(AntMenu)`
 
 const userMenu = logout => (
   <UserMenu>
+    <AntMenu.Item key="my-tournaments">
+      <Link to="/my-tournaments">
+        <FormattedMessage id="app.public.topMenu.myTournaments" />
+      </Link>
+    </AntMenu.Item>
     <AntMenu.Item key="account">
       <Link to="/settings/profile">
         <FormattedMessage id="app.public.topMenu.settings" />

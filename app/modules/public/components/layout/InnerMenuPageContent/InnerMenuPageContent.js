@@ -4,12 +4,6 @@ import styled from 'styled-components';
 import PageContent from '@/modules/public/components/layout/PageContent';
 import Container from '@/modules/public/components/layout/Container';
 
-const StyledContainer = styled(Container)`
-  background: white;
-  margin-top: 15px;
-  padding: 0 !important;
-`;
-
 const Content = styled.div`
   padding-left: 24px;
   width: auto;
@@ -20,12 +14,12 @@ const Content = styled.div`
 `;
 
 const InnerMenuPageContent = props => (
-  <StyledContainer>
+  <Container>
     <PageContent title={props.title}>
       {props.menu}
       <Content>{props.children}</Content>
     </PageContent>
-  </StyledContainer>
+  </Container>
 );
 
 InnerMenuPageContent.propTypes = {

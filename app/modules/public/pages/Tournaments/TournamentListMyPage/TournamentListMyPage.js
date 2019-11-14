@@ -9,49 +9,47 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
-import { Button, Card } from 'antd';
-import CardTable from '@/modules/shared/components/CardTable';
 import TournamentList from '@/modules/shared/components/Tournament/TournamentList';
-import { FormattedMessage } from 'react-intl';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import { tournamentStateEnum } from '@/modules/shared/helpers/enumHelpers';
-import { Link } from 'react-router-dom';
+import PageLayout from '@/modules/public/components/layout/PageLayout';
+import PageTitle from '@/modules/shared/components/PageTitle';
+import Container from '@/modules/public/components/layout/Container';
+import PageContent from '@/modules/public/components/layout/PageContent';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/public/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
-export class DashboardTournaments extends React.PureComponent {
+export class TournamentListMyPage extends React.PureComponent {
   render() {
     return (
-      <Card
-        title={
-          <div>
-            <FormattedMessage id="app.public.dashboardTournaments.title" />
-            <Button size="small" style={{ marginLeft: 10 }}>
-              <Link to="/my-tournaments">
-                <FormattedMessage id="app.public.dashboardTournaments.showAllMyTournaments" />
-              </Link>
-            </Button>
-          </div>
-        }
-        bodyStyle={{ padding: 0 }}
-      >
-        <CardTable>
-          <TournamentList
-            dataSource={this.props.items}
-            loading={this.props.isFetching}
-            fetch={this.props.fetchItems(this.props.currentUser.id)}
-            isAdmin={false}
-            size="small"
-            view="dashboard"
-            totalItems={Math.min(this.props.totalItems, 5 * 5)}
-            pageSize={5}
-          />
-        </CardTable>
-      </Card>
+      <PageLayout>
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.tournamentListMyPage)}
+        />
+
+        <Container>
+          <PageContent
+            title={intlGlobal.formatMessage(pageTitles.tournamentListMyPage)}
+            withPadding={false}
+          >
+            <TournamentList
+              dataSource={this.props.items}
+              loading={this.props.isFetching}
+              fetch={this.props.fetchItems(this.props.currentUser.id)}
+              isAdmin={false}
+              view="my-tournaments"
+              totalItems={this.props.totalItems}
+              pageSize={10}
+            />
+          </PageContent>
+        </Container>
+      </PageLayout>
     );
   }
 }
 
-DashboardTournaments.propTypes = {
+TournamentListMyPage.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape(tournamentListItemPropType)),
   isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,
@@ -64,9 +62,8 @@ export function mapDispatchToProps(dispatch) {
     fetchItems: userId => params =>
       dispatch(
         tournamentActions.fetchMany(
-          prepareFilterParams(params, 'deadline', true, {
+          prepareFilterParams(params, 'deadline', false, {
             userId,
-            acceptsSubmission: true,
             state: tournamentStateEnum.helpers
               .getValues()
               .map(x => x.id)
@@ -89,4 +86,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(DashboardTournaments);
+export default compose(withConnect)(TournamentListMyPage);

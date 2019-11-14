@@ -36,6 +36,7 @@ import GameDetailPage from '@/modules/public/pages/Games/GameDetailPage';
 import AboutPage from '@/modules/public/pages/AboutPage/AboutPage';
 import FaqPage from '@/modules/public/pages/FaqPage/FaqPage';
 import ResendConfirmationEmailPage from '@/modules/public/pages/User/ResendConfirmationEmailPage';
+import TournamentMyListPage from '@/modules/public/pages/Tournaments/TournamentListMyPage';
 
 const MenuSyncedHomePageSwitch = withMenuSync(HomePageSwitch, {
   topMenu: ['home'],
@@ -62,6 +63,14 @@ const MenuSyncedAboutPage = withMenuSync(AboutPage, {
 });
 
 const MenuSyncedFaqPage = withMenuSync(FaqPage, {
+  topMenu: [],
+});
+
+const MenuSyncedSettings = withMenuSync(SettingsPage, {
+  topMenu: [],
+});
+
+const MenuSyncedMyTournaments = withMenuSync(TournamentMyListPage, {
   topMenu: [],
 });
 
@@ -102,7 +111,11 @@ export class PublicApp extends React.Component {
           component={RegistrationSuccessfulPage}
         />
 
-        <PrivateRoute path="/settings" component={SettingsPage} />
+        <PrivateRoute path="/settings" component={MenuSyncedSettings} />
+        <PrivateRoute
+          path="/my-tournaments"
+          component={MenuSyncedMyTournaments}
+        />
 
         <Route exact path="/about" component={MenuSyncedAboutPage} />
         <Route exact path="/faq" component={MenuSyncedFaqPage} />

@@ -11,6 +11,7 @@ import CodeBlock from '@/modules/shared/components/CodeBlock';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton/TournamentAdminButton';
+import CurrentPlace from '@/modules/public/components/Tournament/TournamentDetail/TournamentOverview/CurrentPlace';
 
 const StyledTabs = styled(Tabs)`
   & .ant-tabs-left-bar .ant-tabs-tab {
@@ -98,6 +99,11 @@ class TournamentOverview extends Component {
         title={<FormattedMessage id="app.public.tournamentOverview.title" />}
         buttons={<TournamentAdminButton />}
       >
+        <CurrentPlace
+          tournament={this.props.tournament}
+          leaderboard={this.props.leaderboard}
+        />
+
         {tabs.length === 1 ? (
           <div>
             <Typography.Title level={3}>{tabs[0].title}</Typography.Title>
@@ -146,6 +152,7 @@ class TournamentOverview extends Component {
 TournamentOverview.propTypes = {
   tournament: PropTypes.shape(tournamentPropType).isRequired,
   documents: PropTypes.array.isRequired,
+  leaderboard: PropTypes.object,
 };
 
 export default TournamentOverview;

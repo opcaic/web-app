@@ -22,15 +22,19 @@ import {
 } from '@/modules/shared/helpers/enumHelpers';
 import { getFilterParams } from '@/modules/shared/helpers/resources/tournaments';
 import TournamentCardListLoadMore from '@/modules/public/components/Tournament/TournamentCardListLoadMore';
+import qs from 'query-string';
+import { withRouter } from 'react-router-dom';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentListPage extends React.PureComponent {
+  defaultSelectedValues = {
+    state: tournamentSimplifiedStateEnum.RUNNING,
+    sortByRunning: tournamentRunningSortEnum.DEADLINE_SOON_FIRST,
+    sortByFinished: tournamentFinishedSortEnum.FINISHED_RECENTLY_FIRST,
+  };
+
   state = {
-    selectedFilterValues: {
-      state: tournamentSimplifiedStateEnum.RUNNING,
-      sortByRunning: tournamentRunningSortEnum.DEADLINE_SOON_FIRST,
-      sortByFinished: tournamentFinishedSortEnum.FINISHED_RECENTLY_FIRST,
-    },
+    selectedFilterValues: this.defaultSelectedValues,
     // When the filter changes, we want to reset the state of the tournament list and
     // this is most easily done by remounting the list component by setting a different key
     filterStateNumber: 0,
@@ -38,9 +42,28 @@ export class TournamentListPage extends React.PureComponent {
 
   componentDidMount() {
     this.props.fetchGames();
+    this.onRouteChanged();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      this.onRouteChanged();
+    }
   }
 
   onFilterChange = selectedValues => {
+    this.props.history.push(`/tournaments?${qs.stringify(selectedValues)}`);
+  };
+
+  onRouteChanged = () => {
+    const selectedValues = this.props.location.search
+      ? qs.parse(this.props.location.search)
+      : this.defaultSelectedValues;
+
+    Object.keys(selectedValues).forEach(key => {
+      selectedValues[key] = parseInt(selectedValues[key], 10);
+    });
+
     this.setState(state => ({
       selectedFilterValues: selectedValues,
       filterStateNumber: state.filterStateNumber + 1,
@@ -109,6 +132,8 @@ TournamentListPage.propTypes = {
   fetchGames: PropTypes.func.isRequired,
   games: PropTypes.array,
   isFetchingGames: PropTypes.bool.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -144,4 +169,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(TournamentListPage);
+export default compose(
+  withRouter,
+  withConnect,
+)(TournamentListPage);
