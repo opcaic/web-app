@@ -50,6 +50,7 @@ const reducersFactory = ({ actionTypes }) => (state = initialState, action) => {
       return state.merge({
         isFetching: true,
         error: null,
+        items: [],
       });
     case actionTypes.FETCH_MANY_SUCCESS:
       if (Array.isArray(action.payload)) {
