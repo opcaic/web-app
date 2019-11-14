@@ -23,7 +23,7 @@ const Sidebar = ({ activeItems, allItems }) => (
     <Menu
       mode="inline"
       theme="dark"
-      style={{ height: '100%', borderRight: 0 }}
+      style={{ borderRight: 0 }}
       selectedKeys={activeItems}
     >
       {allItems.map(item => (

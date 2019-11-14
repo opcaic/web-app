@@ -7,7 +7,6 @@ export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   resourceName: 'tournaments',
 });
 
-// TODO: handle properly
 export const tournamentsMenu = [
   {
     key: 'overview',

@@ -89,7 +89,7 @@ function withAjax(WrappedComponent, withSorting = true, withPaging = true) {
 
       return (
         <WrappedComponent
-          pagination={pagination}
+          pagination={withPaging && pagination}
           onChange={this.handleTableChange}
           loading={this.state.delayedLoading || loading}
           dataSource={this.state.delayedLoading ? [] : dataSource}

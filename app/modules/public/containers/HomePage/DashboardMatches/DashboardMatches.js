@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import { Card } from 'antd';
-import CardTable from '@/modules/public/components/Home/CardTable';
+import CardTable from '@/modules/shared/components/CardTable';
 import UserMatchList from '@/modules/shared/components/Tournament/UserMatchList';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
 import { FormattedMessage } from 'react-intl';

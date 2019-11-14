@@ -20,16 +20,20 @@ const PageLayout = props => (
           <Breadcrumb.Item>List</Breadcrumb.Item>
           <Breadcrumb.Item>App</Breadcrumb.Item>
         </Breadcrumb>
-        <Content
-          style={{
-            background: '#fff',
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-          }}
-        >
-          {props.children}
-        </Content>
+        {props.renderInsideCard ? (
+          <Content
+            style={{
+              background: '#fff',
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+            }}
+          >
+            {props.children}
+          </Content>
+        ) : (
+          <Content>{props.children}</Content>
+        )}
       </Layout>
     </Layout>
   </Layout>
@@ -37,6 +41,11 @@ const PageLayout = props => (
 
 PageLayout.propTypes = {
   children: PropTypes.node,
+  renderInsideCard: PropTypes.bool,
+};
+
+PageLayout.defaultProps = {
+  renderInsideCard: true,
 };
 
 export default PageLayout;

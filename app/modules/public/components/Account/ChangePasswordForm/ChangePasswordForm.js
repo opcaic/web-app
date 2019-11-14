@@ -29,7 +29,7 @@ class ChangePasswordForm extends React.PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
-      wrapperCol: { span: 10 },
+      wrapperCol: { xs: 24, md: 16, lg: 10 },
     };
 
     return (

@@ -13,7 +13,10 @@ const TournamentCardList = props => {
     <List
       grid={{
         gutter: 16,
-        xs: 4,
+        xs: 1,
+        sm: 2,
+        md: 3,
+        xl: 4,
       }}
       renderItem={item => (
         <List.Item>

@@ -21,6 +21,10 @@ const GlobalStyle = createGlobalStyle`
   audio, canvas, iframe, img, svg, video {
     vertical-align: initial;
   }
+  
+  .ant-table-body {
+    overflow-x: auto;
+  }
 `;
 
 export default GlobalStyle;

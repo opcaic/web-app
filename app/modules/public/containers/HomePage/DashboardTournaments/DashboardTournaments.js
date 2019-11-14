@@ -10,7 +10,7 @@ import { compose } from 'redux';
 import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { Card } from 'antd';
-import CardTable from '@/modules/public/components/Home/CardTable';
+import CardTable from '@/modules/shared/components/CardTable';
 import TournamentList from '@/modules/shared/components/Tournament/TournamentList';
 import { FormattedMessage } from 'react-intl';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
@@ -56,7 +56,11 @@ export function mapDispatchToProps(dispatch) {
         tournamentActions.fetchMany(
           prepareFilterParams({ count: 100 }, 'deadline', true, {
             userId,
-            state: [tournamentStateEnum.PUBLISHED],
+            acceptsSubmission: true,
+            state: tournamentStateEnum.helpers
+              .getValues()
+              .map(x => x.id)
+              .filter(x => x !== tournamentStateEnum.CREATED),
           }),
         ),
       ),

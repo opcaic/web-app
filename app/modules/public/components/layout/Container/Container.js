@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { breakpoints } from '@/modules/shared/helpers/responsive';
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -9,19 +10,19 @@ const StyledContainer = styled.div`
   margin-right: auto;
   margin-left: auto;
 
-  @media (min-width: 576px) {
+  @media ${breakpoints.sm} {
     max-width: 540px;
   }
 
-  @media (min-width: 768px) {
+  @media ${breakpoints.md} {
     max-width: 720px;
   }
 
-  @media (min-width: 992px) {
+  @media ${breakpoints.lg} {
     max-width: 960px;
   }
 
-  @media (min-width: 1200px) {
+  @media ${breakpoints.xl} {
     max-width: 1140px;
   }
 `;

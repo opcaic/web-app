@@ -3,20 +3,31 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 import {
-  getEditResourceButton,
+  getDetailActionProps,
   getSearchProps,
 } from '@/modules/shared/helpers/table';
 
 const columns = [
   {
-    title: <FormattedMessage id="app.admin.gameList.name" />,
+    title: <FormattedMessage id="app.admin.game.name" />,
     dataIndex: 'name',
     key: 'name',
     sorter: true,
     ...getSearchProps('name'),
   },
   {
-    ...getEditResourceButton(record => `/admin/games/${record.id}`),
+    title: <FormattedMessage id="app.admin.game.key" />,
+    dataIndex: 'key',
+    key: 'key',
+  },
+  {
+    title: <FormattedMessage id="app.admin.gameList.activeTournamentsCount" />,
+    dataIndex: 'activeTournamentsCount',
+    key: 'activeTournamentsCount',
+    align: 'center',
+  },
+  {
+    ...getDetailActionProps(record => `/admin/games/${record.id}`),
   },
 ];
 

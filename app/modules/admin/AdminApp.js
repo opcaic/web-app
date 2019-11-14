@@ -29,6 +29,7 @@ import tournamentFilesReducer, {
 import systemItemsReducer, {
   saga as systemItemsSaga,
 } from './ducks/systemItems';
+import invalidSubmissionsReducer from './ducks/invalidSubmissions';
 import withMenuSync from '@/modules/shared/helpers/hocs/withMenuSync';
 import DashboardPage from '@/modules/admin/pages/DashboardPage';
 import SystemPage from '@/modules/admin/pages/SystemPage';
@@ -136,6 +137,10 @@ const withReducers = [
   injectReducer({ key: 'workers', reducer: workersReducer }),
   injectReducer({ key: 'emailTemplates', reducer: emailTemplatesReducer }),
   injectReducer({ key: 'systemItems', reducer: systemItemsReducer }),
+  injectReducer({
+    key: 'invalidSubmissions',
+    reducer: invalidSubmissionsReducer,
+  }),
 ];
 
 export default compose(

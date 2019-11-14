@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from 'antd';
 import styled, { css } from 'styled-components';
+import { breakpoints } from '@/modules/shared/helpers/responsive';
 
 const Container = styled.div`
   background: white;
@@ -20,10 +21,17 @@ const Title = styled(Typography.Title)`
 `;
 
 const Buttons = styled.div`
-  margin-left: 15px;
-  display: inline-block;
+  margin-top: 10px;
   position: relative;
-  top: -3px;
+
+  display: block;
+
+  @media ${breakpoints.md} {
+    margin-left: 15px;
+    display: inline-block;
+    margin-top: 0px;
+    top: -3px;
+  }
 `;
 
 const Content = styled.div`

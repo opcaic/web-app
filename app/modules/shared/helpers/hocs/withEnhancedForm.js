@@ -10,6 +10,7 @@ function withEnhancedForm(hocOptions = {}) {
       state = {
         isSubmitting: false,
         errors: [],
+        innerErrors: {},
       };
 
       options = Object.assign({}, defaultOptions, hocOptions);
@@ -50,12 +51,21 @@ function withEnhancedForm(hocOptions = {}) {
         const fieldsData = {};
 
         Object.entries(errors.withField).forEach(element => {
-          const key = element[0].toLowerCase();
-          const fieldErrors = element[1];
+          const key = element[0];
+
+          const error = element[1];
+          const fieldErrors = error.messages;
+
+          if (error.innerErrors)
+            this.setState(state => {
+              const newState = Object.assign({}, state);
+              newState.innerErrors[key] = error.innerErrors;
+              return newState;
+            });
 
           fieldsData[key] = {
             value: values[key],
-            errors: fieldErrors.map(error => new Error(error)),
+            errors: fieldErrors.map(e => new Error(e)),
           };
         });
 
@@ -70,6 +80,7 @@ function withEnhancedForm(hocOptions = {}) {
             isSubmitting={this.state.isSubmitting}
             onSubmit={this.onSubmit(this.props.onSubmit)}
             errors={this.state.errors}
+            innerErrors={this.state.innerErrors}
           />
         );
       }

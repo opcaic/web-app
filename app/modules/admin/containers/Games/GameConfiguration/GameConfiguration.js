@@ -73,8 +73,10 @@ class GameConfiguration extends React.Component {
               locale={locale}
               style={style}
               width="100%"
-              placeholder={this.getInitialSchema(this.props)}
+              placeholder={this.state.formSchema}
               onChange={this.updateSchema}
+              waitAfterKeyPress={2500}
+              confirmGood={false}
             />
           </Col>
           <Col offset={1} span={8}>

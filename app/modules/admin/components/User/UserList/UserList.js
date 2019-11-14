@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
 import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 import {
-  getEditResourceButton,
+  getDetailActionProps,
   getSearchProps,
 } from '@/modules/shared/helpers/table';
 import TimeAgo from 'react-timeago';
@@ -40,7 +40,7 @@ const columns = () => [
     filterMultiple: false,
   },
   {
-    ...getEditResourceButton(record => `/admin/users/${record.id}`),
+    ...getDetailActionProps(record => `/admin/users/${record.id}`),
   },
 ];
 

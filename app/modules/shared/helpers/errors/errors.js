@@ -151,10 +151,13 @@ export function prepareFormErrors(
 
     if (x.field !== null && ignoreFields === false) {
       if (!errors.withField[x.field]) {
-        errors.withField[x.field] = [];
+        errors.withField[x.field] = {
+          innerErrors: x.errors,
+          messages: [],
+        };
       }
 
-      errorContainer = errors.withField[x.field];
+      errorContainer = errors.withField[x.field].messages;
     } else {
       errorContainer = errors.withoutField;
     }

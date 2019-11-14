@@ -18,6 +18,7 @@ import {
   acceptsSubmissions,
   getSimplifiedState,
 } from '@/modules/shared/helpers/resources/tournaments';
+import { breakpoints } from '@/modules/shared/helpers/responsive';
 
 const Game = styled.div`
   font-size: 12px;
@@ -28,6 +29,26 @@ const Deadline = styled.div`
   font-size: 12px;
   color: rgba(0, 0, 0, 0.85);
   margin-bottom: 3px;
+`;
+
+const StyledListCard = styled(ListCard)`
+  min-height: 360px;
+
+  & .ant-tag {
+    margin-bottom: 5px;
+  }
+
+  & .ant-tag:last-child {
+    margin-right: 0px;
+  }
+
+  @media ${breakpoints.lg} {
+    min-height: 310px;
+
+    & .ant-tag {
+      margin-bottom: 0px;
+    }
+  }
 `;
 
 const TournamentCard = props => {
@@ -54,14 +75,13 @@ const TournamentCard = props => {
   }
 
   return (
-    <ListCard
+    <StyledListCard
       title={props.tournament.name}
       titleUrl={`/tournaments/${props.tournament.id}`}
       imageUrl={props.tournament.imageUrl}
       headerUrl={`/tournaments/${props.tournament.id}`}
       headerTags={headerTags}
       footerTags={getFooterTags(props.tournament, props.updateFilter)}
-      style={{ minHeight: 310 }}
     >
       <Deadline>
         {acceptsSubmissions(props.tournament) ? (
@@ -95,7 +115,7 @@ const TournamentCard = props => {
           {props.tournament.game.name}
         </Link>
       </Game>
-    </ListCard>
+    </StyledListCard>
   );
 };
 

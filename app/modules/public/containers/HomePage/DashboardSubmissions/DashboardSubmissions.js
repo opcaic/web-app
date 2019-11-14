@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import { Card } from 'antd';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import SubmissionList from '@/modules/shared/components/Tournament/SubmissionList';
-import CardTable from '@/modules/public/components/Home/CardTable';
+import CardTable from '@/modules/shared/components/CardTable';
 import { FormattedMessage } from 'react-intl';
 
 /* eslint-disable react/prefer-stateless-function */
