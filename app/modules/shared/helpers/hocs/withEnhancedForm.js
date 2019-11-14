@@ -4,6 +4,12 @@ const defaultOptions = {
   handleErrors: true,
 };
 
+/**
+ * Provides isSubmitting and error props
+ *
+ * @param hocOptions
+ *
+ */
 function withEnhancedForm(hocOptions = {}) {
   return WrappedComponent =>
     class extends React.Component {

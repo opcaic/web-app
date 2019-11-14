@@ -2,6 +2,11 @@ import React from 'react';
 
 const defaultOptions = {};
 
+/**
+ * Provides the loadMore functionality to the wrapped component. Fetches additional data when the loadMore button is clicked.
+ *
+ * @param hocOptions
+ */
 function withLoadMore(hocOptions = {}) {
   return WrappedComponent =>
     class extends React.Component {

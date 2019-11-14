@@ -34,6 +34,9 @@ export const pageTitles = defineMessages({
   tournamentListPage: {
     id: 'app.public.pageTitles.tournamentListPage',
   },
+  tournamentListMyPage: {
+    id: 'app.public.pageTitles.tournamentListMyPage',
+  },
   confirmEmailPage: {
     id: 'app.public.pageTitles.confirmEmailPage',
   },
