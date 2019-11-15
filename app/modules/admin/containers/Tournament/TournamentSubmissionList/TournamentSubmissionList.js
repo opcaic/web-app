@@ -9,16 +9,24 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import SubmissionList from '@/modules/shared/components/Tournament/SubmissionList';
+import { roleSelector } from '@/modules/shared/selectors/auth';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentSubmissionList extends React.PureComponent {
   render() {
+    const additionalParams = {
+      managedOnly: this.props.userRole === userRoleEnum.ORGANIZER,
+    };
+
     return (
       <div>
         <SubmissionList
           dataSource={this.props.items}
           loading={this.props.isFetching}
-          fetch={this.props.fetchItems(this.props.tournament.id)}
+          fetch={this.props.fetchItems(additionalParams)(
+            this.props.tournament.id,
+          )}
           totalItems={this.props.totalItems}
           view="admin"
         />
@@ -33,16 +41,22 @@ TournamentSubmissionList.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,
   totalItems: PropTypes.number.isRequired,
+  userRole: PropTypes.number.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchItems: tournamentId => params =>
+    fetchItems: additionalParams => tournamentId => params =>
       dispatch(
         submissionActions.fetchMany(
-          prepareFilterParams(params, 'created', false, {
-            tournamentId,
-          }),
+          prepareFilterParams(
+            Object.assign({}, additionalParams, params),
+            'created',
+            false,
+            {
+              tournamentId,
+            },
+          ),
         ),
       ),
   };
@@ -52,6 +66,7 @@ const mapStateToProps = createStructuredSelector({
   items: submissionSelectors.getItems,
   isFetching: submissionSelectors.isFetching,
   totalItems: submissionSelectors.getTotalItems,
+  userRole: roleSelector,
 });
 
 const withConnect = connect(

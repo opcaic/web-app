@@ -199,6 +199,17 @@ class TournamentForm extends React.PureComponent {
             >
               <FormattedMessage id="app.admin.tournamentForm.uploadFiles" />
             </Button>
+            {this.props.hasAdditionalFiles && (
+              <Button
+                onClick={() =>
+                  this.props.deleteTournamentFiles(this.props.resource.id)
+                }
+                style={{ marginLeft: 5 }}
+                type="danger"
+              >
+                <FormattedMessage id="app.generic.delete" />
+              </Button>
+            )}
           </Form.Item>
         )}
 

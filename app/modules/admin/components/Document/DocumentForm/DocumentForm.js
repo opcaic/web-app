@@ -52,9 +52,7 @@ class DocumentForm extends React.PureComponent {
 
     return (
       <Form onSubmit={this.handleSubmit} {...formItemLayout} layout="vertical">
-        <Form.Item
-          label={<FormattedMessage id="app.admin.documentForm.name" />}
-        >
+        <Form.Item label={<FormattedMessage id="app.admin.document.name" />}>
           {getFieldDecorator('name', {
             initialValue: this.props.resource.name,
             rules: [isRequired('name')],

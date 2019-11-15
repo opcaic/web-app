@@ -12,7 +12,19 @@ import { createSelector } from 'reselect';
 
 const intlMessages = defineMessages({
   uploadSuccessNotification: {
-    id: 'app.admin.tournamentFilesUpload.uploadSuccessNotification',
+    id: 'app.admin.tournamentFiles.uploadSuccessNotification',
+  },
+  deleteSuccessNotification: {
+    id: 'app.admin.tournamentFiles.deleteSuccessNotification',
+  },
+  deleteFailureNotification: {
+    id: 'app.admin.tournamentFiles.deleteFailureNotification',
+  },
+  tournamentNoFilesNotification: {
+    id: 'app.admin.tournamentFiles.noFilesNotification',
+  },
+  downloadFailureNotification: {
+    id: 'app.admin.tournamentFiles.downloadFailureNotification',
   },
 });
 
@@ -20,26 +32,25 @@ const intlMessages = defineMessages({
  * Action types
  */
 export const actionTypes = {
-  TOURNAMENT_FILES_UPLOAD:
-    'app/shared/tournamentFilesUpload/TOURNAMENT_FILES_UPLOAD',
-  TOURNAMENT_FILES_UPLOAD_REQUEST:
-    'app/shared/tournamentFilesUpload/TOURNAMENT_FILES_UPLOAD_REQUEST',
-  TOURNAMENT_FILES_UPLOAD_SUCCESS:
-    'app/shared/tournamentFilesUpload/TOURNAMENT_FILES_UPLOAD_SUCCESS',
-  TOURNAMENT_FILES_UPLOAD_FAILURE:
-    'app/shared/tournamentFilesUpload/TOURNAMENT_FILES_UPLOAD_FAILURE',
-  TOURNAMENT_FILES_DOWNLOAD:
-    'app/shared/tournamentFilesDOWNLOAD/TOURNAMENT_FILES_DOWNLOAD',
-  TOURNAMENT_FILES_DOWNLOAD_REQUEST:
-    'app/shared/tournamentFilesDownload/TOURNAMENT_FILES_DOWNLOAD_REQUEST',
-  TOURNAMENT_FILES_DOWNLOAD_SUCCESS:
-    'app/shared/tournamentFilesDownload/TOURNAMENT_FILES_DOWNLOAD_SUCCESS',
-  TOURNAMENT_FILES_DOWNLOAD_FAILURE:
-    'app/shared/tournamentFilesDownload/TOURNAMENT_FILES_DOWNLOAD_FAILURE',
-  TOURNAMENT_FILES_MODAL_HIDE:
-    'app/shared/tournamentFilesUpload/TOURNAMENT_FILES_MODAL_HIDE',
-  TOURNAMENT_FILES_MODAL_SHOW:
-    'app/shared/tournamentFilesUpload/TOURNAMENT_FILES_MODAL_SHOW',
+  upload: {
+    REQUEST: 'app/admin/tournamentFiles/UPLOAD_REQUEST',
+    SUCCESS: 'app/admin/tournamentFiles/UPLOAD_SUCCESS',
+    FAILURE: 'app/admin/tournamentFiles/UPLOAD_FAILURE',
+  },
+  download: {
+    REQUEST: 'app/admin/tournamentFiles/DOWNLOAD_REQUEST',
+    SUCCESS: 'app/admin/tournamentFiles/DOWNLOAD_SUCCESS',
+    FAILURE: 'app/admin/tournamentFiles/DOWNLOAD_FAILURE',
+  },
+  delete: {
+    REQUEST: 'app/admin/tournamentFiles/DELETE_REQUEST',
+    SUCCESS: 'app/admin/tournamentFiles/DELETE_SUCCESS',
+    FAILURE: 'app/admin/tournamentFiles/DELETE_FAILURE',
+  },
+  modal: {
+    HIDE: 'app/admin/tournamentFiles/MODAL_HIDE',
+    SHOW: 'app/admin/tournamentFiles/MODAL_SHOW',
+  },
 };
 
 /*
@@ -54,7 +65,7 @@ export function uploadTournamentFiles(
   progressCallback,
 ) {
   return {
-    type: actionTypes.TOURNAMENT_FILES_UPLOAD,
+    type: actionTypes.upload.REQUEST,
     payload: {
       fileList,
       tournamentId,
@@ -68,16 +79,31 @@ export function uploadTournamentFiles(
 
 export function downloadTournamentFiles(tournamentId) {
   return {
-    type: actionTypes.TOURNAMENT_FILES_DOWNLOAD,
+    type: actionTypes.download.REQUEST,
     payload: {
       tournamentId,
     },
   };
 }
 
+export function deleteTournamentFiles(
+  tournamentId,
+  successCallback,
+  failureCallback,
+) {
+  return {
+    type: actionTypes.delete.REQUEST,
+    payload: {
+      tournamentId,
+      successCallback,
+      failureCallback,
+    },
+  };
+}
+
 export function showTournamentFilesModal(tournament) {
   return {
-    type: actionTypes.TOURNAMENT_FILES_MODAL_SHOW,
+    type: actionTypes.modal.SHOW,
     payload: {
       tournament,
     },
@@ -86,7 +112,7 @@ export function showTournamentFilesModal(tournament) {
 
 export function hideTournamentFilesModal() {
   return {
-    type: actionTypes.TOURNAMENT_FILES_MODAL_HIDE,
+    type: actionTypes.modal.HIDE,
   };
 }
 
@@ -103,10 +129,6 @@ function* handleTournamentFilesUpload({
     progressCallback,
   },
 }) {
-  yield put({
-    type: actionTypes.TOURNAMENT_FILES_UPLOAD_REQUEST,
-  });
-
   let zipFile = null;
 
   if (fileList.length === 1 && fileList[0].name.endsWith('.zip')) {
@@ -160,7 +182,7 @@ function* handleTournamentFilesUpload({
 
   if (status >= 200 && status < 300) {
     yield put({
-      type: actionTypes.TOURNAMENT_FILES_UPLOAD_SUCCESS,
+      type: actionTypes.upload.SUCCESS,
     });
 
     if (successCallback) {
@@ -178,7 +200,7 @@ function* handleTournamentFilesUpload({
 
 function* handleTournamentFilesUploadFailure(data, failureCallback) {
   yield put({
-    type: actionTypes.TOURNAMENT_FILES_UPLOAD_FAILURE,
+    type: actionTypes.upload.FAILURE,
   });
 
   if (data.code === 'invalid-archive-size') {
@@ -198,19 +220,15 @@ function* handleTournamentFilesUploadFailure(data, failureCallback) {
 function* handleTournamentFilesDownload({
   payload: { tournamentId, successCallback, failureCallback },
 }) {
-  yield put({
-    type: actionTypes.TOURNAMENT_FILES_DOWNLOAD_REQUEST,
-  });
-
   const { data, status } = yield call(callApi, {
     endpoint: `api/tournaments/${tournamentId}/files`,
     method: 'GET',
     responseType: 'arraybuffer',
   });
 
-  if (status >= 200 && status < 300) {
+  if (status === 200) {
     yield put({
-      type: actionTypes.TOURNAMENT_FILES_DOWNLOAD_SUCCESS,
+      type: actionTypes.download.SUCCESS,
     });
 
     if (successCallback) {
@@ -221,8 +239,22 @@ function* handleTournamentFilesDownload({
     FileSaver.saveAs(blob, `tournament${tournamentId}_attachments.zip`);
   } else {
     yield put({
-      type: actionTypes.TOURNAMENT_FILES_UPLOAD_FAILURE,
+      type: actionTypes.download.FAILURE,
     });
+
+    if (status === 204) {
+      yield call(notification.error, {
+        message: intlGlobal.formatMessage(
+          intlMessages.tournamentNoFilesNotification,
+        ),
+      });
+    } else {
+      yield call(notification.error, {
+        message: intlGlobal.formatMessage(
+          intlMessages.downloadFailureNotification,
+        ),
+      });
+    }
 
     if (failureCallback) {
       const errors = prepareFormErrors(data);
@@ -231,13 +263,48 @@ function* handleTournamentFilesDownload({
   }
 }
 
+function* handleTournamentFilesDelete({
+  payload: { tournamentId, successCallback, failureCallback },
+}) {
+  try {
+    const { status } = yield call(callApi, {
+      endpoint: `api/tournaments/${tournamentId}/files`,
+      method: 'DELETE',
+    });
+
+    if (status >= 200 && status < 300) {
+      yield put({
+        type: actionTypes.delete.SUCCESS,
+      });
+      yield call(notification.success, {
+        message: intlGlobal.formatMessage(
+          intlMessages.deleteSuccessNotification,
+        ),
+      });
+
+      if (successCallback) successCallback();
+    } else {
+      yield put({
+        type: actionTypes.delete.FAILURE,
+      });
+      yield call(notification.error, {
+        message: intlGlobal.formatMessage(
+          intlMessages.deleteFailureNotification,
+        ),
+      });
+
+      if (failureCallback) failureCallback();
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* saga() {
   yield all([
-    takeEvery(actionTypes.TOURNAMENT_FILES_UPLOAD, handleTournamentFilesUpload),
-    takeEvery(
-      actionTypes.TOURNAMENT_FILES_DOWNLOAD,
-      handleTournamentFilesDownload,
-    ),
+    takeEvery(actionTypes.upload.REQUEST, handleTournamentFilesUpload),
+    takeEvery(actionTypes.download.REQUEST, handleTournamentFilesDownload),
+    takeEvery(actionTypes.delete.REQUEST, handleTournamentFilesDelete),
   ]);
 }
 
@@ -251,11 +318,11 @@ export const initialState = fromJS({
 
 function tournamentFilesUploadReducer(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.TOURNAMENT_FILES_MODAL_SHOW:
+    case actionTypes.modal.SHOW:
       return state
         .set('visible', true)
         .set('tournament', action.payload.tournament);
-    case actionTypes.TOURNAMENT_FILES_MODAL_HIDE:
+    case actionTypes.modal.HIDE:
       return state.set('visible', false).set('tournament', null);
     default:
       return state;

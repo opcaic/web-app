@@ -14,35 +14,48 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import ManagersCreator from '@/modules/admin/components/Tournament/ManagersCreator/ManagersCreator';
+import { currentUserSelector } from '@/modules/shared/selectors/auth';
 
 class TournamentManagers extends React.Component {
   componentDidMount() {
     this.props.fetchOrganizers();
   }
 
-  removeCurrentManagers = (allOrganizers, currentManagers) =>
+  withoutCurrentManagers = (allOrganizers, currentManagers) =>
     allOrganizers.filter(u => !currentManagers.includes(u.email));
+
+  withoutOwner = (allOrganizers, ownerId) =>
+    allOrganizers.filter(u => u.id !== ownerId);
 
   handleSuccess = () => {
     this.props.fetchItems(this.props.tournament.id)();
   };
 
   render() {
+    const canManage =
+      this.props.currentUser.role === userRoleEnum.ADMIN ||
+      this.props.currentUser.id === this.props.tournament.ownerId;
+
     return (
       <div>
-        <div style={{ marginBottom: 15 }}>
-          <ManagersCreator
-            createManager={this.props.createItem(
-              this.props.tournament.id,
-              this.handleSuccess,
-            )}
-            organizerUsers={this.removeCurrentManagers(
-              this.props.organizerUsers,
-              this.props.items,
-            )}
-            isCreating={this.props.isCreating}
-          />
-        </div>
+        {canManage && (
+          <div style={{ marginBottom: 15 }}>
+            <ManagersCreator
+              createManager={this.props.createItem(
+                this.props.tournament.id,
+                this.handleSuccess,
+              )}
+              organizerUsers={this.withoutOwner(
+                this.withoutCurrentManagers(
+                  this.props.organizerUsers,
+                  this.props.items,
+                ),
+                this.props.tournament.ownerId,
+              )}
+              isCreating={this.props.isCreating}
+            />
+          </div>
+        )}
 
         <ManagersList
           fetch={this.props.fetchItems(this.props.tournament.id)}
@@ -54,6 +67,7 @@ class TournamentManagers extends React.Component {
           dataSource={this.props.items}
           loading={this.props.isLoading}
           totalItems={this.props.totalItems}
+          canDelete={canManage}
         />
       </div>
     );
@@ -72,6 +86,7 @@ TournamentManagers.propTypes = {
   tournament: PropTypes.object.isRequired,
   fetchOrganizers: PropTypes.func.isRequired,
   organizerUsers: PropTypes.array,
+  currentUser: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -118,6 +133,7 @@ const mapStateToProps = createStructuredSelector({
   isDeleting: managersSelectors.isDeleting,
   totalItems: managersSelectors.getTotalItems,
   organizerUsers: usersSelectors.getItems,
+  currentUser: currentUserSelector,
 });
 
 const withConnect = connect(

@@ -97,40 +97,49 @@ class TournamentActionButtons extends React.PureComponent {
   render() {
     const { resource, ...rest } = this.props;
 
+    const buttons = [
+      <Button
+        type="default"
+        onClick={() => this.props.cloneTournament(resource.id)}
+      >
+        <FormattedMessage id="app.admin.tournamentList.clone" />
+      </Button>,
+    ];
+
+    if (this.props.canDelete) {
+      buttons.push(
+        <Button
+          type="danger"
+          onClick={() => this.props.deleteTournament(resource.id)}
+        >
+          <FormattedMessage id="app.generic.delete" />
+        </Button>,
+      );
+    }
+
     switch (resource.state) {
       case tournamentStateEnum.CREATED:
-        return (
-          <div>
-            <PublishButton tournamentId={resource.id} {...rest} />
-          </div>
-        );
+        buttons.push(<PublishButton tournamentId={resource.id} {...rest} />);
+        break;
       case tournamentStateEnum.PUBLISHED:
-        return (
-          <div>
-            <StartButton tournamentId={resource.id} {...rest} />
-          </div>
-        );
+        buttons.push(<StartButton tournamentId={resource.id} {...rest} />);
+        break;
       case tournamentStateEnum.RUNNING:
-        return (
-          <div>
-            <PauseButton tournamentId={resource.id} {...rest} />
-            {resource.scope !== tournamentScopeEnum.DEADLINE && (
-              <StopButton tournamentId={resource.id} {...rest} />
-            )}
-          </div>
-        );
+        buttons.push(<PauseButton tournamentId={resource.id} {...rest} />);
+        if (resource.scope !== tournamentScopeEnum.DEADLINE)
+          buttons.push(<StopButton tournamentId={resource.id} {...rest} />);
+        break;
       case tournamentStateEnum.PAUSED:
-        return (
-          <div>
-            <UnpauseButton tournamentId={resource.id} {...rest} />
-            <StopButton tournamentId={resource.id} {...rest} />
-          </div>
-        );
+        buttons.push(<UnpauseButton tournamentId={resource.id} {...rest} />);
+        buttons.push(<StopButton tournamentId={resource.id} {...rest} />);
+        break;
       case tournamentStateEnum.WAITING_FOR_FINISH:
       case tournamentStateEnum.FINISHED:
       default:
-        return <div />;
+        break;
     }
+
+    return <div>{buttons}</div>;
   }
 }
 

@@ -10,7 +10,7 @@ import {
 
 const columns = editLinkGenerator => [
   {
-    title: <FormattedMessage id="app.admin.gameList.name" />,
+    title: <FormattedMessage id="app.admin.document.name" />,
     dataIndex: 'name',
     key: 'name',
     sorter: true,

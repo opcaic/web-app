@@ -11,15 +11,33 @@ export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   resourceName: 'tournaments',
 });
 
-const cloneActionTypes = {
-  REQUEST: 'app/admin/tournament/CLONE_REQUEST',
-  SUCCESS: 'app/admin/tournament/CLONE_SUCCESS',
-  FAILURE: 'app/admin/tournament/CLONE_FAILURE',
+const additionalActionTypes = {
+  clone: {
+    REQUEST: 'app/admin/tournament/CLONE_REQUEST',
+    SUCCESS: 'app/admin/tournament/CLONE_SUCCESS',
+    FAILURE: 'app/admin/tournament/CLONE_FAILURE',
+  },
+  delete: {
+    REQUEST: 'app/admin/tournament/DELETE_REQUEST',
+    SUCCESS: 'app/admin/tournament/DELETE_SUCCESS',
+    FAILURE: 'app/admin/tournament/DELETE_FAILURE',
+  },
 };
 
 export function cloneTournament(id, successCallback, failureCallback) {
   return {
-    type: cloneActionTypes.REQUEST,
+    type: additionalActionTypes.clone.REQUEST,
+    payload: {
+      tournamentId: id,
+      successCallback,
+      failureCallback,
+    },
+  };
+}
+
+export function deleteTournament(id, successCallback, failureCallback) {
+  return {
+    type: additionalActionTypes.delete.REQUEST,
     payload: {
       tournamentId: id,
       successCallback,
@@ -29,6 +47,9 @@ export function cloneTournament(id, successCallback, failureCallback) {
 }
 
 const intlMessages = defineMessages({
+  forbidden: {
+    id: 'app.errors.forbidden',
+  },
   createSuccessNotification: {
     id: 'app.admin.tournaments.createSuccessNotification',
   },
@@ -43,6 +64,15 @@ const intlMessages = defineMessages({
   },
   cloneSuccessNotification: {
     id: 'app.admin.tournaments.cloneSuccessNotification',
+  },
+  cloneFailureNotification: {
+    id: 'app.admin.tournaments.cloneFailureNotification',
+  },
+  deleteSuccessNotification: {
+    id: 'app.admin.tournaments.deleteSuccessNotification',
+  },
+  deleteFailureNotification: {
+    id: 'app.admin.tournaments.deleteFailureNotification',
   },
 });
 
@@ -87,7 +117,7 @@ function* handleTournamentClone({
       const { id } = data;
 
       yield put({
-        type: cloneActionTypes.SUCCESS,
+        type: additionalActionTypes.clone.SUCCESS,
       });
       yield put(push(`/admin/tournaments/${id}`));
       yield call(notification.success, {
@@ -99,13 +129,58 @@ function* handleTournamentClone({
       if (successCallback) successCallback();
     } else {
       yield put({
-        type: cloneActionTypes.FAILURE,
+        type: additionalActionTypes.clone.FAILURE,
       });
       yield call(notification.error, {
         message: intlGlobal.formatMessage(
-          intlMessages.changeFailureNotification,
+          intlMessages.cloneFailureNotification,
         ),
       });
+
+      if (failureCallback) failureCallback();
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* handleTournamentDelete({
+  payload: { tournamentId, successCallback, failureCallback },
+}) {
+  try {
+    const { status } = yield call(callApi, {
+      endpoint: `api/tournaments/${tournamentId}`,
+      method: 'DELETE',
+    });
+
+    if (status >= 200 && status < 300) {
+      yield put({
+        type: additionalActionTypes.delete.SUCCESS,
+      });
+      yield put(push('/admin/tournaments'));
+      yield call(notification.success, {
+        message: intlGlobal.formatMessage(
+          intlMessages.deleteSuccessNotification,
+        ),
+      });
+
+      if (successCallback) successCallback();
+    } else {
+      yield put({
+        type: additionalActionTypes.delete.FAILURE,
+      });
+
+      if (status === 403) {
+        yield call(notification.error, {
+          message: intlMessages.formatMessage(intlMessages.forbidden),
+        });
+      } else {
+        yield call(notification.error, {
+          message: intlGlobal.formatMessage(
+            intlMessages.deleteFailureNotification,
+          ),
+        });
+      }
 
       if (failureCallback) failureCallback();
     }
@@ -119,7 +194,12 @@ export function* saga() {
   yield all([takeLatest(actionTypes.CREATE_FAILURE, handleCreateFailure)]);
   yield all([takeLatest(actionTypes.UPDATE_SUCCESS, handleUpdateSuccess)]);
   yield all([takeLatest(actionTypes.UPDATE_FAILURE, handleUpdateFailure)]);
-  yield all([takeLatest(cloneActionTypes.REQUEST, handleTournamentClone)]);
+  yield all([
+    takeLatest(additionalActionTypes.clone.REQUEST, handleTournamentClone),
+  ]);
+  yield all([
+    takeLatest(additionalActionTypes.delete.REQUEST, handleTournamentDelete),
+  ]);
 }
 
 export default reducers;

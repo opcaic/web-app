@@ -18,6 +18,8 @@ import {
 import TournamentList from '@/modules/admin/components/Tournament/TournamentList';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
+import { roleSelector } from '@/modules/shared/selectors/auth';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
 class TournamentListPage extends React.Component {
   componentWillMount() {
@@ -25,6 +27,10 @@ class TournamentListPage extends React.Component {
   }
 
   render() {
+    const additionalParams = {
+      managedOnly: this.props.userRole === userRoleEnum.ORGANIZER,
+    };
+
     return (
       <PageLayout>
         <Button type="primary" style={{ marginBottom: 20 }}>
@@ -36,7 +42,7 @@ class TournamentListPage extends React.Component {
         <TournamentList
           dataSource={this.props.items}
           loading={this.props.isFetching || this.props.isFetchingGames}
-          fetch={this.props.fetchItems}
+          fetch={this.props.fetchItems(additionalParams)}
           totalItems={this.props.totalItems}
           games={this.props.games}
           cloneTournament={this.props.cloneTournament}
@@ -55,14 +61,19 @@ TournamentListPage.propTypes = {
   isFetchingGames: PropTypes.bool.isRequired,
   fetchGames: PropTypes.func.isRequired,
   cloneTournament: PropTypes.func.isRequired,
+  userRole: PropTypes.number.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchItems: params =>
+    fetchItems: additionalParams => params =>
       dispatch(
         tournamentActions.fetchMany(
-          prepareFilterParams(params, 'created', false),
+          prepareFilterParams(
+            Object.assign({}, additionalParams, params),
+            'created',
+            false,
+          ),
         ),
       ),
     fetchGames: () =>
@@ -83,6 +94,7 @@ const mapStateToProps = createStructuredSelector({
   totalItems: tournamentSelectors.getTotalItems,
   isFetchingGames: gameSelectors.isFetching,
   games: gameSelectors.getItems,
+  userRole: roleSelector,
 });
 
 const withConnect = connect(

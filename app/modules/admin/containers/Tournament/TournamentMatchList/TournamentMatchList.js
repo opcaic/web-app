@@ -10,6 +10,8 @@ import {
   createMatchExecution,
 } from '@/modules/admin/ducks/matches';
 import MatchList from '@/modules/shared/components/Tournament/MatchList/MatchList';
+import { roleSelector } from '@/modules/shared/selectors/auth';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
 class TournamentMatchList extends React.PureComponent {
   state = {
@@ -27,12 +29,18 @@ class TournamentMatchList extends React.PureComponent {
   };
 
   render() {
+    const additionalParams = {
+      managedOnly: this.props.userRole === userRoleEnum.ORGANIZER,
+    };
+
     return (
       <div>
         <MatchList
           dataSource={this.props.items}
           loading={this.props.isFetching}
-          fetch={this.props.fetchItems(this.props.tournament.id)}
+          fetch={this.props.fetchItems(additionalParams)(
+            this.props.tournament.id,
+          )}
           totalItems={this.props.totalItems}
           tournament={this.props.tournament}
           isAdmin
@@ -51,17 +59,23 @@ TournamentMatchList.propTypes = {
   fetchItems: PropTypes.func.isRequired,
   totalItems: PropTypes.number.isRequired,
   createMatchExecution: PropTypes.func.isRequired,
+  userRole: PropTypes.number.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchItems: tournamentId => params =>
+    fetchItems: additionalParams => tournamentId => params =>
       dispatch(
         matchActions.fetchMany(
-          prepareFilterParams(params, 'executed', false, {
-            tournamentId,
-            anonymize: false,
-          }),
+          prepareFilterParams(
+            Object.assign({}, additionalParams, params),
+            'executed',
+            false,
+            {
+              tournamentId,
+              anonymize: false,
+            },
+          ),
         ),
       ),
     createMatchExecution: (matchId, successCallback, failureCallback) =>
@@ -73,6 +87,7 @@ const mapStateToProps = createStructuredSelector({
   items: matchSelectors.getItems,
   isFetching: matchSelectors.isFetching,
   totalItems: matchSelectors.getTotalItems,
+  userRole: roleSelector,
 });
 
 const withConnect = connect(

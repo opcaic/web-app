@@ -9,7 +9,11 @@ import {
   actions as gameActions,
   selectors as gameSelectors,
 } from '@/modules/admin/ducks/games';
-import { actions as tournamentsActions } from '@/modules/admin/ducks/tournaments';
+import {
+  actions as tournamentsActions,
+  cloneTournament,
+  deleteTournament,
+} from '@/modules/admin/ducks/tournaments';
 import Spin from '@/modules/shared/components/Spin';
 import { Col, Row } from 'antd';
 import PropTypes from 'prop-types';
@@ -21,13 +25,15 @@ import { createStructuredSelector } from 'reselect';
 import TournamentFilesUpload from '../TournamentFilesUpload';
 import {
   uploadTournamentFiles,
+  deleteTournamentFiles,
   downloadTournamentFiles,
   hideTournamentFilesModal,
   showTournamentFilesModal,
   tournamentFilesUploadVisibleSelector,
 } from '@/modules/admin/ducks/tournamentFiles';
+import { currentUserSelector } from '@/modules/shared/selectors/auth';
+import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
-/* eslint-disable react/prefer-stateless-function */
 class TournamentBasicInfo extends React.PureComponent {
   state = {
     resource: this.props.tournament,
@@ -64,6 +70,12 @@ class TournamentBasicInfo extends React.PureComponent {
     this.setState({ hasAdditionalFiles: true });
   };
 
+  handleDeleteSuccess = originalCallback => {
+    this.setState({ hasAdditionalFiles: false });
+
+    if (originalCallback) originalCallback();
+  };
+
   render() {
     return (
       <Spin
@@ -78,6 +90,12 @@ class TournamentBasicInfo extends React.PureComponent {
               resource={this.state.resource}
               handleClick={this.changeState}
               failureCallback={this.reloadResource}
+              cloneTournament={this.props.clone}
+              deleteTournament={this.props.delete}
+              canDelete={
+                this.props.currentUser.role === userRoleEnum.ADMIN ||
+                this.props.currentUser.id === this.props.tournament.ownerId
+              }
             />
           </Col>
         </Row>
@@ -97,6 +115,17 @@ class TournamentBasicInfo extends React.PureComponent {
               showTournamentFilesModal={this.props.showModal}
               downloadTournamentFiles={this.props.downloadTournamentFiles}
               hasAdditionalFiles={this.state.hasAdditionalFiles}
+              deleteTournamentFiles={(
+                tournamentId,
+                successCallback,
+                failureCallback,
+              ) =>
+                this.props.deleteTournamentFiles(
+                  tournamentId,
+                  this.handleDeleteSuccess(successCallback),
+                  failureCallback,
+                )
+              }
             />
             <TournamentFilesUpload
               additionalSuccessCallback={this.handleUploadSuccess}
@@ -121,7 +150,11 @@ TournamentBasicInfo.propTypes = {
   isFetchingDocuments: PropTypes.bool.isRequired,
   changeState: PropTypes.func.isRequired,
   downloadTournamentFiles: PropTypes.func,
+  deleteTournamentFiles: PropTypes.func.isRequired,
   showModal: PropTypes.func,
+  clone: PropTypes.func.isRequired,
+  delete: PropTypes.func.isRequired,
+  currentUser: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -155,6 +188,8 @@ export function mapDispatchToProps(dispatch) {
         }),
       ),
     changeState: action => dispatch(action),
+    clone: tournamentId => dispatch(cloneTournament(tournamentId)),
+    delete: tournamentId => dispatch(deleteTournament(tournamentId)),
     uploadTournamentFiles: (
       fileList,
       tournamentId,
@@ -173,6 +208,10 @@ export function mapDispatchToProps(dispatch) {
           progressCallback,
         ),
       ),
+    deleteTournamentFiles: (tournamentId, successCallback, failureCallback) =>
+      dispatch(
+        deleteTournamentFiles(tournamentId, successCallback, failureCallback),
+      ),
     hideModal: () => dispatch(hideTournamentFilesModal()),
     showModal: tournament => dispatch(showTournamentFilesModal(tournament)),
     downloadTournamentFiles: tournamentId =>
@@ -186,6 +225,7 @@ const mapStateToProps = createStructuredSelector({
   isFetchingDocuments: documentSelectors.isFetching,
   documents: documentSelectors.getItems,
   visible: tournamentFilesUploadVisibleSelector,
+  currentUser: currentUserSelector,
 });
 
 const withConnect = connect(

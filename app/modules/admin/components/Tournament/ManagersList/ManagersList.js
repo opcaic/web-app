@@ -17,6 +17,7 @@ function prepareColumns(props) {
           type="danger"
           loading={props.isDeleting}
           onClick={() => props.deleteItem(record)}
+          hidden={!props.canDelete}
         >
           <FormattedMessage id="app.generic.delete" />
         </Button>

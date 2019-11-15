@@ -2,7 +2,7 @@ import { Table, Button } from 'antd';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import withAjax from '@/modules/shared/helpers/hocs/withAjax';
-import { getSearchProps, getActionProps } from '@/modules/shared/helpers/table';
+import { getActionProps, getSearchProps } from '@/modules/shared/helpers/table';
 
 function prepareColumns(props) {
   return [
