@@ -123,7 +123,7 @@ function* handleSubmissionUpload({
 
   let zipFile = null;
 
-  if (fileList.length === 1 && fileList[0].type === 'application/zip') {
+  if (fileList.length === 1 && fileList[0].name.endsWith('.zip')) {
     // eslint-disable-next-line prefer-destructuring
     zipFile = fileList[0];
   } else {
