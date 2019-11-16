@@ -95,7 +95,7 @@ const StyledTable = styled(Table)`
 const Leaderboard = props => (
   <StyledTable
     columns={prepareColumns(props)}
-    rowKey={record => record.id}
+    rowKey={record => record.submissionId}
     pagination={false}
     locale={{
       emptyText: (

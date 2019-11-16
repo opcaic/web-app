@@ -32,12 +32,17 @@ class TournamentMatchDetail extends React.PureComponent {
       <PageContent
         title={<FormattedMessage id="app.public.tournamentMatchDetail.title" />}
         buttons={[
-          <Button type="default" size="small" style={{ marginRight: 10 }}>
+          <Button
+            type="default"
+            size="small"
+            style={{ marginRight: 10 }}
+            key="back"
+          >
             <Link to={`/tournaments/${this.props.tournament.id}/matches/`}>
               <FormattedMessage id="app.generic.backToList" />
             </Link>
           </Button>,
-          <TournamentAdminButton />,
+          <TournamentAdminButton key="admin" />,
         ]}
       >
         <TournamentPageTitle

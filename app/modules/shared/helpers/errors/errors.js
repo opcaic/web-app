@@ -127,6 +127,9 @@ export const errorIntlMessages = defineMessages({
   resetPasswordFailure: {
     id: 'app.errors.resetPasswordFailure',
   },
+  tooManyRequests: {
+    id: 'app.errors.tooManyRequests',
+  },
 });
 
 export function prepareFormErrors(
