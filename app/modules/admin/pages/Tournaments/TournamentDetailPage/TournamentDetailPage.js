@@ -48,7 +48,12 @@ TournamentDetailPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchResource: id => dispatch(tournamentsActions.fetchResource(id)),
+    fetchResource: id =>
+      dispatch(
+        tournamentsActions.fetchResource(id, {
+          endpointParams: { useAdminSuffix: true },
+        }),
+      ),
   };
 }
 

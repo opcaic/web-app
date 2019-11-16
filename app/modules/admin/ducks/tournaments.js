@@ -9,6 +9,10 @@ import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 export const { actions, actionTypes, reducers, selectors } = resourceFactory({
   endpoint: 'api/tournaments',
   resourceName: 'tournaments',
+  apiEndpointFactory: (id = '', endpointParams) =>
+    `api/tournaments/${id}${
+      endpointParams && endpointParams.useAdminSuffix ? '/admin' : ''
+    }`,
 });
 
 const additionalActionTypes = {

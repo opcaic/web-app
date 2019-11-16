@@ -166,7 +166,12 @@ TournamentBasicInfo.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchResource: id => dispatch(tournamentsActions.fetchResource(id)),
+    fetchResource: id =>
+      dispatch(
+        tournamentsActions.fetchResource(id, {
+          endpointParams: { useAdminSuffix: true },
+        }),
+      ),
     updateResource: (resource, successCallback, failureCallback) =>
       dispatch(
         tournamentsActions.updateResource(resource.id, resource, {
