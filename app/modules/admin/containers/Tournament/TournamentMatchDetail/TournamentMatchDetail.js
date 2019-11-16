@@ -38,6 +38,7 @@ class TournamentMatchDetail extends React.PureComponent {
 
             <Collapse defaultActiveKey={[0]} accordion>
               {match &&
+                match.executions &&
                 match.executions.reverse().map((x, index) => (
                   <Collapse.Panel
                     header={

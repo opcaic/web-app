@@ -8,6 +8,7 @@ import { tournamentListItemPropType } from '@/modules/public/utils/propTypes';
 import { dateDiffInDays } from '@/modules/shared/helpers/time';
 import { FormattedMessage } from 'react-intl';
 import {
+  tournamentAvailabilityEnum,
   tournamentScopeEnum,
   tournamentSimplifiedStateEnum,
   tournamentStateEnum,
@@ -29,6 +30,10 @@ const Deadline = styled.div`
   font-size: 12px;
   color: rgba(0, 0, 0, 0.85);
   margin-bottom: 3px;
+`;
+
+const HeaderTag = styled(Tag)`
+  margin-bottom: 3px !important;
 `;
 
 const StyledListCard = styled(ListCard)`
@@ -64,14 +69,22 @@ const TournamentCard = props => {
     );
     if (dayDiff < 14) {
       headerTags.push(
-        <Tag color="#f50" key="ending-soon">
+        <HeaderTag color="#f50" key="ending-soon">
           <FormattedMessage
             id="app.public.tournamentCard.endingSoon"
             values={{ days: dayDiff }}
           />
-        </Tag>,
+        </HeaderTag>,
       );
     }
+  }
+
+  if (props.tournament.availability === tournamentAvailabilityEnum.PRIVATE) {
+    headerTags.push(
+      <HeaderTag color="#000" key="invited-only">
+        <FormattedMessage id="app.public.tournamentCard.invitedOnly" />
+      </HeaderTag>,
+    );
   }
 
   return (

@@ -54,7 +54,8 @@ export function getFilterParams(selectedValues) {
 export function acceptsSubmissions(tournament) {
   return (
     (tournament.scope === tournamentScopeEnum.ONGOING &&
-      tournament.state === tournamentStateEnum.RUNNING) ||
+      (tournament.state === tournamentStateEnum.PUBLISHED ||
+        tournament.state === tournamentStateEnum.RUNNING)) ||
     (tournament.scope === tournamentScopeEnum.DEADLINE &&
       tournament.state === tournamentStateEnum.PUBLISHED)
   );
