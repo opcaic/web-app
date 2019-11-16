@@ -10,6 +10,9 @@ import {
   createMatchExecution,
 } from '@/modules/admin/ducks/matches';
 import MatchList from '@/modules/shared/components/Tournament/MatchList/MatchList';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { roleSelector } from '@/modules/shared/selectors/auth';
 import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
@@ -35,6 +38,12 @@ class TournamentMatchList extends React.PureComponent {
 
     return (
       <div>
+        <TournamentPageTitle
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailMatchesPage,
+          )}
+          tournament={this.props.tournament}
+        />
         <MatchList
           dataSource={this.props.items}
           loading={this.props.isFetching}

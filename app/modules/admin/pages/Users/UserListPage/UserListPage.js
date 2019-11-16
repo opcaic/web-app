@@ -10,12 +10,16 @@ import {
 import UserList from '@/modules/admin/components/User/UserList';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import PageTitle from '@/modules/shared/components/PageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 class UserListPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
+        <PageTitle title={intlGlobal.formatMessage(pageTitles.userListPage)} />
         <UserList
           dataSource={this.props.users}
           loading={this.props.isFetching}

@@ -16,9 +16,9 @@ import { FormattedMessage } from 'react-intl';
 import PageContent from '../../../components/layout/PageContent';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import SubmissionList from '@/modules/shared/components/Tournament/SubmissionList';
-import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton/TournamentAdminButton';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -35,7 +35,7 @@ export class TournamentSubmissionList extends React.PureComponent {
         <TournamentPageTitle
           tournament={this.props.tournament}
           title={intlGlobal.formatMessage(
-            pageTitles.tournamentDetailSubmissionsPage,
+            pageTitles.tournamentDetailMySubmissionsPage,
           )}
         />
 

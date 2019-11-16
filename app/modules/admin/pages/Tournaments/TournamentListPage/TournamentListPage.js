@@ -18,6 +18,9 @@ import {
 import TournamentList from '@/modules/admin/components/Tournament/TournamentList';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import PageTitle from '@/modules/shared/components/PageTitle/PageTitle';
 import { roleSelector } from '@/modules/shared/selectors/auth';
 import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
@@ -33,6 +36,9 @@ class TournamentListPage extends React.Component {
 
     return (
       <PageLayout>
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.tournamentListPage)}
+        />
         <Button type="primary" style={{ marginBottom: 20 }}>
           <Link to="/admin/tournaments/new">
             <FormattedMessage id="app.admin.tournamentList.createNew" />

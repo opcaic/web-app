@@ -12,6 +12,9 @@ import {
 } from '@/modules/admin/ducks/tournamentParticipants';
 import ParticipantList from '@/modules/admin/components/Tournament/ParticipantList';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentsParticipantList extends React.PureComponent {
@@ -22,6 +25,12 @@ class TournamentsParticipantList extends React.PureComponent {
   render() {
     return (
       <div>
+        <TournamentPageTitle
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailParticipantsPage,
+          )}
+          tournament={this.props.tournament}
+        />
         <Button type="primary" style={{ marginBottom: 20 }}>
           <Link
             to={`/admin/tournaments/${

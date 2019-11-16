@@ -10,8 +10,10 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { getLeaderboardData } from '@/modules/shared/helpers/resources/leaderboards';
 import ProgressVisualization from '@/modules/shared/components/Tournament/ProgressVisualization';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 
-/* eslint-disable react/prefer-stateless-function */
 export class TournamentLeaderboard extends React.PureComponent {
   componentDidMount() {
     this.props.fetchItems(this.props.tournament.id);
@@ -20,6 +22,12 @@ export class TournamentLeaderboard extends React.PureComponent {
   render() {
     return (
       <div>
+        <TournamentPageTitle
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailLeaderboardPage,
+          )}
+          tournament={this.props.tournament}
+        />
         {this.props.resource && (
           <div style={{ marginBottom: 25 }}>
             <ProgressVisualization

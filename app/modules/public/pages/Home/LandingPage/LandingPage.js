@@ -3,7 +3,7 @@ import PageLayout from '@/modules/public/components/layout/PageLayout';
 import FeaturedTournaments from '@/modules/public/containers/HomePage/FeaturedTournaments';
 import FeaturedGames from '@/modules/public/containers/HomePage/FeaturedGames';
 import PageTitle from '@/modules/shared/components/PageTitle';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import Banner from '@/modules/public/components/Home/Banner';
 

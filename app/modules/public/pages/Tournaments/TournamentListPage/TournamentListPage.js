@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import Container from '@/modules/public/components/layout/Container';
 import TournamentFilter from '@/modules/public/components/Tournament/TournamentFilter';

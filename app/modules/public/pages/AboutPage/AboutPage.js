@@ -2,7 +2,7 @@ import React from 'react';
 import LocalizedContent from '@/modules/shared/components/LocalizedContent';
 import StaticPage from '@/modules/public/components/layout/StaticPage';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import ReactMarkdown from 'react-markdown';
 import CodeBlock from '@/modules/shared/components/CodeBlock';
 import { en } from '@/modules/public/pages/AboutPage/localizations/en';

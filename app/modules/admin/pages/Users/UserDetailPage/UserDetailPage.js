@@ -11,6 +11,9 @@ import {
 import UserForm from '@/modules/admin/components/User/UserForm';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import Spin from '@/modules/shared/components/Spin';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import PageTitle from '@/modules/shared/components/PageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 class UserDetailPage extends React.PureComponent {
@@ -26,6 +29,9 @@ class UserDetailPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.userDetailPage)}
+        />
         <Spin spinning={this.props.isFetching || this.props.resource == null}>
           <Row>
             <Col span={12}>

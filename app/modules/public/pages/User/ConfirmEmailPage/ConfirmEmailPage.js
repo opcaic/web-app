@@ -12,7 +12,7 @@ import Spin from '@/modules/shared/components/Spin';
 import { confirmEmail } from '@/modules/public/ducks/registration';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ConfirmEmailPage extends React.PureComponent {

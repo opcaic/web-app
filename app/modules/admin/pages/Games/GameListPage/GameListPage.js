@@ -13,12 +13,16 @@ import {
 } from '../../../ducks/games';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import PageTitle from '@/modules/shared/components/PageTitle/PageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 class GameListPage extends React.PureComponent {
   render() {
     return (
       <PageLayout>
+        <PageTitle title={intlGlobal.formatMessage(pageTitles.gameListPage)} />
         <Button type="primary" style={{ marginBottom: 20 }}>
           <Link to="/admin/games/new">
             <FormattedMessage id="app.admin.gameList.createNew" />

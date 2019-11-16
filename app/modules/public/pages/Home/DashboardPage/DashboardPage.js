@@ -1,7 +1,7 @@
 import React from 'react';
 import PageLayout from '@/modules/public/components/layout/PageLayout';
 import PageTitle from '@/modules/shared/components/PageTitle';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import DashboardMatches from '@/modules/public/containers/HomePage/DashboardMatches';
 import { Col, Row } from 'antd';

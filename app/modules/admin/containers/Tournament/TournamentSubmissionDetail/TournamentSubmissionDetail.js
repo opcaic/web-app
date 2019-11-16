@@ -21,8 +21,10 @@ import {
   downloadSubmission,
   runValidation,
 } from '@/modules/shared/ducks/submission';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 
-/* eslint-disable react/prefer-stateless-function */
 class TournamentSubmissionDetail extends React.PureComponent {
   componentDidMount() {
     this.props.fetchResource(this.props.match.params.submissionId);
@@ -31,6 +33,12 @@ class TournamentSubmissionDetail extends React.PureComponent {
   render() {
     return (
       <div>
+        <TournamentPageTitle
+          tournament={this.props.tournament}
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailSubmissionPage,
+          )}
+        />
         <Spin spinning={this.props.isFetching || this.props.resource === null}>
           <Button type="default" style={{ marginBottom: 20 }}>
             <Link

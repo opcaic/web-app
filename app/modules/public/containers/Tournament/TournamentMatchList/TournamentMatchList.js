@@ -15,9 +15,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';
-import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import PageContent from '@/modules/public/components/layout/PageContent';
 import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton/TournamentAdminButton';
 

@@ -7,36 +7,47 @@ import { actions as participantsActions } from '@/modules/admin/ducks/tournament
 import ParticipantsForm from '@/modules/admin/components/Tournament/ParticipantForm';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentParticipantNew extends React.PureComponent {
   render() {
     return (
-      <Row>
-        <Col span={24}>
-          <Button type="default" style={{ marginBottom: 20 }}>
-            <Link
-              to={`/admin/tournaments/${
-                this.props.tournament.id
-              }/participants/`}
-            >
-              <FormattedMessage id="app.admin.tournamentDocumentNew.backToList" />
-            </Link>
-          </Button>
+      <div>
+        <TournamentPageTitle
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailParticipantsPage,
+          )}
+          tournament={this.props.tournament}
+        />
+        <Row>
+          <Col span={24}>
+            <Button type="default" style={{ marginBottom: 20 }}>
+              <Link
+                to={`/admin/tournaments/${
+                  this.props.tournament.id
+                }/participants/`}
+              >
+                <FormattedMessage id="app.admin.tournamentDocumentNew.backToList" />
+              </Link>
+            </Button>
 
-          <ParticipantsForm
-            resource={{}}
-            onSubmit={(values, successCallback, failureCallback) =>
-              this.props.createResource(
-                this.props.tournament.id,
-                values,
-                successCallback,
-                failureCallback,
-              )
-            }
-          />
-        </Col>
-      </Row>
+            <ParticipantsForm
+              resource={{}}
+              onSubmit={(values, successCallback, failureCallback) =>
+                this.props.createResource(
+                  this.props.tournament.id,
+                  values,
+                  successCallback,
+                  failureCallback,
+                )
+              }
+            />
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

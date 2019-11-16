@@ -1,6 +1,6 @@
 import React from 'react';
 import Leaderboard from '@/modules/shared/components/Tournament/Leaderboard';
-import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ import PageContent from '@/modules/public/components/layout/PageContent';
 import { getLeaderboardData } from '@/modules/shared/helpers/resources/leaderboards';
 import PropTypes from 'prop-types';
 import { tournamentPropType } from '@/modules/public/utils/propTypes';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import ProgressVisualization from '@/modules/shared/components/Tournament/ProgressVisualization';
 import TournamentAdminButton from '@/modules/public/components/Tournament/TournamentDetail/TournamentAdminButton/TournamentAdminButton';
 

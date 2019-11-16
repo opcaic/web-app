@@ -9,6 +9,9 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import SubmissionList from '@/modules/shared/components/Tournament/SubmissionList';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { roleSelector } from '@/modules/shared/selectors/auth';
 import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
@@ -21,6 +24,12 @@ export class TournamentSubmissionList extends React.PureComponent {
 
     return (
       <div>
+        <TournamentPageTitle
+          tournament={this.props.tournament}
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailSubmissionsPage,
+          )}
+        />
         <SubmissionList
           dataSource={this.props.items}
           loading={this.props.isFetching}

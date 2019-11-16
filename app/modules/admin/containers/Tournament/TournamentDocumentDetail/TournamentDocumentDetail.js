@@ -12,8 +12,10 @@ import DocumentForm from '@/modules/admin/components/Document/DocumentForm';
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Spin from '@/modules/shared/components/Spin';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 
-/* eslint-disable react/prefer-stateless-function */
 class TournamentDocumentDetail extends React.PureComponent {
   componentDidMount() {
     this.props.fetchResource(this.props.match.params.documentId);
@@ -21,34 +23,44 @@ class TournamentDocumentDetail extends React.PureComponent {
 
   render() {
     return (
-      <Spin spinning={this.props.isFetching}>
-        <Row>
-          <Col span={24}>
-            <Button type="default" style={{ marginBottom: 20 }}>
-              <Link
-                to={`/admin/tournaments/${this.props.tournament.id}/documents/`}
-              >
-                <FormattedMessage id="app.admin.tournamentDocumentNew.backToList" />
-              </Link>
-            </Button>
+      <div>
+        <TournamentPageTitle
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailDocumentPage,
+          )}
+          tournament={this.props.tournament || {}}
+        />
+        <Spin spinning={this.props.isFetching}>
+          <Row>
+            <Col span={24}>
+              <Button type="default" style={{ marginBottom: 20 }}>
+                <Link
+                  to={`/admin/tournaments/${
+                    this.props.tournament.id
+                  }/documents/`}
+                >
+                  <FormattedMessage id="app.admin.tournamentDocumentNew.backToList" />
+                </Link>
+              </Button>
 
-            <DocumentForm
-              resource={this.props.resource || {}}
-              onSubmit={(values, successCallback, failureCallback) =>
-                this.props.updateResource(
-                  Object.assign(
-                    { tournamentId: this.props.tournament.id },
-                    this.props.resource,
-                    values,
-                  ),
-                  successCallback,
-                  failureCallback,
-                )
-              }
-            />
-          </Col>
-        </Row>
-      </Spin>
+              <DocumentForm
+                resource={this.props.resource || {}}
+                onSubmit={(values, successCallback, failureCallback) =>
+                  this.props.updateResource(
+                    Object.assign(
+                      { tournamentId: this.props.tournament.id },
+                      this.props.resource,
+                      values,
+                    ),
+                    successCallback,
+                    failureCallback,
+                  )
+                }
+              />
+            </Col>
+          </Row>
+        </Spin>
+      </div>
     );
   }
 }

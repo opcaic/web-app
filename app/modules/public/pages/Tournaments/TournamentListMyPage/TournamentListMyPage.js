@@ -17,7 +17,7 @@ import PageTitle from '@/modules/shared/components/PageTitle';
 import Container from '@/modules/public/components/layout/Container';
 import PageContent from '@/modules/public/components/layout/PageContent';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class TournamentListMyPage extends React.PureComponent {

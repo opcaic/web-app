@@ -10,9 +10,15 @@ import {
   actions as emailTemplateActions,
 } from '@/modules/admin/ducks/emailTemplates';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import PageTitle from '@/modules/shared/components/PageTitle/PageTitle';
 
 const EmailTemplateListPage = props => (
   <PageLayout>
+    <PageTitle
+      title={intlGlobal.formatMessage(pageTitles.emailTemplateListPage)}
+    />
     <EmailTemplateList
       dataSource={props.items}
       loading={props.isFetching}

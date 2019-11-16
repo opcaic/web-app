@@ -10,7 +10,7 @@ import ResetPasswordForm from '@/modules/public/components/Login/ResetPasswordFo
 import * as qs from 'query-string';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ResetPasswordPage extends React.PureComponent {

@@ -11,6 +11,9 @@ import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import Spin from '@/modules/shared/components/Spin';
 import EmailTemplateForm from '@/modules/admin/components/EmailTemplate/EmailTemplateForm/EmailTemplateForm';
 import { emailTemplatePropType } from '@/modules/admin/utils/propTypes';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import PageTitle from '@/modules/shared/components/PageTitle/PageTitle';
 
 class EmailTemplateDetailPage extends React.Component {
   componentDidMount() {
@@ -27,6 +30,10 @@ class EmailTemplateDetailPage extends React.Component {
   render() {
     return (
       <PageLayout>
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.emailTemplateDetailPage)}
+        />
+
         <Spin spinning={this.props.resource === null || this.props.isFetching}>
           <EmailTemplateForm
             resource={this.props.resource}

@@ -12,12 +12,21 @@ import {
 } from '../../../ducks/documents';
 import DocumentList from '@/modules/admin/components/Document/DocumentList';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentDocumentList extends React.PureComponent {
   render() {
     return (
       <div>
+        <TournamentPageTitle
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailDocumentsPage,
+          )}
+          tournament={this.props.tournament || {}}
+        />
         <Button type="primary" style={{ marginBottom: 20 }}>
           <Link
             to={`/admin/tournaments/${this.props.tournament.id}/documents/new`}

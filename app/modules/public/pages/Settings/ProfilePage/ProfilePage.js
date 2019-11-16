@@ -10,7 +10,7 @@ import {
 } from '@/modules/public/ducks/users';
 import { withRouter } from 'react-router-dom';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import ProfileForm from '@/modules/public/components/Account/ProfileForm';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';

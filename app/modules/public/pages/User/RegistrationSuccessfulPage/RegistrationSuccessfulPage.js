@@ -8,7 +8,7 @@ import NoMenuPageLayout from '@/modules/public/components/layout/NoMenuPageLayou
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class RegistrationSuccessfulPage extends React.PureComponent {

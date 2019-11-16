@@ -31,6 +31,7 @@ import {
   showTournamentFilesModal,
   tournamentFilesUploadVisibleSelector,
 } from '@/modules/admin/ducks/tournamentFiles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
 
@@ -78,61 +79,67 @@ class TournamentBasicInfo extends React.PureComponent {
 
   render() {
     return (
-      <Spin
-        spinning={this.props.isFetchingGames || this.props.isFetchingDocuments}
-      >
-        <Row style={{ marginBottom: 20 }}>
-          <Col xl={16}>
-            <TournamentStats resource={this.state.resource} />
-          </Col>
-          <Col xl={8} style={{ textAlign: 'right' }}>
-            <TournamentActionButtons
-              resource={this.state.resource}
-              handleClick={this.changeState}
-              failureCallback={this.reloadResource}
-              cloneTournament={this.props.clone}
-              deleteTournament={this.props.delete}
-              canDelete={
-                this.props.currentUser.role === userRoleEnum.ADMIN ||
-                this.props.currentUser.id === this.props.tournament.ownerId
-              }
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <TournamentForm
-              resource={this.state.resource || {}}
-              games={this.props.games}
-              documents={this.props.documents}
-              onSubmit={(values, successCallback, failureCallback) =>
-                this.props.updateResource(
-                  Object.assign({}, this.state.resource, values),
+      <div>
+        <TournamentPageTitle tournament={this.props.tournament} />
+
+        <Spin
+          spinning={
+            this.props.isFetchingGames || this.props.isFetchingDocuments
+          }
+        >
+          <Row style={{ marginBottom: 20 }}>
+            <Col xl={16}>
+              <TournamentStats resource={this.state.resource} />
+            </Col>
+            <Col xl={8} style={{ textAlign: 'right' }}>
+              <TournamentActionButtons
+                resource={this.state.resource}
+                handleClick={this.changeState}
+                failureCallback={this.reloadResource}
+                cloneTournament={this.props.clone}
+                deleteTournament={this.props.delete}
+                canDelete={
+                  this.props.currentUser.role === userRoleEnum.ADMIN ||
+                  this.props.currentUser.id === this.props.tournament.ownerId
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <TournamentForm
+                resource={this.state.resource || {}}
+                games={this.props.games}
+                documents={this.props.documents}
+                onSubmit={(values, successCallback, failureCallback) =>
+                  this.props.updateResource(
+                    Object.assign({}, this.state.resource, values),
+                    successCallback,
+                    failureCallback,
+                  )
+                }
+                showTournamentFilesModal={this.props.showModal}
+                downloadTournamentFiles={this.props.downloadTournamentFiles}
+                hasAdditionalFiles={this.state.hasAdditionalFiles}
+                deleteTournamentFiles={(
+                  tournamentId,
                   successCallback,
                   failureCallback,
-                )
-              }
-              showTournamentFilesModal={this.props.showModal}
-              downloadTournamentFiles={this.props.downloadTournamentFiles}
-              hasAdditionalFiles={this.state.hasAdditionalFiles}
-              deleteTournamentFiles={(
-                tournamentId,
-                successCallback,
-                failureCallback,
-              ) =>
-                this.props.deleteTournamentFiles(
-                  tournamentId,
-                  this.handleDeleteSuccess(successCallback),
-                  failureCallback,
-                )
-              }
-            />
-            <TournamentFilesUpload
-              additionalSuccessCallback={this.handleUploadSuccess}
-            />
-          </Col>
-        </Row>
-      </Spin>
+                ) =>
+                  this.props.deleteTournamentFiles(
+                    tournamentId,
+                    this.handleDeleteSuccess(successCallback),
+                    failureCallback,
+                  )
+                }
+              />
+              <TournamentFilesUpload
+                additionalSuccessCallback={this.handleUploadSuccess}
+              />
+            </Col>
+          </Row>
+        </Spin>
+      </div>
     );
   }
 }

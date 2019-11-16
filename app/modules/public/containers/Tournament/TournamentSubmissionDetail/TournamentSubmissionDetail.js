@@ -15,9 +15,9 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import PageContent from '@/modules/public/components/layout/PageContent';
-import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import Submission from '@/modules/shared/components/Tournament/Submission';
 import { prepareFilterParams } from '@/modules/shared/helpers/table';
 import { matchStateEnum } from '@/modules/shared/helpers/enumHelpers';

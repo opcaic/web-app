@@ -2,7 +2,7 @@ import React from 'react';
 import PageLayout from '@/modules/public/components/layout/PageLayout';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import { Button, Result } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';

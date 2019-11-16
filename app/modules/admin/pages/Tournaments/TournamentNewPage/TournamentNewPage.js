@@ -11,6 +11,9 @@ import {
 } from '@/modules/admin/ducks/games';
 import TournamentForm from '@/modules/admin/components/Tournament/TournamentForm';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import PageTitle from '@/modules/shared/components/PageTitle/PageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentNewPage extends React.PureComponent {
@@ -29,6 +32,9 @@ class TournamentNewPage extends React.PureComponent {
 
     return (
       <PageLayout>
+        <PageTitle
+          title={intlGlobal.formatMessage(pageTitles.newTournamentPage)}
+        />
         <Row>
           <Col span={24}>
             <TournamentForm

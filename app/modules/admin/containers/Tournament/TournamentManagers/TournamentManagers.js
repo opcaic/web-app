@@ -14,6 +14,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import ManagersCreator from '@/modules/admin/components/Tournament/ManagersCreator/ManagersCreator';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
 
 class TournamentManagers extends React.Component {
@@ -38,6 +41,12 @@ class TournamentManagers extends React.Component {
 
     return (
       <div>
+        <TournamentPageTitle
+          title={intlGlobal.formatMessage(
+            pageTitles.tournamentDetailManagersPage,
+          )}
+          tournament={this.props.tournament}
+        />
         {canManage && (
           <div style={{ marginBottom: 15 }}>
             <ManagersCreator

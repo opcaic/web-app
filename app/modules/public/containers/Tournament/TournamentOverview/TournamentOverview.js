@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import Spin from '@/modules/shared/components/Spin';
-import TournamentPageTitle from '@/modules/public/components/Tournament/TournamentDetail/TournamentPageTitle';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import {
   actions as leaderboardActions,
   selectors as leaderboardSelectors,

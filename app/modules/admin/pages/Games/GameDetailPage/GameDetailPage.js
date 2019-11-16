@@ -12,6 +12,7 @@ import GameDetailRoutes from '@/modules/admin/pages/Games/GameDetailRoutes';
 import withSyncedActiveItems from '@/modules/shared/helpers/hocs/withSyncedActiveItems';
 import PageLayout from '@/modules/admin/components/layout/PageLayout';
 import Spin from '@/modules/shared/components/Spin';
+import PageTitle from '@/modules/shared/components/PageTitle/PageTitle';
 
 const SyncedMenu = withSyncedActiveItems(GameMenu, 'gameMenu');
 
@@ -23,6 +24,7 @@ class GameDetailPage extends React.Component {
   render() {
     return (
       <PageLayout>
+        {this.props.resource && <PageTitle title={this.props.resource.name} />}
         <SyncedMenu id={this.props.match.params.id} />
         <div style={{ height: 40 }} />
 

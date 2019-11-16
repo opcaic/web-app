@@ -14,6 +14,9 @@ import Spin from '@/modules/shared/components/Spin';
 import MatchExecution from '@/modules/shared/components/Tournament/MatchExecution';
 import { entryPointResultEnum } from '@/modules/shared/helpers/enumHelpers';
 import { downloadFiles } from '@/modules/shared/ducks/matches';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
+import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
+import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentMatchDetail extends React.PureComponent {
@@ -25,49 +28,55 @@ class TournamentMatchDetail extends React.PureComponent {
     const match = this.props.resource;
 
     return (
-      <Spin spinning={this.props.isFetching || this.props.resource === null}>
-        <Row>
-          <Col span={24}>
-            <Button type="default" style={{ marginBottom: 20 }}>
-              <Link
-                to={`/admin/tournaments/${this.props.tournament.id}/matches/`}
-              >
-                <FormattedMessage id="app.admin.tournamentMatchDetail.backToList" />
-              </Link>
-            </Button>
+      <div>
+        <TournamentPageTitle
+          tournament={this.props.tournament}
+          title={intlGlobal.formatMessage(pageTitles.tournamentDetailMatchPage)}
+        />
+        <Spin spinning={this.props.isFetching || this.props.resource === null}>
+          <Row>
+            <Col span={24}>
+              <Button type="default" style={{ marginBottom: 20 }}>
+                <Link
+                  to={`/admin/tournaments/${this.props.tournament.id}/matches/`}
+                >
+                  <FormattedMessage id="app.admin.tournamentMatchDetail.backToList" />
+                </Link>
+              </Button>
 
-            <Collapse defaultActiveKey={[0]} accordion>
-              {match &&
-                match.executions &&
-                match.executions.reverse().map((x, index) => (
-                  <Collapse.Panel
-                    header={
-                      <FormattedMessage
-                        id="app.admin.tournamentMatchDetail.collapseHeader"
-                        values={{
-                          state: entryPointResultEnum.helpers.idToText(
-                            x.executorResult,
-                          ),
-                          index: this.props.resource.executions.length - index,
-                        }}
+              <Collapse defaultActiveKey={[0]} accordion>
+                {match &&
+                  match.executions.reverse().map((x, index) => (
+                    <Collapse.Panel
+                      header={
+                        <FormattedMessage
+                          id="app.admin.tournamentMatchDetail.collapseHeader"
+                          values={{
+                            state: entryPointResultEnum.helpers.idToText(
+                              x.executorResult,
+                            ),
+                            index:
+                              this.props.resource.executions.length - index,
+                          }}
+                        />
+                      }
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={index}
+                    >
+                      <MatchExecution
+                        matchExecution={x}
+                        match={match}
+                        tournament={this.props.tournament}
+                        isAdmin
+                        downloadFiles={() => this.props.downloadFiles(x.id)}
                       />
-                    }
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={index}
-                  >
-                    <MatchExecution
-                      matchExecution={x}
-                      match={match}
-                      tournament={this.props.tournament}
-                      isAdmin
-                      downloadFiles={() => this.props.downloadFiles(x.id)}
-                    />
-                  </Collapse.Panel>
-                ))}
-            </Collapse>
-          </Col>
-        </Row>
-      </Spin>
+                    </Collapse.Panel>
+                  ))}
+              </Collapse>
+            </Col>
+          </Row>
+        </Spin>
+      </div>
     );
   }
 }

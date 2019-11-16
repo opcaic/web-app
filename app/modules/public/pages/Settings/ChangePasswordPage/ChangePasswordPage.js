@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { changePassword } from '@/modules/public/ducks/users';
 import { withRouter } from 'react-router-dom';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
-import { pageTitles } from '@/modules/public/utils/pageTitles';
+import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import PageTitle from '@/modules/shared/components/PageTitle';
 import ChangePasswordForm from '@/modules/public/components/Account/ChangePasswordForm';
 
