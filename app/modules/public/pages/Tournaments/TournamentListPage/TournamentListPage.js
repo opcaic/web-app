@@ -40,7 +40,10 @@ export class TournamentListPage extends React.PureComponent {
     filterStateNumber: 0,
   };
 
+  isMounted = false;
+
   componentDidMount() {
+    this.isMounted = true;
     this.props.fetchGames();
     this.onRouteChanged();
   }
@@ -49,6 +52,10 @@ export class TournamentListPage extends React.PureComponent {
     if (this.props.location !== prevProps.location) {
       this.onRouteChanged();
     }
+  }
+
+  componentWillUnmount() {
+    this.isMounted = false;
   }
 
   onFilterChange = selectedValues => {
@@ -71,22 +78,13 @@ export class TournamentListPage extends React.PureComponent {
   };
 
   fetchData = (additionalParams, successCallback, failureCallback) => {
-    this.props.fetchItems(
-      getFilterParams(this.state.selectedFilterValues),
-      additionalParams,
-      this.fetchDataSuccessCallback(successCallback),
-      failureCallback,
-    );
-  };
-
-  fetchDataSuccessCallback = originalSuccessCallback => (data, ...rest) => {
-    const transformedData = {
-      total: data.total,
-      list: data.list,
-    };
-
-    if (originalSuccessCallback) {
-      originalSuccessCallback(transformedData, ...rest);
+    if (this.isMounted) {
+      this.props.fetchItems(
+        getFilterParams(this.state.selectedFilterValues),
+        additionalParams,
+        successCallback,
+        failureCallback,
+      );
     }
   };
 

@@ -41,7 +41,7 @@ function prepareColumns({ view }) {
     key: 'deadline',
     render: (text, record) =>
       record.scope === tournamentScopeEnum.DEADLINE ? (
-        <TimeAgo date={new Date(record.deadline)} />
+        <TimeAgo date={record.deadline} />
       ) : (
         <FormattedMessage id="app.shared.tournamentList.withoutDeadline" />
       ),
