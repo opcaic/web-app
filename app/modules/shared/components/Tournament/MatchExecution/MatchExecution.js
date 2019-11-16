@@ -108,6 +108,10 @@ class MatchExecution extends Component {
   render() {
     // eslint-disable-next-line prefer-destructuring
     const additionalData = this.props.matchExecution.additionalData;
+    const shouldDisplayCompilerResults =
+      this.props.isAdmin && this.props.matchExecution.botResults;
+    const shouldDisplayException =
+      this.props.isAdmin && this.props.matchExecution.exception !== null;
 
     return (
       <div>
@@ -177,6 +181,16 @@ class MatchExecution extends Component {
             </Descriptions.Item>
           )}
 
+          {shouldDisplayException && (
+            <Descriptions.Item
+              label={
+                <FormattedMessage id="app.shared.matchExecution.exception" />
+              }
+            >
+              {this.props.matchExecution.exception}
+            </Descriptions.Item>
+          )}
+
           {this.props.isAdmin && (
             <Descriptions.Item
               label={
@@ -210,9 +224,10 @@ class MatchExecution extends Component {
             {this.props.match.submissions.map((x, index) => [
               <span key={`sep_${x.id}`}>{index ? ', ' : ''}</span>,
               <span key={x.id}>
-                {getSubmissionUsername(x)}{' '}
+                {getSubmissionUsername(x)}
                 {this.props.isAdmin && (
                   <span>
+                    {' '}
                     (
                     <Link
                       to={`/admin/tournaments/${
@@ -239,6 +254,39 @@ class MatchExecution extends Component {
             >
               <FormattedMessage id="app.shared.matchExecution.downloadFiles" />
             </Button>
+          </div>
+        )}
+
+        {shouldDisplayCompilerResults && (
+          <div>
+            <Typography.Title level={3} style={{ marginTop: 20 }}>
+              <FormattedMessage id="app.shared.matchExecution.compilerResults" />
+            </Typography.Title>
+
+            <Descriptions column={1} size="small" bordered>
+              {this.props.matchExecution.botResults.map(x => (
+                <Descriptions.Item
+                  label={x.submission.author.username}
+                  key={x.submission.id}
+                >
+                  {entryPointResultEnum.helpers.idToText(x.compilerResult)}
+                  <ShowLogButton
+                    size="small"
+                    onClick={() =>
+                      this.showLog(
+                        <FormattedMessage
+                          id="app.shared.matchExecution.compilerResultModalTitle"
+                          values={{ player: x.submission.author.username }}
+                        />,
+                        x.compilerLog,
+                      )
+                    }
+                  >
+                    <FormattedMessage id="app.shared.submission.showLog" />
+                  </ShowLogButton>
+                </Descriptions.Item>
+              ))}
+            </Descriptions>
           </div>
         )}
 

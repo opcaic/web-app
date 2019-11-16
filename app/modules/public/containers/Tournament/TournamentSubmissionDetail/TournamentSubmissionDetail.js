@@ -38,12 +38,17 @@ class TournamentSubmissionDetail extends React.PureComponent {
           <FormattedMessage id="app.public.tournamentSubmissionDetail.title" />
         }
         buttons={[
-          <Button type="default" size="small" style={{ marginRight: 10 }}>
+          <Button
+            type="default"
+            size="small"
+            style={{ marginRight: 10 }}
+            key="back"
+          >
             <Link to={`/tournaments/${this.props.tournament.id}/submissions/`}>
               <FormattedMessage id="app.generic.backToList" />
             </Link>
           </Button>,
-          <TournamentAdminButton />,
+          <TournamentAdminButton key="admin" />,
         ]}
       >
         <TournamentPageTitle
@@ -96,10 +101,7 @@ TournamentSubmissionDetail.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchResource: (id, successCallback) =>
-      dispatch(
-        submissionsActions.fetchResource(id, { meta: { successCallback } }),
-      ),
+    fetchResource: id => dispatch(submissionsActions.fetchResource(id)),
     downloadSubmission: id => dispatch(downloadSubmission(id)),
     fetchMatches: submissionId => params =>
       dispatch(

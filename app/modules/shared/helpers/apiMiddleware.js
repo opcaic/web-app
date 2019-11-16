@@ -152,6 +152,22 @@ function* handle401Interceptor() {
   });
 }
 
+function* handle429Interceptor() {
+  axiosInstance.interceptors.response.use(response => {
+    if (response.status === 429) {
+      response.data = {
+        code: 'too-many-requests',
+      };
+    }
+
+    return response;
+  });
+}
+
 export function* apiSaga() {
-  yield all([call(handle401Interceptor), takeEvery(CALL_API, handleApiCalls)]);
+  yield all([
+    call(handle401Interceptor),
+    call(handle429Interceptor),
+    takeEvery(CALL_API, handleApiCalls),
+  ]);
 }

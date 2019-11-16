@@ -8,6 +8,7 @@ import {
   scopeTooltipIntlMessages,
 } from '@/modules/public/components/Tournament/TournamentDetail/TournamentOverview/localization';
 import {
+  tournamentAvailabilityEnum,
   tournamentFormatEnum,
   tournamentScopeEnum,
   tournamentSimplifiedStateEnum,
@@ -61,6 +62,15 @@ const BasicInformation = props => (
           tournamentSimplifiedStateEnum.helpers.idToText(
             getSimplifiedState(props.tournament),
           )
+        )}
+      </Descriptions.Item>
+      <Descriptions.Item
+        label={
+          <FormattedMessage id="app.public.tournamentOverview.availability" />
+        }
+      >
+        {tournamentAvailabilityEnum.helpers.idToText(
+          props.tournament.availability,
         )}
       </Descriptions.Item>
       <Descriptions.Item

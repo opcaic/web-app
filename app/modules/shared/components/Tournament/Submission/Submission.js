@@ -18,6 +18,7 @@ import { theme } from '@/modules/shared/helpers/utils';
 import MatchList from '@/modules/shared/components/Tournament/MatchList';
 import LogModal from '@/modules/shared/components/Tournament/LogModal';
 import Validation from '@/modules/shared/components/Tournament/Submission/Validation';
+import UserMatchList from '@/modules/shared/components/Tournament/UserMatchList/UserMatchList';
 
 function getStateDescription(state) {
   let description = null;
@@ -262,17 +263,28 @@ class Submission extends Component {
               margin: this.props.isAdmin ? null : '0px -27px -25px -25px',
             }}
           >
-            <MatchList
-              dataSource={this.props.matches}
-              loading={this.props.isFetchingMatches}
-              fetch={this.props.fetchMatches}
-              totalItems={this.props.matchesTotalItems}
-              tournament={this.props.tournament}
-              isAdmin={this.props.isAdmin}
-              emptyText={
-                <FormattedMessage id="app.shared.submission.noMatches" />
-              }
-            />
+            {this.props.isAdmin ? (
+              <MatchList
+                dataSource={this.props.matches}
+                loading={this.props.isFetchingMatches}
+                fetch={this.props.fetchMatches}
+                totalItems={this.props.matchesTotalItems}
+                tournament={this.props.tournament}
+                isAdmin={this.props.isAdmin}
+                emptyText={
+                  <FormattedMessage id="app.shared.submission.noMatches" />
+                }
+              />
+            ) : (
+              <UserMatchList
+                dataSource={this.props.matches}
+                loading={this.props.isFetchingMatches}
+                fetch={this.props.fetchMatches}
+                user={this.props.submission.author}
+                totalItems={this.props.matchesTotalItems}
+                view="public"
+              />
+            )}
           </div>
         </div>
       </div>
