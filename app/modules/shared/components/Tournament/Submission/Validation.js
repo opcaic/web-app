@@ -54,6 +54,11 @@ const Validation = ({ validation, showLog, isAdmin }) => {
     <div>
       <Descriptions column={1} size="small" bordered style={{ marginTop: 15 }}>
         <Descriptions.Item
+          label={<FormattedMessage id="app.shared.submission.validationId" />}
+        >
+          {validation.id}
+        </Descriptions.Item>
+        <Descriptions.Item
           label={
             <FormattedMessage id="app.shared.submission.validationsDate" />
           }
@@ -69,7 +74,19 @@ const Validation = ({ validation, showLog, isAdmin }) => {
         >
           {getValidationStateIcon(validation.checkerResult)}
           {entryPointResultEnum.helpers.idToText(validation.checkerResult)}
-          {validation.checkerResult !== entryPointResultEnum.NOT_EXECUTED && (
+          {validation.checkerResult !== entryPointResultEnum.NOT_EXECUTED && [
+            <ShowLogButton
+              size="small"
+              style={{ marginLeft: 10 }}
+              onClick={() =>
+                showLog(
+                  <FormattedMessage id="app.shared.submission.checkerErrorResultModalTitle" />,
+                  validation.checkerErrorLog,
+                )
+              }
+            >
+              <FormattedMessage id="app.shared.submission.showErrorLog" />
+            </ShowLogButton>,
             <ShowLogButton
               size="small"
               onClick={() =>
@@ -80,8 +97,8 @@ const Validation = ({ validation, showLog, isAdmin }) => {
               }
             >
               <FormattedMessage id="app.shared.submission.showLog" />
-            </ShowLogButton>
-          )}
+            </ShowLogButton>,
+          ]}
         </Descriptions.Item>
         <Descriptions.Item
           label={<FormattedMessage id="app.shared.submission.compilerResult" />}
@@ -89,7 +106,19 @@ const Validation = ({ validation, showLog, isAdmin }) => {
           {getValidationStateIcon(validation.compilerResult)}
           {entryPointResultEnum.helpers.idToText(validation.compilerResult)}
 
-          {validation.compilerResult !== entryPointResultEnum.NOT_EXECUTED && (
+          {validation.compilerResult !== entryPointResultEnum.NOT_EXECUTED && [
+            <ShowLogButton
+              size="small"
+              style={{ marginLeft: 10 }}
+              onClick={() =>
+                showLog(
+                  <FormattedMessage id="app.shared.submission.compilerErrorResultModalTitle" />,
+                  validation.compilerErrorLog,
+                )
+              }
+            >
+              <FormattedMessage id="app.shared.submission.showErrorLog" />
+            </ShowLogButton>,
             <ShowLogButton
               size="small"
               onClick={() =>
@@ -100,8 +129,8 @@ const Validation = ({ validation, showLog, isAdmin }) => {
               }
             >
               <FormattedMessage id="app.shared.submission.showLog" />
-            </ShowLogButton>
-          )}
+            </ShowLogButton>,
+          ]}
         </Descriptions.Item>
         <Descriptions.Item
           label={
@@ -110,7 +139,19 @@ const Validation = ({ validation, showLog, isAdmin }) => {
         >
           {getValidationStateIcon(validation.validatorResult)}
           {entryPointResultEnum.helpers.idToText(validation.validatorResult)}
-          {validation.validatorResult !== entryPointResultEnum.NOT_EXECUTED && (
+          {validation.validatorResult !== entryPointResultEnum.NOT_EXECUTED && [
+            <ShowLogButton
+              size="small"
+              style={{ marginLeft: 10 }}
+              onClick={() =>
+                showLog(
+                  <FormattedMessage id="app.shared.submission.validatorErrorResultModalTitle" />,
+                  validation.validatorErrorLog,
+                )
+              }
+            >
+              <FormattedMessage id="app.shared.submission.showErrorLog" />
+            </ShowLogButton>,
             <ShowLogButton
               size="small"
               onClick={() =>
@@ -121,8 +162,8 @@ const Validation = ({ validation, showLog, isAdmin }) => {
               }
             >
               <FormattedMessage id="app.shared.submission.showLog" />
-            </ShowLogButton>
-          )}
+            </ShowLogButton>,
+          ]}
         </Descriptions.Item>
         {shouldDisplayException && (
           <Descriptions.Item

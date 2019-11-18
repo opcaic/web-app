@@ -101,6 +101,7 @@ export function mapDispatchToProps(dispatch) {
         matchActions.fetchMany(
           prepareFilterParams(params, 'executed', false, {
             submissionId,
+            anonymize: false,
           }),
         ),
       ),
