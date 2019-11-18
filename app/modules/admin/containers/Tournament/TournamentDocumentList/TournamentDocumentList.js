@@ -18,6 +18,25 @@ import TournamentPageTitle from '@/modules/shared/components/Tournament/Tourname
 
 /* eslint-disable react/prefer-stateless-function */
 class TournamentDocumentList extends React.PureComponent {
+  state = {
+    params: null,
+  };
+
+  fetchItems = tournamentId => params => {
+    const allParams = Object.assign({}, params, { tournamentId });
+    this.setState({ params: allParams });
+
+    this.props.fetchItems(allParams);
+  };
+
+  deleteResource = documentId => {
+    this.props.deleteResource(documentId, this.handlDeleteSuccess);
+  };
+
+  handlDeleteSuccess = () => {
+    this.props.fetchItems(this.state.params);
+  };
+
   render() {
     return (
       <div>
@@ -38,11 +57,12 @@ class TournamentDocumentList extends React.PureComponent {
         <DocumentList
           dataSource={this.props.items}
           loading={this.props.isFetching}
-          fetch={this.props.fetchItems(this.props.tournament.id)}
+          fetch={this.fetchItems(this.props.tournament.id)}
           totalItems={this.props.totalItems}
           editLinkGenerator={id =>
             `/admin/tournaments/${this.props.tournament.id}/documents/${id}`
           }
+          deleteDocument={this.deleteResource}
         />
       </div>
     );
@@ -53,17 +73,25 @@ TournamentDocumentList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   isFetching: PropTypes.bool.isRequired,
   fetchItems: PropTypes.func.isRequired,
+  deleteResource: PropTypes.func.isRequired,
   totalItems: PropTypes.number.isRequired,
   tournament: PropTypes.object.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchItems: tournamentId => params =>
+    fetchItems: params =>
       dispatch(
-        documentActions.fetchMany(
-          prepareFilterParams(params, 'name', true, { tournamentId }),
-        ),
+        documentActions.fetchMany(prepareFilterParams(params, 'name', true)),
+      ),
+    deleteResource: (documentId, successCallback, failureCallback) =>
+      dispatch(
+        documentActions.deleteResource(documentId, {
+          meta: {
+            successCallback,
+            failureCallback,
+          },
+        }),
       ),
   };
 }

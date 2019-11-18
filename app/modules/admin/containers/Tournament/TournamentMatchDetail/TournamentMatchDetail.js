@@ -2,17 +2,21 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Button, Col, Collapse, Row } from 'antd';
+import { Button, Col, Collapse, Row, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
 import {
   actions as matchesActions,
   selectors as matchesSelectors,
+  createMatchExecution,
 } from '@/modules/admin/ducks/matches';
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Spin from '@/modules/shared/components/Spin';
 import MatchExecution from '@/modules/shared/components/Tournament/MatchExecution';
-import { entryPointResultEnum } from '@/modules/shared/helpers/enumHelpers';
+import {
+  entryPointResultEnum,
+  matchStateEnum,
+} from '@/modules/shared/helpers/enumHelpers';
 import { downloadFiles } from '@/modules/shared/ducks/matches';
 import { pageTitles } from '@/modules/shared/utils/pageTitles';
 import { intlGlobal } from '@/modules/shared/helpers/IntlGlobalProvider';
@@ -23,6 +27,14 @@ class TournamentMatchDetail extends React.PureComponent {
   componentDidMount() {
     this.props.fetchResource(this.props.match.params.matchId);
   }
+
+  handleSuccess = () => {
+    this.props.fetchResource(this.props.resource.id);
+  };
+
+  handleMatchReexecution = () => {
+    this.props.createMatchExecution(this.props.resource.id, this.handleSuccess);
+  };
 
   render() {
     const match = this.props.resource;
@@ -43,6 +55,18 @@ class TournamentMatchDetail extends React.PureComponent {
                   <FormattedMessage id="app.admin.tournamentMatchDetail.backToList" />
                 </Link>
               </Button>
+              <Popconfirm
+                title={
+                  <FormattedMessage id="app.admin.confirms.executeMatch" />
+                }
+                onConfirm={this.handleMatchReexecution}
+              >
+                <Button
+                  disabled={!match || match.state !== matchStateEnum.FAILED}
+                >
+                  <FormattedMessage id="app.admin.matchList.rematch" />
+                </Button>
+              </Popconfirm>
 
               <Collapse defaultActiveKey={[0]} accordion>
                 {match &&
@@ -84,6 +108,7 @@ class TournamentMatchDetail extends React.PureComponent {
 TournamentMatchDetail.propTypes = {
   fetchResource: PropTypes.func.isRequired,
   downloadFiles: PropTypes.func.isRequired,
+  createMatchExecution: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   resource: PropTypes.object,
   match: PropTypes.object.isRequired,
@@ -102,6 +127,8 @@ export function mapDispatchToProps(dispatch) {
         }),
       ),
     downloadFiles: id => dispatch(downloadFiles(id)),
+    createMatchExecution: (matchId, successCallback, failureCallback) =>
+      dispatch(createMatchExecution(matchId, successCallback, failureCallback)),
   };
 }
 

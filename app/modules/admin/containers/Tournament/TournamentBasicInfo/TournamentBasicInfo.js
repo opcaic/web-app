@@ -33,7 +33,11 @@ import {
 } from '@/modules/admin/ducks/tournamentFiles';
 import TournamentPageTitle from '@/modules/shared/components/Tournament/TournamentPageTitle';
 import { currentUserSelector } from '@/modules/shared/selectors/auth';
-import { userRoleEnum } from '@/modules/shared/helpers/enumHelpers';
+import {
+  tournamentStateEnum,
+  tournamentScopeEnum,
+  userRoleEnum,
+} from '@/modules/shared/helpers/enumHelpers';
 
 class TournamentBasicInfo extends React.PureComponent {
   state = {
@@ -54,7 +58,11 @@ class TournamentBasicInfo extends React.PureComponent {
   }
 
   changeState = (newState, stateAction) => {
-    const newStateObject = { state: newState };
+    const newStateObject =
+      newState === tournamentStateEnum.PUBLISHED &&
+      this.props.tournament.scope === tournamentScopeEnum.ONGOING
+        ? { state: tournamentStateEnum.RUNNING }
+        : { state: newState };
 
     this.setState(state => ({
       resource: Object.assign({}, state.resource, newStateObject),

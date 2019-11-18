@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import {
   publishTournament,
   startTournament,
@@ -15,23 +15,32 @@ import {
 } from '@/modules/shared/helpers/enumHelpers';
 
 const ActionButton = props => {
-  const { handleClick, createAction, message, type, state } = props;
+  const {
+    handleClick,
+    confirmTitle,
+    createAction,
+    message,
+    type,
+    state,
+  } = props;
 
   return (
-    <Button
-      type={type}
-      size="large"
-      onClick={() => handleClick(state, createAction())}
-      style={{ marginLeft: 10 }}
+    <Popconfirm
+      placement="left"
+      onConfirm={() => handleClick(state, createAction())}
+      title={confirmTitle}
     >
-      {message}
-    </Button>
+      <Button type={type} size="large" style={{ marginLeft: 5 }}>
+        {message}
+      </Button>
+    </Popconfirm>
   );
 };
 
 ActionButton.propTypes = {
   handleClick: PropTypes.func,
   createAction: PropTypes.func,
+  confirmTitle: PropTypes.node,
   message: PropTypes.object,
   type: PropTypes.string,
   state: PropTypes.number,
@@ -45,6 +54,9 @@ const PublishButton = props => (
     state={tournamentStateEnum.PUBLISHED}
     message={<FormattedMessage id="app.admin.tournamentForm.publish" />}
     type="primary"
+    confirmTitle={
+      <FormattedMessage id="app.admin.confirms.publishTournament" />
+    }
     {...props}
   />
 );
@@ -55,6 +67,7 @@ const StartButton = props => (
     }
     state={tournamentStateEnum.RUNNING}
     message={<FormattedMessage id="app.admin.tournamentForm.start" />}
+    confirmTitle={<FormattedMessage id="app.admin.confirms.startTournament" />}
     type="primary"
     {...props}
   />
@@ -66,6 +79,7 @@ const PauseButton = props => (
     }
     state={tournamentStateEnum.PAUSED}
     message={<FormattedMessage id="app.admin.tournamentForm.pause" />}
+    confirmTitle={<FormattedMessage id="app.admin.confirms.pauseTournament" />}
     type="normal"
     {...props}
   />
@@ -77,6 +91,9 @@ const UnpauseButton = props => (
     }
     state={tournamentStateEnum.RUNNING}
     message={<FormattedMessage id="app.admin.tournamentForm.unpause" />}
+    confirmTitle={
+      <FormattedMessage id="app.admin.confirms.unpauseTournament" />
+    }
     type="normal"
     {...props}
   />
@@ -88,6 +105,7 @@ const StopButton = props => (
     }
     state={tournamentStateEnum.FINISHED}
     message={<FormattedMessage id="app.admin.tournamentForm.stop" />}
+    confirmTitle={<FormattedMessage id="app.admin.confirms.stopTournament" />}
     type="danger"
     {...props}
   />
@@ -97,25 +115,7 @@ class TournamentActionButtons extends React.PureComponent {
   render() {
     const { resource, ...rest } = this.props;
 
-    const buttons = [
-      <Button
-        type="default"
-        onClick={() => this.props.cloneTournament(resource.id)}
-      >
-        <FormattedMessage id="app.admin.tournamentList.clone" />
-      </Button>,
-    ];
-
-    if (this.props.canDelete) {
-      buttons.push(
-        <Button
-          type="danger"
-          onClick={() => this.props.deleteTournament(resource.id)}
-        >
-          <FormattedMessage id="app.generic.delete" />
-        </Button>,
-      );
-    }
+    const buttons = [];
 
     switch (resource.state) {
       case tournamentStateEnum.CREATED:
@@ -137,6 +137,38 @@ class TournamentActionButtons extends React.PureComponent {
       case tournamentStateEnum.FINISHED:
       default:
         break;
+    }
+
+    buttons.push(
+      <Popconfirm
+        placement="left"
+        onConfirm={() => this.props.cloneTournament(resource.id)}
+        title={<FormattedMessage id="app.admin.confirms.cloneTournament" />}
+      >
+        <Button type="default" style={{ marginLeft: 15 }}>
+          <FormattedMessage id="app.admin.tournamentList.clone" />
+        </Button>
+      </Popconfirm>,
+    );
+
+    if (this.props.canDelete) {
+      buttons.push(
+        <Popconfirm
+          placement="left"
+          title={
+            resource.state !== tournamentStateEnum.RUNNING ? (
+              <FormattedMessage id="app.admin.confirms.deleteTournament" />
+            ) : (
+              <FormattedMessage id="app.admin.confirms.deleteRunningTournament" />
+            )
+          }
+          onConfirm={() => this.props.deleteTournament(resource.id)}
+        >
+          <Button type="danger" style={{ marginLeft: 5 }}>
+            <FormattedMessage id="app.generic.delete" />
+          </Button>
+        </Popconfirm>,
+      );
     }
 
     return <div>{buttons}</div>;

@@ -13,10 +13,6 @@ import PropTypes from 'prop-types';
 const { Option } = Select;
 
 class TournamentGameInfo extends React.Component {
-  componentDidMount() {
-    if (this.props.gameId) this.props.fetchGame(this.props.gameId);
-  }
-
   handleGameChange = id => {
     this.props.fetchGame(id);
     this.props.onGameChange(id);

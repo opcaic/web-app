@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { FormattedMessage } from 'react-intl';
-import ReactHtmlParser from 'react-html-parser';
 import withEnhancedForm from '@/modules/shared/helpers/hocs/withEnhancedForm';
 import { compose } from 'redux';
 import styled from 'styled-components';
@@ -44,6 +43,9 @@ class EmailTemplateForm extends React.Component {
     const tailFormItemLayout = {
       wrapperCol: { span: 14, offset: 3 },
     };
+
+    const blob = new Blob([this.state.bodyTemplate], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
 
     return (
       <Form onSubmit={this.handleSubmit} {...formItemLayout}>
@@ -96,7 +98,13 @@ class EmailTemplateForm extends React.Component {
           wrapperCol={{ span: 18 }}
         >
           <StyledHtmlContainer>
-            {ReactHtmlParser(this.state.bodyTemplate)}
+            <iframe
+              title="templatePreview"
+              src={url}
+              width="100%"
+              height="600px"
+              frameBorder="0"
+            />
           </StyledHtmlContainer>
         </Form.Item>
 

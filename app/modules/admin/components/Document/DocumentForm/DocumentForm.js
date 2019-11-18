@@ -79,13 +79,6 @@ class DocumentForm extends React.PureComponent {
               >
                 <FormattedMessage id="app.generic.save" />
               </Button>
-              <Button
-                type="danger"
-                htmlType="submit"
-                style={{ marginLeft: '10px' }}
-              >
-                <FormattedMessage id="app.generic.delete" />
-              </Button>
             </div>
           ) : (
             <div>
