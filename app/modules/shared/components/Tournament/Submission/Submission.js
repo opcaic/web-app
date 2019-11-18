@@ -131,6 +131,14 @@ class Submission extends Component {
             )}
 
             <Descriptions column={1} size="small" bordered>
+              {this.props.isAdmin && (
+                <Descriptions.Item
+                  label={<FormattedMessage id="app.shared.submission.id" />}
+                >
+                  {this.props.submission.id}
+                </Descriptions.Item>
+              )}
+
               <Descriptions.Item
                 label={<FormattedMessage id="app.shared.submission.date" />}
               >

@@ -148,6 +148,16 @@ class MatchExecution extends Component {
 
           {this.props.isAdmin && (
             <Descriptions.Item
+              label={
+                <FormattedMessage id="app.shared.matchExecution.matchId" />
+              }
+            >
+              {this.props.match.id}
+            </Descriptions.Item>
+          )}
+
+          {this.props.isAdmin && (
+            <Descriptions.Item
               label={<FormattedMessage id="app.shared.matchExecution.jobId" />}
             >
               {this.props.matchExecution.jobId}
@@ -165,7 +175,19 @@ class MatchExecution extends Component {
               )}
 
               {this.props.matchExecution.executorResult !==
-                entryPointResultEnum.NOT_EXECUTED && (
+                entryPointResultEnum.NOT_EXECUTED && [
+                <ShowLogButton
+                  size="small"
+                  style={{ marginLeft: 10 }}
+                  onClick={() =>
+                    this.showLog(
+                      <FormattedMessage id="app.shared.matchExecution.executorErrorResultModalTitle" />,
+                      this.props.matchExecution.executorErrorLog,
+                    )
+                  }
+                >
+                  <FormattedMessage id="app.shared.matchExecution.showErrorLog" />
+                </ShowLogButton>,
                 <ShowLogButton
                   size="small"
                   onClick={() =>
@@ -175,9 +197,9 @@ class MatchExecution extends Component {
                     )
                   }
                 >
-                  <FormattedMessage id="app.shared.submission.showLog" />
-                </ShowLogButton>
-              )}
+                  <FormattedMessage id="app.shared.matchExecution.showLog" />
+                </ShowLogButton>,
+              ]}
             </Descriptions.Item>
           )}
 
@@ -272,6 +294,21 @@ class MatchExecution extends Component {
                   {entryPointResultEnum.helpers.idToText(x.compilerResult)}
                   <ShowLogButton
                     size="small"
+                    style={{ marginLeft: 10 }}
+                    onClick={() =>
+                      this.showLog(
+                        <FormattedMessage
+                          id="app.shared.matchExecution.compilerErrorResultModalTitle"
+                          values={{ player: x.submission.author.username }}
+                        />,
+                        this.props.matchExecution.compilerErrorLog,
+                      )
+                    }
+                  >
+                    <FormattedMessage id="app.shared.matchExecution.showErrorLog" />
+                  </ShowLogButton>
+                  <ShowLogButton
+                    size="small"
                     onClick={() =>
                       this.showLog(
                         <FormattedMessage
@@ -282,7 +319,7 @@ class MatchExecution extends Component {
                       )
                     }
                   >
-                    <FormattedMessage id="app.shared.submission.showLog" />
+                    <FormattedMessage id="app.shared.matchExecution.showLog" />
                   </ShowLogButton>
                 </Descriptions.Item>
               ))}
